@@ -37,13 +37,13 @@ public partial class @PlayerControllerMap: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
+                    ""name"": ""MoveK"",
+                    ""type"": ""Value"",
                     ""id"": ""fa8c9bcd-3d5d-4df7-9ac0-2d5743ab593d"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -70,37 +70,37 @@ public partial class @PlayerControllerMap: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""f46d8a68-4c54-4d36-9765-38282a3799b9"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""name"": ""1D Axis"",
+                    ""id"": ""e879c7ec-77a9-4fe2-a06d-45aa3dd5c488"",
+                    ""path"": ""1DAxis"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
+                    ""action"": ""MoveK"",
+                    ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""c2fd43df-aeed-4409-a3a5-899b54d1f9e4"",
+                    ""name"": ""negative"",
+                    ""id"": ""ef49eb60-0220-4349-83b3-2e71b41bebf8"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveK"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""27c0defb-ca17-4585-bfac-1654c9379bae"",
-                    ""path"": """",
+                    ""name"": ""positive"",
+                    ""id"": ""ea986f10-3810-4125-acad-af3659c9b027"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""MoveK"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -110,7 +110,7 @@ public partial class @PlayerControllerMap: IInputActionCollection2, IDisposable
         // Move
         m_Move = asset.FindActionMap("Move", throwIfNotFound: true);
         m_Move_Move = m_Move.FindAction("Move", throwIfNotFound: true);
-        m_Move_Newaction = m_Move.FindAction("New action", throwIfNotFound: true);
+        m_Move_MoveK = m_Move.FindAction("MoveK", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -173,13 +173,13 @@ public partial class @PlayerControllerMap: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Move;
     private List<IMoveActions> m_MoveActionsCallbackInterfaces = new List<IMoveActions>();
     private readonly InputAction m_Move_Move;
-    private readonly InputAction m_Move_Newaction;
+    private readonly InputAction m_Move_MoveK;
     public struct MoveActions
     {
         private @PlayerControllerMap m_Wrapper;
         public MoveActions(@PlayerControllerMap wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Move_Move;
-        public InputAction @Newaction => m_Wrapper.m_Move_Newaction;
+        public InputAction @MoveK => m_Wrapper.m_Move_MoveK;
         public InputActionMap Get() { return m_Wrapper.m_Move; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -192,9 +192,9 @@ public partial class @PlayerControllerMap: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @MoveK.started += instance.OnMoveK;
+            @MoveK.performed += instance.OnMoveK;
+            @MoveK.canceled += instance.OnMoveK;
         }
 
         private void UnregisterCallbacks(IMoveActions instance)
@@ -202,9 +202,9 @@ public partial class @PlayerControllerMap: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @MoveK.started -= instance.OnMoveK;
+            @MoveK.performed -= instance.OnMoveK;
+            @MoveK.canceled -= instance.OnMoveK;
         }
 
         public void RemoveCallbacks(IMoveActions instance)
@@ -225,6 +225,6 @@ public partial class @PlayerControllerMap: IInputActionCollection2, IDisposable
     public interface IMoveActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnMoveK(InputAction.CallbackContext context);
     }
 }
