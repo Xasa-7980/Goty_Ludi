@@ -58,7 +58,7 @@ Material:
     - _FoamOpacity: 1
     - _FoamScale: 0.436
     - _FoamSpeed: 0.125
-    - _FresnelIntensity: 1
+    - _FresnelIntensity: 0.735
     - _Opacity: 1
     - _OpacityDepth: 20
     - _QueueControl: 0
@@ -80,6 +80,6 @@ Material:
     - _DeepColor: {r: 0, g: 0.6933656, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _FoamColor: {r: 0.6698113, g: 0.7373499, b: 1, a: 1}
-    - _FresnelColor: {r: 0, g: 0.032790184, b: 1, a: 1}
+    - _FresnelColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShallowColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
