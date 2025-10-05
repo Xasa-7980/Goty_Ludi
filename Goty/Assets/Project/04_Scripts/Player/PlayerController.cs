@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
         {
             playerControllerMap = input;
             moveAction = playerControllerMap.actions["Move"];
-            moveActionK = playerControllerMap.actions["Move"];
+            moveActionK = playerControllerMap.actions["MoveK"];
         }
         public Vector2 GetKeyboardDirection ( )
         {
@@ -53,7 +53,9 @@ public class PlayerController : MonoBehaviour
     private Timer timer;
     private float targetX;
     public float distX;
-    private float newDeltaTime;
+    public float radius;
+    public float checkDist = 0.3f;
+    private float deltaTime;
     private void Start ( )
     {
         gameInput = new GameInput(playerInput);
@@ -62,29 +64,20 @@ public class PlayerController : MonoBehaviour
     }
     private void Update ( )
     {
-        newDeltaTime = Time.deltaTime * timeScale;
+        deltaTime = Time.deltaTime * timeScale;
         PlayerMove(phase);
     }
     float dirZ;
     void PlayerMove(GamePhase phase)
     {
-        Vector2 keyDirection = gameInput.GetKeyboardDirection( );
-        Vector2 touchDirection = gameInput.GetTouchDirection( );
+        Vector2 keyDirection = gameInput.GetKeyboardDirection( ).normalized;
+        Vector2 touchDirection = gameInput.GetTouchDirection( ).normalized;
 
         Vector2 direction = useMouse ? touchDirection : keyDirection; 
         if (phase == GamePhase.RIVER)
         {
             float maxX = 0;
-            if (Physics.Raycast(transform.position, Vector3.right, out RaycastHit hitRight, 100, groundMask))
-            {
-                maxX = hitRight.point.x;
-            }
-            float minX = 0;
-            if (Physics.Raycast(transform.position, Vector3.left, out RaycastHit hitLeft, 100, groundMask))
-            {
-                minX = hitLeft.point.x;
-            }
-            GetRiverMovement(direction, minX, maxX);
+            GetRiverMovement(direction);
         }
         else if(phase == GamePhase.SEA)
         {
@@ -98,36 +91,41 @@ public class PlayerController : MonoBehaviour
             GetSeaMovement(bound, direction);
         }
     }
-    void GetRiverMovement ( Vector2 direction, float minX, float maxX )
+    private void OnDrawGizmos ( )
     {
-        float deltaX = 0f;
 
-        if (direction.x != 0 && !useMouse) // Using keyboard
+        // Gizmo derecha
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + Vector3.right * checkDist, radius);
+
+        // Gizmo izquierda
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position + Vector3.left * checkDist, radius);
+    }
+    void GetRiverMovement ( Vector2 direction )
+    {
+        float deltaX = direction.x * speed * Time.deltaTime;
+
+        RaycastHit hit;
+
+        if (deltaX > 0 && Physics.Raycast(transform.position, Vector3.right, out hit, radius + checkDist, groundMask))
         {
-            if (Keyboard.current.aKey.isPressed) // Left
-            {
-                deltaX = -speed * newDeltaTime;
-            }
-            else if (Keyboard.current.dKey.isPressed) // Right
-            {
-                deltaX = speed * newDeltaTime;
-            }
+            deltaX = Mathf.Min(deltaX, hit.distance - radius);
         }
-        else if (direction != Vector2.zero && (Mouse.current != null || Touchscreen.current != null) && useMouse) // Mouse / touch screen
+        else if (deltaX < 0 && Physics.Raycast(transform.position, Vector3.left, out hit, radius + checkDist, groundMask))
         {
-            deltaX = (direction.x - lastPointerPos.x) * sensitivity;
-            lastPointerPos = direction;
-        } 
-        float nextX = Mathf.Clamp(transform.position.x + deltaX, minX - distX, maxX + distX); 
-        dirZ += forwardSpeed * speed * newDeltaTime; 
-        Vector3 newPos = new Vector3(nextX, transform.position.y, dirZ * Vector3.back.z); 
-        rb.MovePosition(newPos);
+            deltaX = Mathf.Max(deltaX, -(hit.distance - radius));
+        }
+
+        dirZ += forwardSpeed * speed * deltaTime;
+        Vector3 nextPos = transform.position + new Vector3(deltaX, 0, dirZ * Vector3.back.z);
+        rb.MovePosition(nextPos);
     }
     void GetSeaMovement(Bounds bound, Vector2 direction)
     {
-        direction.y += divingSpeed * newDeltaTime;
-        float deltaX = (direction.x - lastPointerPos.x) * speed * newDeltaTime;
-        float deltaY = (direction.y - lastPointerPos.y) * speed * newDeltaTime;
+        direction.y += divingSpeed * deltaTime;
+        float deltaX = (direction.x - lastPointerPos.x) * speed * deltaTime;
+        float deltaY = (direction.y - lastPointerPos.y) * speed * deltaTime;
         Vector3 newDir = transform.position + Vector3.right * deltaX + Vector3.up * deltaY;
         Vector3 newPos = new Vector3(newDir.x, newDir.y, transform.position.z);
         direction.x = Mathf.Clamp(direction.x, bound.min.x, bound.max.x);
