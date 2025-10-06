@@ -82,7 +82,7 @@ public class Timer
         return is_started && !is_paused && !is_stopped;
 
     }
-    public bool Timer_Stopped ( )
+    public bool Timer_Finished ( )
     {
         return !is_started && !is_paused && !is_going && is_stopped;
     }

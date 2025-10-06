@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
     public GamePhase phase = GamePhase.RIVER; //quitar public 
     private Rigidbody rb;
     private GameInput gameInput;
+    private CameraBehaviour cameraBehaviour;
     private Vector2 lastPointerPos;
     private Timer timer;
     private float targetX;
@@ -56,11 +57,14 @@ public class PlayerController : MonoBehaviour
     public float radius;
     public float checkDist = 0.3f;
     private float deltaTime;
+    private float shakeDurationOnHit;
+    private float shakeAmountOnHit;
     private void Start ( )
     {
         gameInput = new GameInput(playerInput);
         rb = GetComponent<Rigidbody>();
         timer = new Timer( this );
+        cameraBehaviour = Camera.main.gameObject.GetComponent<CameraBehaviour>();
     }
     private void Update ( )
     {
@@ -77,7 +81,7 @@ public class PlayerController : MonoBehaviour
         if (phase == GamePhase.RIVER)
         {
             float maxX = 0;
-            GetRiverMovement(direction);
+            RiverMove(direction);
         }
         else if(phase == GamePhase.SEA)
         {
@@ -88,7 +92,7 @@ public class PlayerController : MonoBehaviour
             Bounds bound = new Bounds(center, size);
 
             Debug.Log(bound);
-            GetSeaMovement(bound, direction);
+            SeaMove(bound, direction);
         }
     }
     private void OnDrawGizmos ( )
@@ -102,7 +106,7 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position + Vector3.left * checkDist, radius);
     }
-    void GetRiverMovement ( Vector2 direction )
+    void RiverMove ( Vector2 direction )
     {
         float deltaX = direction.x * speed * Time.deltaTime;
 
@@ -118,10 +122,10 @@ public class PlayerController : MonoBehaviour
         }
 
         dirZ += forwardSpeed * speed * deltaTime;
-        Vector3 nextPos = transform.position + new Vector3(deltaX, 0, dirZ * Vector3.back.z);
+        Vector3 nextPos = transform.position + new Vector3(deltaX, 0, dirZ * 0.1f * Vector3.back.z);
         rb.MovePosition(nextPos);
     }
-    void GetSeaMovement(Bounds bound, Vector2 direction)
+    void SeaMove(Bounds bound, Vector2 direction)
     {
         direction.y += divingSpeed * deltaTime;
         float deltaX = (direction.x - lastPointerPos.x) * speed * deltaTime;
@@ -132,13 +136,49 @@ public class PlayerController : MonoBehaviour
         direction.y = Mathf.Clamp(direction.y, bound.min.y, bound.max.y);
         rb.MovePosition(newPos);
     }
-    void GetSkyMovement ( )
+    void AscensionMove ( Vector2 direction )
+    {
+
+        float deltaX = direction.x * speed * Time.deltaTime;
+
+        RaycastHit hit;
+
+        if (deltaX > 0 && Physics.Raycast(transform.position, Vector3.right, out hit, radius + checkDist, groundMask))
+        {
+            deltaX = Mathf.Min(deltaX, hit.distance - radius);
+        }
+        else if (deltaX < 0 && Physics.Raycast(transform.position, Vector3.left, out hit, radius + checkDist, groundMask))
+        {
+            deltaX = Mathf.Max(deltaX, -(hit.distance - radius));
+        }
+
+        dirZ += forwardSpeed * speed * deltaTime;
+        Vector3 nextPos = transform.position + new Vector3(deltaX, dirZ * Vector3.down.y, transform.position.z);
+        rb.MovePosition(nextPos);
+    }
+    void SkyMove ( )
     {
 
     }
-    void GetFallMovement ( )
+    void FallMove ( Vector2 direction )
     {
 
+        float deltaX = direction.x * speed * Time.deltaTime;
+
+        RaycastHit hit;
+
+        if (deltaX > 0 && Physics.Raycast(transform.position, Vector3.right, out hit, radius + checkDist, groundMask))
+        {
+            deltaX = Mathf.Min(deltaX, hit.distance - radius);
+        }
+        else if (deltaX < 0 && Physics.Raycast(transform.position, Vector3.left, out hit, radius + checkDist, groundMask))
+        {
+            deltaX = Mathf.Max(deltaX, -(hit.distance - radius));
+        }
+
+        dirZ += forwardSpeed * speed * deltaTime;
+        Vector3 nextPos = transform.position + new Vector3(deltaX, dirZ * Vector3.down.y, transform.position.z);
+        rb.MovePosition(nextPos);
     }
     void PhaseTransition()
     {
@@ -148,6 +188,13 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("Transicionando");
             }, Action_Timing.Start);
+        }
+    }
+    private void OnCollisionEnter ( Collision collision )
+    {
+        if(collision.gameObject.layer == groundMask)
+        {
+            cameraBehaviour.CameraShake(shakeDurationOnHit, shakeAmountOnHit);
         }
     }
 }
