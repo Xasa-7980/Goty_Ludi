@@ -4,7 +4,7 @@ public class CameraBehaviour : MonoBehaviour
 {
     private Timer timer;
     private Vector3 originalPos;
-    [SerializeField] private PlayerController player;
+    [SerializeField] private Player player;
     private void Start ( )
     {
         originalPos = transform.localPosition;

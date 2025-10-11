@@ -25,7 +25,7 @@ public class ProceduralBuildingMap : MonoBehaviour
     private MapShape lastShape;
     private Transform curMapTransform;
     private Transform nextMapTransform;
-    public PlayerController playerController;
+    public Player playerController;
     // Start is called before the first frame update
     void Awake()
     {
