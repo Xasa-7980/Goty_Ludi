@@ -1,16 +1,47 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    AsyncOperation async;
+    IEnumerator LoadSceneAsync()
     {
-        
+        async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+
+        while (async.progress < 0.9)
+        {
+            yield return null;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LoadMainMenu()
     {
-        
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void LoadRiver()
+    {
+        SceneManager.LoadScene("River");
+    }
+
+    public void NextScene()
+    {
+        if (SceneManager.GetActiveScene().name != "SkyFall")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            return;
+        }
+        LoadRiver();
+    }
+
+    public void LoadPauseMenu()
+    {
+
+    }
+
+    public void LoadOptionsMenu()
+    {
+
     }
 }

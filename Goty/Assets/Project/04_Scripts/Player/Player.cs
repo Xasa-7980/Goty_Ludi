@@ -48,16 +48,17 @@ public class Player : MonoBehaviour
     [SerializeField] private float forwardSpeed = 1;
 
 
-    public GamePhase phase = GamePhase.RIVER; //quitar public 
+    [SerializeField] private GamePhase phase = GamePhase.RIVER; //quitar public 
     private Rigidbody rb;
     private GameInput gameInput;
     private CameraBehaviour cameraBehaviour;
     private Vector2 lastPointerPos;
     private TimerObject timer;
     private float targetX;
-    public float distX;
-    public float radius;
-    public float checkDist = 0.3f;
+    [SerializeField] private float distX;
+    [SerializeField] private float radius;
+    [SerializeField] private float checkDist = 0.3f;
+    [SerializeField] private float jumpForce = 10;
     private float deltaTime;
     private float shakeDurationOnHit;
     private float shakeAmountOnHit;
@@ -206,7 +207,6 @@ public class Player : MonoBehaviour
         Vector3 nextPos = transform.position + new Vector3(deltaX, 0, dirZ * 0.1f * Vector3.back.z);
         rb.MovePosition(nextPos);
     }
-    public float jumpForce = 10;
     void SeaMove ( Bounds bound, Vector2 direction )
     {
         float targetVelX = direction.x * speed;
