@@ -2,9 +2,19 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneController : MonoBehaviour
+public class SceneController :MonoBehaviour
 {
+    public static SceneController Instance { get; private set; }
     AsyncOperation async;
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(Instance);          
+        }
+        Instance = this;    
+        DontDestroyOnLoad(Instance);
+    }
     IEnumerator LoadSceneAsync()
     {
         async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
