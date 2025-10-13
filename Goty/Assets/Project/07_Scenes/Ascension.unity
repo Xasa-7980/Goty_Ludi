@@ -205,12 +205,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.270598, y: -0.65328085, z: 0.2705972, w: 0.6532826}
+  m_LocalPosition: {x: 6, y: -0.3535649, z: -0.3535638}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1263919044}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
@@ -10233,7 +10233,8 @@ Transform:
   m_LocalPosition: {x: 0.5, y: 0, z: 6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 330585546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 45, y: 90, z: 0}
 --- !u!54 &1263919045
@@ -10286,11 +10287,61 @@ MonoBehaviour:
   phaseTransitionMaxTime: 0
   timeScale: 1
   forwardSpeed: 0.01
-  phase: 1
+  phase: 2
   distX: 0
   radius: 0.5
   checkDist: 0.3
+  duration: 3
   jumpForce: 5
+  airUpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0033416748
+      value: -0.0018920898
+      inSlope: 1.0765707
+      outSlope: 1.0765707
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.16999584
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.3557496
+      outSlope: -1.3557496
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.15667766
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  airDownCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  time: 1
 --- !u!114 &1263919047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10546,7 +10597,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 330585546}
   - {fileID: 1263919044}
   - {fileID: 722665820}
   - {fileID: 6058669081837481475}

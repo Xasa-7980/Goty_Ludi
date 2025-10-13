@@ -9,6 +9,7 @@ public enum GamePhase
 {
     RIVER,
     SEA,
+    ASCENSION,
     SKY,
     FALL
 }
@@ -52,7 +53,7 @@ public class Player : MonoBehaviour
     private GameInput gameInput;
     private CameraBehaviour cameraBehaviour;
     private Vector2 lastPointerPos;
-    private Timer timer;
+    private TimerObject timer;
     private float targetX;
     public float distX;
     public float radius;
@@ -64,7 +65,7 @@ public class Player : MonoBehaviour
     {
         gameInput = new GameInput(playerInput);
         rb = GetComponent<Rigidbody>();
-        timer = new Timer(this);
+        timer = new TimerObject(this);
         cameraBehaviour = Camera.main.gameObject.GetComponent<CameraBehaviour>();
     }
     private void Update ( )
@@ -117,6 +118,14 @@ public class Player : MonoBehaviour
         Vector2 direction = useMouse ? touchDirection : keyDirection;
         if (phase == GamePhase.RIVER)
         {
+            if (rb.useGravity)
+            {
+                rb.useGravity = false;
+                rb.constraints = RigidbodyConstraints.None;
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
+                rb.constraints = RigidbodyConstraints.FreezePositionY;
+            }
             float maxX = 0;
             RiverMove(direction);
         }
@@ -126,6 +135,7 @@ public class Player : MonoBehaviour
             {
                 rb.useGravity = true;
                 rb.constraints = RigidbodyConstraints.None;
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
                 rb.constraints = RigidbodyConstraints.FreezeRotation;
                 rb.constraints = RigidbodyConstraints.FreezePositionZ;
             }
@@ -138,7 +148,34 @@ public class Player : MonoBehaviour
             Debug.Log(direction);
             SeaMove(bound, direction);
         }
+        else if (phase == GamePhase.ASCENSION)
+        {
+            if (rb.useGravity)
+            {
+                rb.useGravity = false;
+                rb.constraints = RigidbodyConstraints.None;
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
+                rb.constraints = RigidbodyConstraints.FreezePositionZ;
+
+            }
+            if (Input.GetKeyDown(KeyCode.Space) && !ascending)
+            {
+                ascensionTimer = 0f;
+                ascending = true;
+            }
+
+            if (ascending)
+            {
+                AscensionMove();
+            }
+        }
+
     }
+    bool ascending = false; 
+    [SerializeField] private float duration = 3f;
+
+    private float ascensionTimer = 0f;
     private void OnDrawGizmos ( )
     {
 
@@ -211,26 +248,31 @@ public class Player : MonoBehaviour
             }
         }
     }
-    void AscensionMove ( Vector2 direction )
+    public AnimationCurve airUpCurve;
+    public AnimationCurve airDownCurve;
+    public float time = 0;
+    
+    void AscensionMove ( )
     {
+        ascensionTimer += Time.deltaTime;
+        float t = ascensionTimer / duration;
 
-        float deltaX = direction.x * speed * Time.deltaTime;
-
-        RaycastHit hit;
-
-        if (deltaX > 0 && Physics.Raycast(transform.position, Vector3.right, out hit, radius + checkDist, groundMask))
+        if (t >= 1f)
         {
-            deltaX = Mathf.Min(deltaX, hit.distance - radius);
-        }
-        else if (deltaX < 0 && Physics.Raycast(transform.position, Vector3.left, out hit, radius + checkDist, groundMask))
-        {
-            deltaX = Mathf.Max(deltaX, -(hit.distance - radius));
+            t = 1f;
+            ascending = false; // terminar el movimiento
         }
 
-        dirZ += forwardSpeed * speed * deltaTime;
-        Vector3 nextPos = transform.position + new Vector3(deltaX, dirZ * Vector3.down.y, transform.position.z);
-        rb.MovePosition(nextPos);
+        // Evaluar la curva para obtener un valor entre 0 y 1
+        float curveValue = airUpCurve.Evaluate(t);
+
+        // Calcular la posición objetivo usando Lerp
+        Vector3 targetPos = transform.position + Vector3.up * (curveValue * airUpCurve.Evaluate(1));
+
+        // Movimiento suave hacia el objetivo
+        transform.position = Vector3.Lerp(transform.position, targetPos, 10f * Time.deltaTime);
     }
+
     void SkyMove ( )
     {
 

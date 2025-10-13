@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
 {
-    private Timer timer;
+    private TimerObject timer;
     private Vector3 originalPos;
     [SerializeField] private Player player;
     private void Start ( )
     {
         originalPos = transform.localPosition;
-        timer = new Timer(this);
+        timer = new TimerObject(this);
     }
     private void Update ( )
     {

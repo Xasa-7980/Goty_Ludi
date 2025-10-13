@@ -10,7 +10,7 @@ public enum Action_Timing
     OnGoing,
     End
 }
-public class Timer
+public class TimerObject
 {
     float curTime;
     MonoBehaviour owner;
@@ -19,7 +19,7 @@ public class Timer
     bool is_going;
     bool is_stopped;
     bool is_paused;
-    public Timer(MonoBehaviour owner)
+    public TimerObject ( MonoBehaviour owner )
     {
         this.owner = owner;
         runningCoroutines = new List<Coroutine>();
@@ -86,7 +86,7 @@ public class Timer
     {
         return !is_started && !is_paused && !is_going && is_stopped;
     }
-    public void DisableTimer( )
+    public void DisableTimer ( )
     {
         is_going = false;
     }
