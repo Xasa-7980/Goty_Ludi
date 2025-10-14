@@ -146,7 +146,7 @@ public class Player : MonoBehaviour
             Vector3 center = bottomLeft + size / 2;
             Bounds bound = new Bounds(center, size);
 
-            Debug.Log(direction);
+            //Debug.Log(direction);
             SeaMove(bound, direction);
         }
         else if (phase == GamePhase.ASCENSION)

@@ -37,7 +37,7 @@ public class JellyFishScript : MonoBehaviour
         {
             Debug.Log("I'm flapping");
             rb.AddForce(Vector3.up * flapImpulse, ForceMode.Impulse);
-            new WaitForSeconds(flapTime);
+            yield return new WaitForSeconds(flapTime);
         }
         yield return null;
     }
