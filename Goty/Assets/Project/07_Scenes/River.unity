@@ -343,7 +343,7 @@ PrefabInstance:
     - target: {fileID: 6058669082071058596, guid: 5a3358c604949a14f9396422b43ba1d8,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.01068
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6058669082071058596, guid: 5a3358c604949a14f9396422b43ba1d8,
         type: 3}
@@ -790,7 +790,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
-  useMouse: 0
   sensitivity: 0
   joystick: {fileID: 0}
   speed: 0
@@ -1030,7 +1029,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 1263919047}
-  useMouse: 1
   sensitivity: 15
   joystick: {fileID: 1145560048}
   speed: 100

@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
 {
     [Header("Input Settings")]
     [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private bool useMouse;
+    private bool useMouse;
     [SerializeField] private float sensitivity;
     [SerializeField] private FixedJoystick joystick;
 
