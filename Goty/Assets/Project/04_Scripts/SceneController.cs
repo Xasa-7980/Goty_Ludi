@@ -45,6 +45,11 @@ public class SceneController :MonoBehaviour
         LoadRiver();
     }
 
+    public void ResetScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     public void LoadPauseMenu()
     {
 
