@@ -105,21 +105,16 @@ public class Player : MonoBehaviour
 
     public void ChangePhase ( GamePhase newPhase )
     {
-        PhysicsMode requiredPhysics = newPhase == GamePhase.ASCENSION ? PhysicsMode.Mode2D : PhysicsMode.Mode3D;
+        PhysicsMode requiredPhysics = phase == GamePhase.ASCENSION ? PhysicsMode.Mode2D : PhysicsMode.Mode3D;
 
-        if (currentPhysicsMode != requiredPhysics)
+        if (requiredPhysics == PhysicsMode.Mode2D)
         {
-            if (requiredPhysics == PhysicsMode.Mode2D)
-            {
-                Add2DPhysicsSetUp();
-            }
-            else
-            {
-                Add3DPhysicsSetUp();
-            }
-            currentPhysicsMode = requiredPhysics;
+            Add2DPhysicsSetUp();
         }
-        print(phase);
+        else
+        {
+            Add3DPhysicsSetUp();
+        }
 
         phase = newPhase;
     }
@@ -232,7 +227,7 @@ public class Player : MonoBehaviour
 
     private void SeaMove ( Vector2 direction )
     {
-        ConfigureRigidbodyForSea();
+        ConfigureRigidbodyForFlappy();
 
         float targetVelX = direction.x * speed;
         rb.linearVelocity = new Vector3(targetVelX, rb.linearVelocity.y, rb.linearVelocity.z);
@@ -240,7 +235,7 @@ public class Player : MonoBehaviour
         HandleJump();
     }
 
-    private void ConfigureRigidbodyForSea ( )
+    private void ConfigureRigidbodyForFlappy ( )
     {
         if (!rb.useGravity)
         {
@@ -273,12 +268,26 @@ public class Player : MonoBehaviour
 
     private void AscensionMove ( Vector2 direction )
     {
+        ConfigureRigidbodyForAscension();
         float targetVelX = direction.x * speed;
         rb2d.linearVelocity = new Vector2(targetVelX, rb2d.linearVelocity.y);
     }
 
+    private void ConfigureRigidbodyForAscension ( )
+    {
+        if (!rb2d != null)
+        {
+            if (!rb2d.simulated)
+            {
+                rb2d.simulated = true;
+                rb2d.constraints = RigidbodyConstraints2D.None;
+                rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
+        }
+    }
     private void SkyMove ( )
     {
+        ConfigureRigidbodyForFlappy();
         HandleJump();
     }
 
