@@ -69,12 +69,26 @@ public class Player : MonoBehaviour
     {
         InitializeComponents();
         ChangePhase(phase);
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            // Lógica para Android
+            useMouse = true;
+        }
+        else if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            // Lógica para PC/Web
+            useMouse = false;
+        }
     }
 
     private void Update ( )
     {
         deltaTime = Time.deltaTime * timeScale;
         HandleMovement();
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneController.Instance.NextScene();
+        }
     }
 
     private void InitializeComponents ( )
@@ -105,6 +119,7 @@ public class Player : MonoBehaviour
             }
             currentPhysicsMode = requiredPhysics;
         }
+        print(phase);
 
         phase = newPhase;
     }
@@ -116,19 +131,19 @@ public class Player : MonoBehaviour
         switch (phase)
         {
             case GamePhase.RIVER:
-                RiverMove(inputDirection);
+                RiverMove(GetInputDirection());
                 break;
             case GamePhase.SEA:
-                SeaMove(joystick.Direction);
+                SeaMove(GetInputDirection());
                 break;
             case GamePhase.ASCENSION:
-                AscensionMove(joystick.Direction);
+                AscensionMove(GetInputDirection());
                 break;
             case GamePhase.SKY:
                 SkyMove();
                 break;
             case GamePhase.FALL:
-                RiverMove(joystick.Direction);
+                AscensionMove(GetInputDirection());
                 break;
         }
     }
@@ -139,7 +154,7 @@ public class Player : MonoBehaviour
         {
             return GetTouchBasedInput(true);
         }
-        return gameInput.GetKeyboardDirection().normalized;
+        return new Vector3(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"),0);
     }
 
     private Vector2 GetTouchBasedInput ( bool useJoystick )
@@ -177,7 +192,7 @@ public class Player : MonoBehaviour
     private void RiverMove ( Vector2 direction )
     {
         ConfigureRigidbodyForRiver();
-        MoveHorizontallyWithCollision(direction.x);
+        MoveHorizontallyWithCollision(direction);
         MoveForward();
     }
 
@@ -190,27 +205,29 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void MoveHorizontallyWithCollision ( float inputX )
+    private void MoveHorizontallyWithCollision ( Vector3 direction )
     {
-        float deltaX = inputX * speed * Time.deltaTime;
-        Vector3 direction = deltaX > 0 ? Vector3.right : Vector3.left;
+        float deltaX = Vector3.right.x * direction.y * speed;
 
-        if (Physics.Raycast(transform.position, direction, out RaycastHit hit,
-            radius + checkDist, groundMask))
+        RaycastHit hit;
+
+        if (deltaX > 0 && Physics.Raycast(transform.position, Vector3.right, out hit, radius + checkDist, groundMask))
         {
-            float maxDistance = hit.distance - radius;
-            deltaX = deltaX > 0 ? Mathf.Min(deltaX, maxDistance) : Mathf.Max(deltaX, -maxDistance);
+            deltaX = Mathf.Min(deltaX, hit.distance - radius);
+
         }
-
-        Vector3 horizontalMovement = new Vector3(deltaX, 0, 0);
-        rb.MovePosition(transform.position + horizontalMovement);
+        else if (deltaX < 0 && Physics.Raycast(transform.position, Vector3.left, out hit, radius + checkDist, groundMask))
+        {
+            deltaX = Mathf.Max(deltaX, -(hit.distance - radius));
+        }
+        Vector3 nextPos = new Vector3(deltaX, 0, 0);
+        rb.linearVelocity = new Vector3(nextPos.x * deltaTime, rb.linearVelocity.y, rb.linearVelocity.z);
     }
-
     private void MoveForward ( )
     {
-        dirZ += forwardSpeed * speed * deltaTime;
-        Vector3 forwardMovement = new Vector3(0, 0, dirZ * 0.1f * Vector3.back.z);
-        rb.MovePosition(transform.position + forwardMovement);
+        dirZ += Vector3.forward.z * forwardSpeed * deltaTime;
+        Vector3 forwardMovement = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, dirZ * 0.1f);
+        rb.linearVelocity = forwardMovement;
     }
 
     private void SeaMove ( Vector2 direction )
@@ -228,6 +245,7 @@ public class Player : MonoBehaviour
         if (!rb.useGravity)
         {
             rb.useGravity = true;
+            rb.constraints = RigidbodyConstraints.None;
             rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
         }
     }
@@ -297,11 +315,19 @@ public class Player : MonoBehaviour
 
         if (rb == null)
         {
-            rb = gameObject.AddComponent<Rigidbody>();
+            if(!TryGetComponent<Rigidbody>(out rb))
+            {
+
+                rb = gameObject.AddComponent<Rigidbody>();
+            }
         }
         if (sphereCollider == null)
         {
-            sphereCollider = gameObject.AddComponent<SphereCollider>();
+            if (!TryGetComponent<SphereCollider>(out sphereCollider))
+            {
+
+                sphereCollider = gameObject.AddComponent<SphereCollider>();
+            }
         }
     }
 
@@ -315,13 +341,14 @@ public class Player : MonoBehaviour
         {
             Destroy(sphereCollider);
         }
-
-        if (rb2d == null)
+        if (!TryGetComponent<Rigidbody2D>(out rb2d))
         {
+            print("No encuentro el rb2d");
             rb2d = gameObject.AddComponent<Rigidbody2D>();
         }
-        if (circleCollider2D == null)
+        if (!TryGetComponent<CircleCollider2D>(out circleCollider2D))
         {
+            print("No encuentro el collider 2d");
             circleCollider2D = gameObject.AddComponent<CircleCollider2D>();
         }
     }

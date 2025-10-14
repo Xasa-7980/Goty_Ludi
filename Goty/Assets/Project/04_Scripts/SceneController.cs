@@ -10,7 +10,7 @@ public class SceneController :MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(Instance);          
+            Destroy(gameObject);          
         }
         Instance = this;    
         DontDestroyOnLoad(Instance);
