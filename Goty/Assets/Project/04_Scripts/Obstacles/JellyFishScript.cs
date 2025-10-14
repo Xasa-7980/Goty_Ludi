@@ -34,8 +34,7 @@ public class JellyFishScript : MonoBehaviour
     IEnumerator TimeToFlap()
     {
         while(!isDead)
-        {
-            Debug.Log("I'm flapping");
+        { 
             rb.AddForce(Vector3.up * flapImpulse, ForceMode.Impulse);
             yield return new WaitForSeconds(flapTime);
         }

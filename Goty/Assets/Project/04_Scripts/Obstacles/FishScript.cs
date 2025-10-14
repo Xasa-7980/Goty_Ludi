@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class FishScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private float initalY;
+    [SerializeField] private float initalX; 
+    
     void Start()
     {
         

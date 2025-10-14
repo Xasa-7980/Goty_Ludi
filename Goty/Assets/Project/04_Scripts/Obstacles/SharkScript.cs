@@ -19,12 +19,12 @@ public class SharkScript : MonoBehaviour
     [SerializeField] private float vel;
     private float appearVel;
     private bool spawnRight;
-    private readonly float timeToStop = 1.0f;
     private readonly float timeToWait = 2.0f;
     private float initialY;
     private float initialX;
     private readonly float initialZ = 7f;
 
+    //public float timeToSpawn; 
 
     private State state;
     private Vector3 initialPosition;
@@ -32,11 +32,11 @@ public class SharkScript : MonoBehaviour
 
    void Start()
     {
-        appearVel = vel / 10;
+        appearVel = vel / 5;
         timer = new TimerObject(this);
         SetRandomSpawn();
         transform.position = initialPosition;
-        state = State.APPEARING;                
+        state = State.APPEARING;
     }
     void Update()
     {
@@ -72,7 +72,7 @@ public class SharkScript : MonoBehaviour
         initialY = UnityEngine.Random.Range(yMin, yMax);
 
         // Posicion X aleatoria entre dos valores
-        spawnRight = (int)UnityEngine.Random.Range(0, 2) > 0 ? true : false;
+        spawnRight = UnityEngine.Random.value > 0.5f;
 
         if (spawnRight)
         {
