@@ -8,7 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Fantasy Meter
-  m_Shader: {fileID: -6465566751694194690, guid: b098a0834b92acd448735228191d38ee, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: b098a0834b92acd448735228191d38ee,
+    type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -41,8 +42,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Alpha: 0.81
+    - _AlphaClip: 0.5
     - _ColorMask: 15
     - _Health: 0.556
+    - _Height: -0.15
+    - _MeterValue: 0.5
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -50,9 +55,11 @@ Material:
     - _StencilWriteMask: 255
     - _UIMaskSoftnessX: 1
     - _UIMaskSoftnessY: 1
+    - _WaveSpeed: 2
     m_Colors:
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 0, b: 0, a: 1}
+    - _WaterColor: {r: 0.06603757, g: 0.68036443, b: 1, a: 1}
     - _WidthHeight: {r: 250, g: 250, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
