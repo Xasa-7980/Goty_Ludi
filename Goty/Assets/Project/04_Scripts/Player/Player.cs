@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Cinemachine;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -13,291 +13,267 @@ public enum GamePhase
     SKY,
     FALL
 }
+
+public enum PhysicsMode
+{
+    Mode2D,
+    Mode3D
+}
+
 public class Player : MonoBehaviour
 {
-    [Serializable]
-    private class GameInput
-    {
-        public PlayerInput playerControllerMap;
-        private InputAction moveAction;
-        private InputAction moveActionK;
-        public GameInput ( PlayerInput input )
-        {
-            playerControllerMap = input;
-            moveAction = playerControllerMap.actions["Move"];
-            moveActionK = playerControllerMap.actions["MoveK"];
-        }
-        public Vector2 GetKeyboardDirection ( )
-        {
-            return moveActionK.ReadValue<Vector2>();
-        }
-        public Vector2 GetTouchDirection ( )
-        {
-            return moveAction.ReadValue<Vector2>();
-        }
-    }
-
+    [Header("Input Settings")]
     [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private bool useMouse;
+    [SerializeField] private float sensitivity;
+    [SerializeField] private FixedJoystick joystick;
+
+    [Header("Movement Settings")]
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private float divingSpeed = 3f;
+    [SerializeField] private float forwardSpeed = 1f;
+    [SerializeField] private float jumpForce = 10f;
+
+    [Header("Collision Settings")]
     [SerializeField] private LayerMask groundMask;
-    [SerializeField] private float speed; //Velocidad de movimiento
-    [SerializeField] private float divingSpeed = 3;
-    [SerializeField] private float sensitivity; //Sensibilidad de pantalla con movimiento de dedo o ratón
-    [SerializeField] private bool useMouse; //Sensibilidad de pantalla con movimiento de dedo o ratón
-    [SerializeField] private float phaseTransitionMaxTime;
-    [SerializeField] private float timeScale = 1;
-    [SerializeField] private float forwardSpeed = 1;
-
-
-    [SerializeField] private GamePhase phase = GamePhase.RIVER; //quitar public 
-    private Rigidbody rb;
-    private GameInput gameInput;
-    private CameraBehaviour cameraBehaviour;
-    private Vector2 lastPointerPos;
-    private TimerObject timer;
-    private float targetX;
-    [SerializeField] private float distX;
-    [SerializeField] private float radius;
     [SerializeField] private float checkDist = 0.3f;
-    [SerializeField] private float jumpForce = 10;
+    [SerializeField] private float radius = 0.5f;
+
+    [Header("Gameplay Settings")]
+    [SerializeField] private GamePhase phase = GamePhase.RIVER;
+    [SerializeField] private float phaseTransitionMaxTime = 2f;
+    [SerializeField] private float timeScale = 1f;
+    [SerializeField] private float shakeDurationOnHit = 0.5f;
+    [SerializeField] private float shakeAmountOnHit = 0.1f;
+
+    // Components
+    [HideIfNoComponent(typeof(Rigidbody))] private Rigidbody rb;
+    [HideIfNoComponent(typeof(SphereCollider))] private SphereCollider sphereCollider;
+    [HideIfNoComponent(typeof(Rigidbody2D))] private Rigidbody2D rb2d;
+    [HideIfNoComponent(typeof(CircleCollider2D))] private CircleCollider2D circleCollider2D;
+    private CameraBehaviour cameraBehaviour;
+    private GameInput gameInput;
+    private TimerObject timer;
+
+    // State variables
+    private Vector2 lastPointerPos;
+    private float dirZ;
     private float deltaTime;
-    private float shakeDurationOnHit;
-    private float shakeAmountOnHit;
+    private int health = 0;
+    private PhysicsMode currentPhysicsMode;
+
+    // Events
+    public UnityEvent OnDeath;
+
     private void Start ( )
     {
-        gameInput = new GameInput(playerInput);
-        rb = GetComponent<Rigidbody>();
-        timer = new TimerObject(this);
-        cameraBehaviour = Camera.main.gameObject.GetComponent<CameraBehaviour>();
+        InitializeComponents();
+        ChangePhase(phase);
     }
+
     private void Update ( )
     {
         deltaTime = Time.deltaTime * timeScale;
-        PlayerMove(phase);
+        HandleMovement();
     }
-    float dirZ;
-    void PlayerMove ( GamePhase phase )
+
+    private void InitializeComponents ( )
     {
-        Vector2 keyDirection = gameInput.GetKeyboardDirection().normalized;
-        Vector2 touchDirection = Vector2.zero;
+        gameInput = new GameInput(playerInput);
+        timer = new TimerObject(this);
 
-        if (useMouse)
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null && mainCamera.TryGetComponent<CameraBehaviour>(out cameraBehaviour))
         {
-            if (Input.touchCount > 0)
-            {
-                Touch touch = Input.GetTouch(0);
-                if (touch.position.x < Screen.width / 2)
-                {
-                    float moveDir = (touch.deltaPosition.x > 0) ? 1 : -1;
-                    touchDirection = new Vector2(moveDir, 0);
-                }
-            }
-            else if (Input.GetMouseButton(0))
-            {
-                if (Input.mousePosition.x < Screen.width / 2)
-                {
-                    if (lastPointerPos == Vector2.zero)
-                        lastPointerPos = Input.mousePosition;
+            Debug.Log("Added camera behaviour succefully");
+        }
+    }
 
-                    Vector2 delta = (Vector2)Input.mousePosition - lastPointerPos;
-                    touchDirection = new Vector2(delta.x * sensitivity, 0);
-                    lastPointerPos = Input.mousePosition;
-                }
-                else
-                {
-                    lastPointerPos = Vector2.zero;
-                }
+    public void ChangePhase ( GamePhase newPhase )
+    {
+        PhysicsMode requiredPhysics = newPhase == GamePhase.ASCENSION ? PhysicsMode.Mode2D : PhysicsMode.Mode3D;
+
+        if (currentPhysicsMode != requiredPhysics)
+        {
+            if (requiredPhysics == PhysicsMode.Mode2D)
+            {
+                Add2DPhysicsSetUp();
             }
             else
             {
-                lastPointerPos = Vector2.zero;
+                Add3DPhysicsSetUp();
             }
-        }
-        else
-        {
-            touchDirection = gameInput.GetTouchDirection().normalized;
-        }
-        Vector2 direction = useMouse ? touchDirection : keyDirection;
-        if (phase == GamePhase.RIVER)
-        {
-            if (rb.useGravity)
-            {
-                rb.useGravity = false;
-                rb.constraints = RigidbodyConstraints.None;
-                rb.constraints = RigidbodyConstraints.FreezeRotation;
-                rb.constraints = RigidbodyConstraints.FreezeRotation;
-                rb.constraints = RigidbodyConstraints.FreezePositionY;
-            }
-            float maxX = 0;
-            RiverMove(direction);
-        }
-        else if (phase == GamePhase.SEA)
-        {
-            if (!rb.useGravity)
-            {
-                rb.useGravity = true;
-                rb.constraints = RigidbodyConstraints.None;
-                rb.constraints = RigidbodyConstraints.FreezeRotation;
-                rb.constraints = RigidbodyConstraints.FreezeRotation;
-                rb.constraints = RigidbodyConstraints.FreezePositionZ;
-            }
-            Vector3 bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane));
-            Vector3 topRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, Camera.main.nearClipPlane));
-            Vector3 size = topRight - bottomLeft;
-            Vector3 center = bottomLeft + size / 2;
-            Bounds bound = new Bounds(center, size);
-
-            //Debug.Log(direction);
-            SeaMove(bound, direction);
-        }
-        else if (phase == GamePhase.ASCENSION)
-        {
-            if (rb.useGravity)
-            {
-                rb.useGravity = false;
-                rb.constraints = RigidbodyConstraints.None;
-                rb.constraints = RigidbodyConstraints.FreezeRotation;
-                rb.constraints = RigidbodyConstraints.FreezeRotation;
-                rb.constraints = RigidbodyConstraints.FreezePositionZ;
-
-            }
-            if (Input.GetKeyDown(KeyCode.Space) && !ascending)
-            {
-                ascensionTimer = 0f;
-                ascending = true;
-            }
-
-            if (ascending)
-            {
-                AscensionMove();
-            }
+            currentPhysicsMode = requiredPhysics;
         }
 
+        phase = newPhase;
     }
-    bool ascending = false; 
-    [SerializeField] private float duration = 3f;
 
-    private float ascensionTimer = 0f;
-    private void OnDrawGizmos ( )
+    private void HandleMovement ( )
     {
+        Vector2 inputDirection = GetInputDirection();
 
-        // Gizmo derecha
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + Vector3.right * checkDist, radius);
-
-        // Gizmo izquierda
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position + Vector3.left * checkDist, radius);
-    }
-    void RiverMove ( Vector2 direction )
-    {
-        float deltaX = direction.x * speed * Time.deltaTime;
-
-        RaycastHit hit;
-
-        if (deltaX > 0 && Physics.Raycast(transform.position, Vector3.right, out hit, radius + checkDist, groundMask))
+        switch (phase)
         {
-            deltaX = Mathf.Min(deltaX, hit.distance - radius);
+            case GamePhase.RIVER:
+                RiverMove(inputDirection);
+                break;
+            case GamePhase.SEA:
+                SeaMove(joystick.Direction);
+                break;
+            case GamePhase.ASCENSION:
+                AscensionMove(joystick.Direction);
+                break;
+            case GamePhase.SKY:
+                SkyMove();
+                break;
+            case GamePhase.FALL:
+                RiverMove(joystick.Direction);
+                break;
         }
-        else if (deltaX < 0 && Physics.Raycast(transform.position, Vector3.left, out hit, radius + checkDist, groundMask))
+    }
+
+    private Vector2 GetInputDirection ( )
+    {
+        if (useMouse)
         {
-            deltaX = Mathf.Max(deltaX, -(hit.distance - radius));
+            return GetTouchBasedInput(true);
         }
-
-        dirZ += forwardSpeed * speed * deltaTime;
-        Vector3 nextPos = transform.position + new Vector3(deltaX, 0, dirZ * 0.1f * Vector3.back.z);
-        rb.MovePosition(nextPos);
+        return gameInput.GetKeyboardDirection().normalized;
     }
-    void SeaMove ( Bounds bound, Vector2 direction )
-    {
-        float targetVelX = direction.x * speed;
 
-        rb.linearVelocity = new Vector3(targetVelX, rb.linearVelocity.y, rb.linearVelocity.z);
-        Jump();
-    }
-    void Jump ( )
+    private Vector2 GetTouchBasedInput ( bool useJoystick )
     {
+        if (useJoystick)
+        {
+            return joystick.Direction;
+        }
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == UnityEngine.TouchPhase.Began)
+            if (touch.position.x < Screen.width / 2)
             {
-                if (touch.position.x > Screen.width / 2)
-                {
-                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-                    rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                }
-                else
-                {
-                    Debug.Log("Toque en la mitad izquierda de la pantalla");
-                }
+                float moveDir = touch.deltaPosition.x > 0 ? 1 : -1;
+                return new Vector2(moveDir, 0);
             }
         }
-        if (Input.GetMouseButtonDown(0))
+        else if (Input.GetMouseButton(0))
         {
-            Vector3 mousePos = Input.mousePosition;
+            if (Input.mousePosition.x < Screen.width / 2)
+            {
+                if (lastPointerPos == Vector2.zero)
+                    lastPointerPos = Input.mousePosition;
 
-            if (mousePos.x > Screen.width / 2)
-            {
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            }
-            else
-            {
-                Debug.Log("Click en la mitad izquierda de la pantalla");
+                Vector2 delta = (Vector2)Input.mousePosition - lastPointerPos;
+                lastPointerPos = Input.mousePosition;
+                return new Vector2(delta.x * sensitivity, 0);
             }
         }
-    }
-    public AnimationCurve airUpCurve;
-    public AnimationCurve airDownCurve;
-    public float time = 0;
-    
-    void AscensionMove ( )
-    {
-        ascensionTimer += Time.deltaTime;
-        float t = ascensionTimer / duration;
+        lastPointerPos = Vector2.zero;
 
-        if (t >= 1f)
-        {
-            t = 1f;
-            ascending = false; // terminar el movimiento
-        }
-
-        // Evaluar la curva para obtener un valor entre 0 y 1
-        float curveValue = airUpCurve.Evaluate(t);
-
-        // Calcular la posición objetivo usando Lerp
-        Vector3 targetPos = transform.position + Vector3.up * (curveValue * airUpCurve.Evaluate(1));
-
-        // Movimiento suave hacia el objetivo
-        transform.position = Vector3.Lerp(transform.position, targetPos, 10f * Time.deltaTime);
+        return Vector2.zero;
     }
 
-    void SkyMove ( )
+    private void RiverMove ( Vector2 direction )
     {
-
+        ConfigureRigidbodyForRiver();
+        MoveHorizontallyWithCollision(direction.x);
+        MoveForward();
     }
-    void FallMove ( Vector2 direction )
+
+    private void ConfigureRigidbodyForRiver ( )
     {
-
-        float deltaX = direction.x * speed * Time.deltaTime;
-
-        RaycastHit hit;
-
-        if (deltaX > 0 && Physics.Raycast(transform.position, Vector3.right, out hit, radius + checkDist, groundMask))
+        if (rb.useGravity)
         {
-            deltaX = Mathf.Min(deltaX, hit.distance - radius);
+            rb.useGravity = false;
+            rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         }
-        else if (deltaX < 0 && Physics.Raycast(transform.position, Vector3.left, out hit, radius + checkDist, groundMask))
+    }
+
+    private void MoveHorizontallyWithCollision ( float inputX )
+    {
+        float deltaX = inputX * speed * Time.deltaTime;
+        Vector3 direction = deltaX > 0 ? Vector3.right : Vector3.left;
+
+        if (Physics.Raycast(transform.position, direction, out RaycastHit hit,
+            radius + checkDist, groundMask))
         {
-            deltaX = Mathf.Max(deltaX, -(hit.distance - radius));
+            float maxDistance = hit.distance - radius;
+            deltaX = deltaX > 0 ? Mathf.Min(deltaX, maxDistance) : Mathf.Max(deltaX, -maxDistance);
         }
 
+        Vector3 horizontalMovement = new Vector3(deltaX, 0, 0);
+        rb.MovePosition(transform.position + horizontalMovement);
+    }
+
+    private void MoveForward ( )
+    {
         dirZ += forwardSpeed * speed * deltaTime;
-        Vector3 nextPos = transform.position + new Vector3(deltaX, dirZ * Vector3.down.y, transform.position.z);
-        rb.MovePosition(nextPos);
+        Vector3 forwardMovement = new Vector3(0, 0, dirZ * 0.1f * Vector3.back.z);
+        rb.MovePosition(transform.position + forwardMovement);
     }
-    void PhaseTransition ( )
+
+    private void SeaMove ( Vector2 direction )
+    {
+        ConfigureRigidbodyForSea();
+
+        float targetVelX = direction.x * speed;
+        rb.linearVelocity = new Vector3(targetVelX, rb.linearVelocity.y, rb.linearVelocity.z);
+
+        HandleJump();
+    }
+
+    private void ConfigureRigidbodyForSea ( )
+    {
+        if (!rb.useGravity)
+        {
+            rb.useGravity = true;
+            rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+        }
+    }
+
+    private void HandleJump ( )
+    {
+        bool jumpInput = false;
+
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            jumpInput = touch.phase == UnityEngine.TouchPhase.Began && touch.position.x > Screen.width / 2;
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            jumpInput = Input.mousePosition.x > Screen.width / 2;
+        }
+
+        if (jumpInput)
+        {
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+    }
+
+    private void AscensionMove ( Vector2 direction )
+    {
+        float targetVelX = direction.x * speed;
+        rb2d.linearVelocity = new Vector2(targetVelX, rb2d.linearVelocity.y);
+    }
+
+    private void SkyMove ( )
+    {
+        HandleJump();
+    }
+
+    private void OnDrawGizmos ( )
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + Vector3.right * checkDist, radius);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position + Vector3.left * checkDist, radius);
+    }
+
+    private void PhaseTransition ( )
     {
         if (!timer.Timer_Started())
         {
@@ -307,28 +283,96 @@ public class Player : MonoBehaviour
             }, Action_Timing.Start);
         }
     }
+
+    private void Add3DPhysicsSetUp ( )
+    {
+        if (rb2d != null)
+        {
+            Destroy(rb2d);
+        }
+        if (circleCollider2D != null)
+        {
+            Destroy(circleCollider2D);
+        }
+
+        if (rb == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody>();
+        }
+        if (sphereCollider == null)
+        {
+            sphereCollider = gameObject.AddComponent<SphereCollider>();
+        }
+    }
+
+    private void Add2DPhysicsSetUp ( )
+    {
+        if (rb != null)
+        {
+            Destroy(rb);
+        }
+        if (sphereCollider != null)
+        {
+            Destroy(sphereCollider);
+        }
+
+        if (rb2d == null)
+        {
+            rb2d = gameObject.AddComponent<Rigidbody2D>();
+        }
+        if (circleCollider2D == null)
+        {
+            circleCollider2D = gameObject.AddComponent<CircleCollider2D>();
+        }
+    }
+
     private void OnCollisionEnter ( Collision collision )
     {
         if (collision.gameObject.layer == groundMask)
         {
-            cameraBehaviour.CameraShake(shakeDurationOnHit, shakeAmountOnHit);
+            cameraBehaviour?.CameraShake(shakeDurationOnHit, shakeAmountOnHit);
         }
     }
-    UnityEvent OnDeath;
-    int health = 0;
 
-    public void ReceiveDamage ( int dmg )
+    private void OnCollisionEnter2D ( Collision2D collision )
     {
-        health -= dmg;
+        if (collision.gameObject.layer == groundMask)
+        {
+            cameraBehaviour?.CameraShake(shakeDurationOnHit, shakeAmountOnHit);
+        }
+    }
+
+    public void ReceiveDamage ( int damage )
+    {
+        health -= damage;
         if (health <= 0)
         {
             OnDeath?.Invoke();
         }
     }
-    IEnumerator Fade ( )
+
+    private System.Collections.IEnumerator Fade ( )
     {
         Debug.Log("Start");
-        yield return new WaitUntil(()=> Input.GetKeyDown(KeyCode.A));
+        yield return new WaitUntil(( ) => Input.GetKeyDown(KeyCode.A));
         Debug.Log("End");
+    }
+
+    [Serializable]
+    private class GameInput
+    {
+        private PlayerInput playerControllerMap;
+        private InputAction moveAction;
+        private InputAction moveActionK;
+
+        public GameInput ( PlayerInput input )
+        {
+            playerControllerMap = input;
+            moveAction = playerControllerMap.actions["Move"];
+            moveActionK = playerControllerMap.actions["MoveK"];
+        }
+
+        public Vector2 GetKeyboardDirection ( ) => moveActionK.ReadValue<Vector2>();
+        public Vector2 GetTouchDirection ( ) => moveAction.ReadValue<Vector2>();
     }
 }

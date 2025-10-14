@@ -93,7 +93,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: b83b3643edd41f74b8fa1ef64bd17bf8,
+    type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -5463,23 +5464,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 649745423}
+  useMouse: 1
+  sensitivity: 0.05
+  joystick: {fileID: 1583384053}
+  speed: 6
+  divingSpeed: 3
+  forwardSpeed: 0.01
+  jumpForce: 5
   groundMask:
     serializedVersion: 2
     m_Bits: 72
-  speed: 6
-  divingSpeed: 3
-  sensitivity: 0.05
-  useMouse: 1
+  checkDist: 0.3
+  radius: 0.5
+  phase: 2
   phaseTransitionMaxTime: 0
   timeScale: 1
-  forwardSpeed: 0.01
-  phase: 2
-  distX: 0
-  radius: 0.5
-  checkDist: 0.3
-  jumpForce: 5
-  joystick: {fileID: 1583384053}
-  duration: 3
+  shakeDurationOnHit: 0.5
+  shakeAmountOnHit: 0.1
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!23 &649745425
 MeshRenderer:
   m_ObjectHideFlags: 0
