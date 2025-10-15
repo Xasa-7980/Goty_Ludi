@@ -78,6 +78,7 @@ public class Player : MonoBehaviour
         {
             // Lógica para PC/Web
             useMouse = false;
+            joystick.gameObject.SetActive(false);
         }
     }
 
