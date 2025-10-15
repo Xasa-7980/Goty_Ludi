@@ -48,6 +48,10 @@ MonoBehaviour:
   Jellyfish: {fileID: 4733810697896949002, guid: 406aa2b460d1aa24bbb7d530d761867f,
     type: 3}
   Fish: {fileID: 1985235270246680295, guid: 7da0c1a21c001c34d856c72814e0d7b6, type: 3}
+  WaterDrop: {fileID: 4739753399556298665, guid: 630220294e165104abc0d22d1f2435a8,
+    type: 3}
+  Cloud: {fileID: 9162845639601829825, guid: e81ffd5b85aa2fa47b1fe5092147e1f3, type: 3}
+  Bird: {fileID: 9162845639601829825, guid: 7b0ad264486916047a14068130798c40, type: 3}
   times:
   - 0.5
   - 2
