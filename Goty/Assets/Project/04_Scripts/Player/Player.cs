@@ -99,7 +99,7 @@ public class Player : MonoBehaviour
     {
         gameInput = new GameInput(playerInput);
         timer = new TimerObject(this);
-        screenBounds = screenCollider.bounds;
+        if(screenCollider != null) screenBounds = screenCollider.bounds;
         Camera mainCamera = Camera.main;
         if (mainCamera != null && mainCamera.TryGetComponent<CameraBehaviour>(out cameraBehaviour))
         {
@@ -228,7 +228,7 @@ public class Player : MonoBehaviour
             deltaX = Mathf.Max(deltaX, -(hit.distance - radius));
         }
         Vector3 nextPos = new Vector3(deltaX, 0, 0);
-        rb.linearVelocity = new Vector3(nextPos.x * deltaTime, rb.linearVelocity.y, rb.linearVelocity.z);
+        rb.linearVelocity = new Vector3(nextPos.x, rb.linearVelocity.y, rb.linearVelocity.z);
     }
     private void MoveForward ( )
     {
@@ -243,9 +243,9 @@ public class Player : MonoBehaviour
         ConfigureRigidbodyForFlappy();
 
         float targetVelX = direction.x * speed;
-        float velY = Mathf.Clamp(rb2d.linearVelocity.y, minGravityFall, maxGravityFall);
 
-        rb.linearVelocity = new Vector3(targetVelX, velY, rb.linearVelocity.z);
+
+        rb.linearVelocity = new Vector3(targetVelX, rb.linearVelocity.y, rb.linearVelocity.z);
 
         HandleJump();
     }
@@ -293,19 +293,6 @@ public class Player : MonoBehaviour
     }
     float lerpSpeed = 3;
     float originalSpeed;
-    private void FallMove ( Vector2 direction )
-    {
-        ConfigureRigidbodyForSkyFall();
-        if(direction == Vector2.zero) { lerpSpeed = 0; }
-        Vector2 velocity = direction * speed;
-
-        rb.linearVelocity = velocity;
-        float clampedX = Mathf.Clamp(transform.position.x, screenBounds.min.x, screenBounds.max.x);
-        float clampedY = Mathf.Clamp(transform.position.y, screenBounds.min.y, screenBounds.max.y);
-        Vector3 clampedPosition = new Vector3(clampedX, clampedY, transform.position.z);
-
-        rb.MovePosition(clampedPosition);
-    }
     private void ConfigureRigidbodyForAscension ( )
     {
         if (!rb2d != null)
@@ -322,6 +309,19 @@ public class Player : MonoBehaviour
     {
         ConfigureRigidbodyForFlappy();
         HandleJump();
+    }
+    private void FallMove ( Vector2 direction )
+    {
+        ConfigureRigidbodyForSkyFall();
+        if (direction == Vector2.zero) { lerpSpeed = 0; }
+        Vector2 velocity = direction * speed;
+
+        rb.linearVelocity = velocity;
+        float clampedX = Mathf.Clamp(transform.position.x, screenBounds.min.x, screenBounds.max.x);
+        float clampedY = Mathf.Clamp(transform.position.y, screenBounds.min.y, screenBounds.max.y);
+        Vector3 clampedPosition = new Vector3(clampedX, clampedY, transform.position.z);
+
+        rb.MovePosition(clampedPosition);
     }
 
     private void OnDrawGizmos ( )

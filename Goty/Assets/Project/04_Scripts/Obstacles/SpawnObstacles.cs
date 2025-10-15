@@ -14,27 +14,42 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] private float spawnTime = 3;
     [SerializeField] private GameObject[] prefabsToSpawn;
     TimerObject spawnTimer;
+    [SerializeField] private SpawnMode spawnMode;
     private void Start ( )
     {
         spawnTimer = new TimerObject(this);
     }
     private void Update ( )
     {
-        if (!spawnTimer.Timer_Started())
+        switch (spawnMode)
         {
-            spawnTimer.StartTimer(spawnTime, ( ) =>
-            {
-                Spawn();
-            }, Action_Timing.End);
+            case SpawnMode.None:
+                break;
+            case SpawnMode.Square:
+                break;
+            case SpawnMode.Circle:
+                if (!spawnTimer.Timer_Started())
+                {
+                    spawnTimer.StartTimer(spawnTime, ( ) =>
+                    {
+                        SpawnInsideCircle();
+                    }, Action_Timing.End);
+                }
+                break;
+            case SpawnMode.Sphere:
+                break;
+            case SpawnMode.Box:
+                break;
+            default:
+                break;
         }
-        SpawnInsideSquare();
     }
-    void Spawn ( )
+    void SpawnInsideCircle ( )
     {
         Vector2 randPosition = Random.insideUnitCircle * radius;
-        int randIndex = Random.Range( 0, prefabsToSpawn.Length );
-        Instantiate(prefabsToSpawn[randIndex], new Vector3(transform.position.x + randPosition.x, transform.position.y, transform.position.z + randPosition.y),Quaternion.identity);
-        
+        int randIndex = Random.Range(0, prefabsToSpawn.Length);
+        Instantiate(prefabsToSpawn[randIndex], new Vector3(transform.position.x + randPosition.x, transform.position.y, transform.position.z + randPosition.y), Quaternion.identity);
+
     }
     void SpawnInsideSquare ( )
     {
@@ -45,12 +60,6 @@ public class SpawnObstacles : MonoBehaviour
         int randIndex = Random.Range( 0, prefabsToSpawn.Length );
         Instantiate(prefabsToSpawn[randIndex], pointInsideSquare, Quaternion.identity);
 
-    }
-    void SpawnInsideCircle ( )
-    {
-        Vector2 randPosition = Random.insideUnitCircle * radius;
-        int randIndex = Random.Range(0, prefabsToSpawn.Length);
-        Instantiate(prefabsToSpawn[randIndex], new Vector3(transform.position.x + randPosition.x, transform.position.y, transform.position.z + randPosition.y), Quaternion.identity);
     }
     void SpawnInsideSphere ( )
     {

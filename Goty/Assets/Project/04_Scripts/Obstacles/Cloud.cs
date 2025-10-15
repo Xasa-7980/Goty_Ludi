@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Cloud : MonoBehaviour
 {
-    const float INITIALZ = 6;
+    const float INITIALZ = 0;
     const float INITIALX = 8;
 
     [SerializeField] private GameObject[] models;
