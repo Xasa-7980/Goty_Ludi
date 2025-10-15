@@ -64,6 +64,8 @@ public class SharkScript : MonoBehaviour
             default:
                 break;
         }
+        if (transform.position.x > 10 || transform.position.x < -10)
+            Destroy(gameObject);
     }
 
     void SetRandomSpawn()
