@@ -214,7 +214,7 @@ public class Player : MonoBehaviour
 
     private void MoveHorizontallyWithCollision ( Vector3 direction )
     {
-        float deltaX = Vector3.right.x * direction.y * speed;
+        float deltaX = Vector3.right.x * -direction.y * speed;
 
         RaycastHit hit;
 

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnObstacles : MonoBehaviour
@@ -15,9 +16,12 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] private GameObject[] prefabsToSpawn;
     TimerObject spawnTimer;
     [SerializeField] private SpawnMode spawnMode;
+    [SerializeField] private Player player;
+    [SerializeField] private float maxDistance = 5;
     private void Start ( )
     {
         spawnTimer = new TimerObject(this);
+        player = GameObject.FindAnyObjectByType( typeof( Player ) ).GetComponent<Player>();
     }
     private void Update ( )
     {
@@ -28,6 +32,8 @@ public class SpawnObstacles : MonoBehaviour
             case SpawnMode.Square:
                 break;
             case SpawnMode.Circle:
+                float distance = Vector3.Distance(transform.position, player.transform.position);
+                if (distance <= maxDistance && distance >= 20 )
                 if (!spawnTimer.Timer_Started())
                 {
                     spawnTimer.StartTimer(spawnTime, ( ) =>
