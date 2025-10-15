@@ -11,6 +11,7 @@ public class SpawnObstacles : MonoBehaviour
         Box
     }
     [SerializeField] private float radius;
+    [SerializeField] private Vector3 size = Vector3.one;
     [SerializeField] private float spawnTime = 3;
     [SerializeField] private GameObject[] prefabsToSpawn;
     TimerObject spawnTimer;
@@ -75,6 +76,13 @@ public class SpawnObstacles : MonoBehaviour
     {
         Color color = Color.red;
         Gizmos.color = color;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        if(spawnMode == SpawnMode.Circle)
+        {
+            Gizmos.DrawWireSphere(transform.position, radius);
+        }
+        else if(spawnMode == SpawnMode.Square)
+        {
+            Gizmos.DrawWireCube(transform.position,size);
+        }
     }
 }

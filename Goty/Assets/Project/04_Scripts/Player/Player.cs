@@ -49,10 +49,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float shakeAmountOnHit = 0.1f;
 
     // Components
-    [HideIfNoComponent(typeof(Rigidbody))] private Rigidbody rb;
-    [HideIfNoComponent(typeof(SphereCollider))] private SphereCollider sphereCollider;
-    [HideIfNoComponent(typeof(Rigidbody2D))] private Rigidbody2D rb2d;
-    [HideIfNoComponent(typeof(CircleCollider2D))] private CircleCollider2D circleCollider2D;
+    [SerializeField] private Rigidbody2D rb2d;
+    [SerializeField] private CircleCollider2D circleCollider2D;
     private CameraBehaviour cameraBehaviour;
     private GameInput gameInput;
     private TimerObject timer;
@@ -70,7 +68,6 @@ public class Player : MonoBehaviour
     private void Start ( )
     {
         InitializeComponents();
-        ChangePhase(phase);
         if (Application.platform == RuntimePlatform.Android)
         {
             // Lógica para Android
@@ -82,7 +79,6 @@ public class Player : MonoBehaviour
             useMouse = false;
             joystick.gameObject.SetActive(false);
         }
-        originalSpeed = speed;
     }
 
     private void Update ( )
@@ -99,6 +95,8 @@ public class Player : MonoBehaviour
     {
         gameInput = new GameInput(playerInput);
         timer = new TimerObject(this);
+        rb2d = GetComponent<Rigidbody2D>();
+        circleCollider2D = GetComponent<CircleCollider2D>();
         if(screenCollider != null) screenBounds = screenCollider.bounds;
         Camera mainCamera = Camera.main;
         if (mainCamera != null && mainCamera.TryGetComponent<CameraBehaviour>(out cameraBehaviour))
@@ -106,27 +104,9 @@ public class Player : MonoBehaviour
             Debug.Log("Added camera behaviour succefully");
         }
     }
-
-    public void ChangePhase ( GamePhase newPhase )
-    {
-        PhysicsMode requiredPhysics = phase == GamePhase.ASCENSION ? PhysicsMode.Mode2D : PhysicsMode.Mode3D;
-
-        if (requiredPhysics == PhysicsMode.Mode2D)
-        {
-            Add2DPhysicsSetUp();
-        }
-        else
-        {
-            Add3DPhysicsSetUp();
-        }
-
-        phase = newPhase;
-    }
-
     private void HandleMovement ( )
     {
         Vector2 inputDirection = GetInputDirection();
-
         switch (phase)
         {
             case GamePhase.RIVER:
@@ -153,7 +133,7 @@ public class Player : MonoBehaviour
         {
             return GetTouchBasedInput(true);
         }
-        return new Vector3(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"),0);
+        return gameInput.GetKeyboardDirection();
     }
 
     private Vector2 GetTouchBasedInput ( bool useJoystick )
@@ -192,50 +172,45 @@ public class Player : MonoBehaviour
     {
         ConfigureRigidbodyForRiver();
         MoveHorizontallyWithCollision(direction);
-        MoveForward();
     }
 
     private void ConfigureRigidbodyForRiver ( )
     {
-        if (rb.useGravity)
+        if (rb2d.gravityScale != 0)
         {
-            rb.useGravity = false;
-            rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+            rb2d.gravityScale = 0.01f;
+            rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
     private void ConfigureRigidbodyForSkyFall ( )
     {
-        if (rb.useGravity)
+        if (rb2d.simulated)
         {
-            rb.useGravity = false;
-            rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+            rb2d.simulated = false;
+            rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
 
-    private void MoveHorizontallyWithCollision ( Vector3 direction )
+    private void MoveHorizontallyWithCollision ( Vector2 direction )
     {
-        float deltaX = Vector3.right.x * direction.y * speed;
+        float deltaX = -direction.y * speed;
 
-        RaycastHit hit;
-
-        if (deltaX > 0 && Physics.Raycast(transform.position, Vector3.right, out hit, radius + checkDist, groundMask))
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, radius + checkDist, groundMask);
+        if (deltaX > 0 && hitRight.collider != null)
         {
-            deltaX = Mathf.Min(deltaX, hit.distance - radius);
+            deltaX = Mathf.Min(deltaX, hitRight.distance - radius);
+        }
 
-        }
-        else if (deltaX < 0 && Physics.Raycast(transform.position, Vector3.left, out hit, radius + checkDist, groundMask))
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, radius + checkDist, groundMask);
+        if (deltaX < 0 && hitLeft.collider != null)
         {
-            deltaX = Mathf.Max(deltaX, -(hit.distance - radius));
+            deltaX = Mathf.Max(deltaX, -(hitLeft.distance - radius));
         }
-        Vector3 nextPos = new Vector3(deltaX, 0, 0);
-        rb.linearVelocity = new Vector3(nextPos.x, rb.linearVelocity.y, rb.linearVelocity.z);
-    }
-    private void MoveForward ( )
-    {
+
+        Vector2 nextPos = Vector2.right * deltaX; 
         dirZ = Vector3.forward.z * forwardSpeed;
-        //Posible feature: añadir mas velocidad a medida del tiempo con +=
-        Vector3 forwardMovement = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, dirZ);
-        rb.linearVelocity = forwardMovement;
+
+        rb2d.linearVelocity = new Vector2(nextPos.x, dirZ);
     }
 
     private void SeaMove ( Vector2 direction )
@@ -245,18 +220,18 @@ public class Player : MonoBehaviour
         float targetVelX = direction.x * speed;
 
 
-        rb.linearVelocity = new Vector3(targetVelX, rb.linearVelocity.y, rb.linearVelocity.z);
+        rb2d.linearVelocity = new Vector3(targetVelX, rb2d.linearVelocity.y);
 
         HandleJump();
     }
 
     private void ConfigureRigidbodyForFlappy ( )
     {
-        if (!rb.useGravity)
+        if (!rb2d.simulated)
         {
-            rb.useGravity = true;
-            rb.constraints = RigidbodyConstraints.None;
-            rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+            rb2d.simulated = true;
+            rb2d.constraints = RigidbodyConstraints2D.None;
+            rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
 
@@ -276,10 +251,10 @@ public class Player : MonoBehaviour
 
         if (jumpInput)
         {
-            float velY = Mathf.Clamp(rb.linearVelocity.y, minGravityFall, maxGravityFall);
+            float velY = Mathf.Clamp(rb2d.linearVelocity.y, minGravityFall, maxGravityFall);
 
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, velY, rb.linearVelocity.z);
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            rb2d.linearVelocity = new Vector3(rb2d.linearVelocity.x, velY);
+            rb2d.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
         }
     }
     public float maxGravityFall = 7;
@@ -316,12 +291,12 @@ public class Player : MonoBehaviour
         if (direction == Vector2.zero) { lerpSpeed = 0; }
         Vector2 velocity = direction * speed;
 
-        rb.linearVelocity = velocity;
+        rb2d.linearVelocity = velocity;
         float clampedX = Mathf.Clamp(transform.position.x, screenBounds.min.x, screenBounds.max.x);
         float clampedY = Mathf.Clamp(transform.position.y, screenBounds.min.y, screenBounds.max.y);
         Vector3 clampedPosition = new Vector3(clampedX, clampedY, transform.position.z);
 
-        rb.MovePosition(clampedPosition);
+        rb2d.MovePosition(clampedPosition);
     }
 
     private void OnDrawGizmos ( )
@@ -341,57 +316,6 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("Transicionando");
             }, Action_Timing.Start);
-        }
-    }
-
-    private void Add3DPhysicsSetUp ( )
-    {
-        if (rb2d != null)
-        {
-            Destroy(rb2d);
-        }
-        if (circleCollider2D != null)
-        {
-            Destroy(circleCollider2D);
-        }
-
-        if (rb == null)
-        {
-            if(!TryGetComponent<Rigidbody>(out rb))
-            {
-
-                rb = gameObject.AddComponent<Rigidbody>();
-            }
-        }
-        if (sphereCollider == null)
-        {
-            if (!TryGetComponent<SphereCollider>(out sphereCollider))
-            {
-
-                sphereCollider = gameObject.AddComponent<SphereCollider>();
-            }
-        }
-    }
-
-    private void Add2DPhysicsSetUp ( )
-    {
-        if (rb != null)
-        {
-            Destroy(rb);
-        }
-        if (sphereCollider != null)
-        {
-            Destroy(sphereCollider);
-        }
-        if (!TryGetComponent<Rigidbody2D>(out rb2d))
-        {
-            print("No encuentro el rb2d");
-            rb2d = gameObject.AddComponent<Rigidbody2D>();
-        }
-        if (!TryGetComponent<CircleCollider2D>(out circleCollider2D))
-        {
-            print("No encuentro el collider 2d");
-            circleCollider2D = gameObject.AddComponent<CircleCollider2D>();
         }
     }
 
