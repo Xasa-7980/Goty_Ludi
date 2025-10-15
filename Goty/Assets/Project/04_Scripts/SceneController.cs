@@ -17,7 +17,7 @@ public class SceneController :MonoBehaviour
     }
     IEnumerator LoadSceneAsync()
     {
-        async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1, LoadSceneMode.Additive);
 
         while (async.progress < 0.9)
         {
