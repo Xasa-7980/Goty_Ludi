@@ -38,6 +38,8 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private float checkDist = 0.3f;
     [SerializeField] private float radius = 0.5f;
+    [SerializeField] private Collider screenCollider;
+    private Bounds screenBounds;
 
     [Header("Gameplay Settings")]
     [SerializeField] private GamePhase phase = GamePhase.RIVER;
@@ -80,6 +82,7 @@ public class Player : MonoBehaviour
             useMouse = false;
             joystick.gameObject.SetActive(false);
         }
+        originalSpeed = speed;
     }
 
     private void Update ( )
@@ -96,7 +99,7 @@ public class Player : MonoBehaviour
     {
         gameInput = new GameInput(playerInput);
         timer = new TimerObject(this);
-
+        screenBounds = screenCollider.bounds;
         Camera mainCamera = Camera.main;
         if (mainCamera != null && mainCamera.TryGetComponent<CameraBehaviour>(out cameraBehaviour))
         {
@@ -139,7 +142,7 @@ public class Player : MonoBehaviour
                 SkyMove();
                 break;
             case GamePhase.FALL:
-                AscensionMove(GetInputDirection());
+                FallMove(GetInputDirection());
                 break;
         }
     }
@@ -200,6 +203,14 @@ public class Player : MonoBehaviour
             rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         }
     }
+    private void ConfigureRigidbodyForSkyFall ( )
+    {
+        if (rb.useGravity)
+        {
+            rb.useGravity = false;
+            rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+        }
+    }
 
     private void MoveHorizontallyWithCollision ( Vector3 direction )
     {
@@ -221,8 +232,9 @@ public class Player : MonoBehaviour
     }
     private void MoveForward ( )
     {
-        dirZ += Vector3.forward.z * forwardSpeed * deltaTime;
-        Vector3 forwardMovement = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, dirZ * 0.1f);
+        dirZ = Vector3.forward.z * forwardSpeed;
+        //Posible feature: añadir mas velocidad a medida del tiempo con +=
+        Vector3 forwardMovement = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, dirZ);
         rb.linearVelocity = forwardMovement;
     }
 
@@ -231,7 +243,9 @@ public class Player : MonoBehaviour
         ConfigureRigidbodyForFlappy();
 
         float targetVelX = direction.x * speed;
-        rb.linearVelocity = new Vector3(targetVelX, rb.linearVelocity.y, rb.linearVelocity.z);
+        float velY = Mathf.Clamp(rb2d.linearVelocity.y, minGravityFall, maxGravityFall);
+
+        rb.linearVelocity = new Vector3(targetVelX, velY, rb.linearVelocity.z);
 
         HandleJump();
     }
@@ -262,18 +276,36 @@ public class Player : MonoBehaviour
 
         if (jumpInput)
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+            float velY = Mathf.Clamp(rb.linearVelocity.y, minGravityFall, maxGravityFall);
+
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, velY, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
-
+    public float maxGravityFall = 7;
+    public float minGravityFall = -3;
     private void AscensionMove ( Vector2 direction )
     {
         ConfigureRigidbodyForAscension();
         float targetVelX = direction.x * speed;
-        rb2d.linearVelocity = new Vector2(targetVelX, rb2d.linearVelocity.y);
+        float velY = Mathf.Clamp(rb2d.linearVelocity.y, minGravityFall, maxGravityFall);
+        rb2d.linearVelocity = Vector3.up * velY + Vector3.right * targetVelX;;
     }
+    float lerpSpeed = 3;
+    float originalSpeed;
+    private void FallMove ( Vector2 direction )
+    {
+        ConfigureRigidbodyForSkyFall();
+        if(direction == Vector2.zero) { lerpSpeed = 0; }
+        Vector2 velocity = direction * speed;
 
+        rb.linearVelocity = velocity;
+        float clampedX = Mathf.Clamp(transform.position.x, screenBounds.min.x, screenBounds.max.x);
+        float clampedY = Mathf.Clamp(transform.position.y, screenBounds.min.y, screenBounds.max.y);
+        Vector3 clampedPosition = new Vector3(clampedX, clampedY, transform.position.z);
+
+        rb.MovePosition(clampedPosition);
+    }
     private void ConfigureRigidbodyForAscension ( )
     {
         if (!rb2d != null)
