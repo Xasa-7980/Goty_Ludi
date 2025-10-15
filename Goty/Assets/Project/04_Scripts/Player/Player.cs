@@ -231,7 +231,7 @@ public class Player : MonoBehaviour
         ConfigureRigidbodyForFlappy();
 
         float targetVelX = direction.x * speed;
-        rb.linearVelocity = new Vector3(targetVelX, rb.linearVelocity.y, rb.linearVelocity.z);
+        rb.linearVelocity = new Vector3(targetVelX, 0, rb.linearVelocity.z);
 
         HandleJump();
     }

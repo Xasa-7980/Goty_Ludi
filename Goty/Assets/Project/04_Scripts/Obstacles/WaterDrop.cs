@@ -15,7 +15,7 @@ public class WaterDrop : MonoBehaviour
 
     void Start()
     {
-        GetComponent<DamageDealer>().enabled = Random.value < probabilityToBeClean);
+        GetComponent<DamageDealer>().enabled = Random.value < probabilityToBeClean;
         initialX = Random.Range(xMax, xMin);
         transform.position = new Vector3(initialX, INITIALY, INITIALZ);
         fallingVel = Random.Range(fallingVelMin, fallingVelMax);
