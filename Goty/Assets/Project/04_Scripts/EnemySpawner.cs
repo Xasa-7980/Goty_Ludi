@@ -5,6 +5,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject Shark;
     [SerializeField] private GameObject Jellyfish;
     [SerializeField] private GameObject Fish;
+    [SerializeField] private GameObject WaterDrop;
     private TimerObject timer;
     private int i = 0;
 
@@ -16,6 +17,7 @@ public class EnemySpawner : MonoBehaviour
         SHARK,
         JELLYFISH,
         FISH,
+        WATERDROP,
         NULL
     }
 
@@ -45,6 +47,9 @@ public class EnemySpawner : MonoBehaviour
 
                         case EnemyType.FISH:
                             enemy = Instantiate(Fish);
+                            break;
+                        case EnemyType.WATERDROP:
+                            enemy = Instantiate(WaterDrop);
                             break;
 
                         default:
