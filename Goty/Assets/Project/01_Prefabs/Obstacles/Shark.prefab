@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 843519511260897311}
   - component: {fileID: 6520994810155350019}
   - component: {fileID: 4946268862489410561}
-  - component: {fileID: 6002426225070568723}
   - component: {fileID: 1656771086343344108}
   m_Layer: 0
   m_Name: Shark
@@ -105,7 +104,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -129,34 +128,6 @@ MonoBehaviour:
   x_right: 9
   appearingDistance: 3
   vel: 10
-  spawnRight: 0
---- !u!54 &6002426225070568723
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8933829397613144300}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!114 &1656771086343344108
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3163011982171603173}
   - component: {fileID: 9197610592229886403}
   - component: {fileID: 5037856423914769481}
-  - component: {fileID: 933591896097897774}
+  - component: {fileID: -5707840922804026438}
   m_Layer: 0
   m_Name: JellyFish
   m_TagString: Untagged
@@ -104,7 +104,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -122,35 +122,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 842cfa00250e2ee47ab2dcf83dbf6b67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalSpeed: 0.1
-  flapTime: 2
-  flapImpulse: 3
-  direction: 1
-  gravity: 0.1
---- !u!54 &933591896097897774
-Rigidbody:
+  horizontalSpeed: 1
+  flapTime: 3
+  flapImpulse: 3.5
+  gravity: 2
+  xMax: 8
+  xMin: -8
+--- !u!114 &-5707840922804026438
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4733810697896949002}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 120
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b4ccd7d91ac0874bb3c864bdb36d3ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
