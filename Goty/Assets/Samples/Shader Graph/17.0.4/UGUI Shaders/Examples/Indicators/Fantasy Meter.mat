@@ -42,15 +42,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.81
+    - _Alpha: 1
     - _AlphaClip: 0.5
     - _ColorMask: 15
-    - _Health: 0.556
-<<<<<<< Updated upstream
-    - _Height: 0.42
-=======
-    - _Height: 0.39
->>>>>>> Stashed changes
+    - _Health: 0.618
+    - _Height: 0.26
     - _MeterValue: 0.5
     - _Stencil: 0
     - _StencilComp: 8
@@ -59,11 +55,11 @@ Material:
     - _StencilWriteMask: 255
     - _UIMaskSoftnessX: 1
     - _UIMaskSoftnessY: 1
-    - _WaveSpeed: 2
+    - _WaveSpeed: 1
     m_Colors:
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 1, g: 0, b: 0, a: 1}
-    - _WaterColor: {r: 0.06603757, g: 0.68036443, b: 1, a: 1}
-    - _WidthHeight: {r: 250, g: 250, b: 0, a: 0}
+    - _Color: {r: 0, g: 0.4823529, b: 1, a: 1}
+    - _WaterColor: {r: 0.10588237, g: 0.34901956, b: 0.7215686, a: 1}
+    - _WidthHeight: {r: 200, g: 200, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
