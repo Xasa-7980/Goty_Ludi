@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class WaterDrop : MonoBehaviour
 {
-    const float INITIALY = 11;
+    const float INITIALY = 1;
     const float INITIALZ = 7;
 
     [SerializeField] private float fallingVelMax;
@@ -24,6 +24,6 @@ public class WaterDrop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += Vector3.down * fallingVel * Time.deltaTime;
+        transform.position += Vector3.up * fallingVel * Time.deltaTime;
     }
 }

@@ -28,5 +28,8 @@ public class Cloud : MonoBehaviour
     void Update()
     {
         transform.position += Time.deltaTime * vel * Vector3.left;
+
+        if (transform.position.x < -8)
+            Destroy(gameObject);
     }
 }

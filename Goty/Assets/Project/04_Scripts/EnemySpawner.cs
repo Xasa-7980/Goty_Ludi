@@ -8,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject WaterDrop;
     [SerializeField] private GameObject Cloud;
     [SerializeField] private GameObject Bird;
+    [SerializeField] private GameObject Thunder;
     private TimerObject timer;
     private int i = 0;
 
@@ -20,6 +21,7 @@ public class EnemySpawner : MonoBehaviour
         JELLYFISH,
         FISH,
         WATERDROP,
+        THUNDER,
         CLOUD,
         BIRD,
         NULL
@@ -44,11 +46,9 @@ public class EnemySpawner : MonoBehaviour
                         case EnemyType.SHARK:
                             enemy = Instantiate(Shark);
                             break;
-
                         case EnemyType.JELLYFISH:
                             enemy = Instantiate(Jellyfish);
                             break;
-
                         case EnemyType.FISH:
                             enemy = Instantiate(Fish);
                             break;
@@ -58,9 +58,12 @@ public class EnemySpawner : MonoBehaviour
                         case EnemyType.CLOUD:
                             enemy = Instantiate(Cloud);
                             break;
-                            case EnemyType.BIRD:
+                        case EnemyType.BIRD:
                             enemy = Instantiate(Bird);
-                            break;  
+                            break;
+                        case EnemyType.THUNDER:
+                            enemy = Instantiate(Thunder);
+                            break;
 
                         default:
                             break;
