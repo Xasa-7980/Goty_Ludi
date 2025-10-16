@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class GoalScript : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D ( Collider2D collision )
     {
-        if (other.gameObject.layer == 7)
+        if(collision.gameObject.layer == 7)
         {
             SceneController.Instance.NextScene();
         }

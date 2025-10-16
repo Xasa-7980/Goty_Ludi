@@ -16,33 +16,49 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] private GameObject[] prefabsToSpawn;
     TimerObject spawnTimer;
     [SerializeField] private SpawnMode spawnMode;
+    [SerializeField] private Player player;
+    [SerializeField] private float maxDistance = 30;
+    [SerializeField] private float minDistance = 15;
     private void Start ( )
     {
         spawnTimer = new TimerObject(this);
+        player = GameObject.FindAnyObjectByType<Player>();
     }
     private void Update ( )
     {
-        switch (spawnMode)
+        float distanceBetweenPlayer = Vector2.Distance(transform.position, player.transform.position);
+        if (distanceBetweenPlayer < maxDistance && distanceBetweenPlayer > minDistance)
         {
-            case SpawnMode.None:
-                break;
-            case SpawnMode.Square:
-                break;
-            case SpawnMode.Circle:
-                if (!spawnTimer.Timer_Started())
-                {
-                    spawnTimer.StartTimer(spawnTime, ( ) =>
+            switch (spawnMode)
+            {
+                case SpawnMode.None:
+                    break;
+                case SpawnMode.Square:
+
+                    if (!spawnTimer.Timer_Started())
                     {
-                        SpawnInsideCircle();
-                    }, Action_Timing.End);
-                }
-                break;
-            case SpawnMode.Sphere:
-                break;
-            case SpawnMode.Box:
-                break;
-            default:
-                break;
+                        spawnTimer.StartTimer(spawnTime, ( ) =>
+                        {
+                            SpawnInsideSquare();
+                        }, Action_Timing.End);
+                    }
+                    break;
+                case SpawnMode.Circle:
+                    if (!spawnTimer.Timer_Started())
+                    {
+                        spawnTimer.StartTimer(spawnTime, ( ) =>
+                        {
+                            SpawnInsideCircle();
+                        }, Action_Timing.End);
+                    }
+                    break;
+                case SpawnMode.Sphere:
+                    break;
+                case SpawnMode.Box:
+                    break;
+                default:
+                    break;
+            }
         }
     }
     void SpawnInsideCircle ( )
@@ -54,7 +70,7 @@ public class SpawnObstacles : MonoBehaviour
     }
     void SpawnInsideSquare ( )
     {
-        var a = GetComponent<Collider>().bounds;
+        var a = GetComponent<Collider2D>().bounds;
         float randomX = Random.Range(a.min.x, a.max.x);
         float randomY = Random.Range(a.min.y, a.max.y);
         Vector3 pointInsideSquare = new Vector3(randomX, randomY, transform.position.z);
