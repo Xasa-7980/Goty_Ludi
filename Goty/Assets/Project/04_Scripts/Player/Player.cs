@@ -68,17 +68,6 @@ public class Player : MonoBehaviour
     private void Start ( )
     {
         InitializeComponents();
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            // Lógica para Android
-            useMouse = true;
-        }
-        else if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WebGLPlayer)
-        {
-            // Lógica para PC/Web
-            useMouse = false;
-            joystick.gameObject.SetActive(false);
-        }
     }
 
     private void Update ( )
@@ -102,6 +91,33 @@ public class Player : MonoBehaviour
         if (mainCamera != null && mainCamera.TryGetComponent<CameraBehaviour>(out cameraBehaviour))
         {
             Debug.Log("Added camera behaviour succefully");
+        }
+        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            // Lógica para apps móviles
+            useMouse = true;
+            joystick.gameObject.SetActive(true);
+        }
+        else if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            // WebGL: puede ser PC o móvil, hay que comprobar si tiene pantalla táctil
+            if (Input.touchSupported)
+            {
+                useMouse = true;
+                print("has touch support");
+                joystick.gameObject.SetActive(true);
+            }
+            else
+            {
+                useMouse = false;
+                joystick.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            // PC o editor
+            useMouse = false;
+            joystick.gameObject.SetActive(false);
         }
     }
     private void HandleMovement ( )
@@ -217,7 +233,7 @@ public class Player : MonoBehaviour
     {
         ConfigureRigidbodyForFlappy();
 
-        float targetVelX = direction.x * speed;
+        float targetVelX = -direction.y * speed;
 
 
         rb2d.linearVelocity = new Vector3(targetVelX, rb2d.linearVelocity.y);
@@ -242,7 +258,7 @@ public class Player : MonoBehaviour
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            jumpInput = touch.phase == UnityEngine.TouchPhase.Began && touch.position.x > Screen.width / 2;
+            jumpInput = touch.phase == UnityEngine.TouchPhase.Began && touch.position.x > 0;
         }
         else if (Input.GetMouseButtonDown(0))
         {
