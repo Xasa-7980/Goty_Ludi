@@ -3,7 +3,6 @@ using System.Collections;
 
 public class JellyFishScript : MonoBehaviour
 {
-    const int INITIALZ = 7;
     const int INITIALY = -5;
 
     [SerializeField] private float horizontalSpeed;
@@ -58,6 +57,6 @@ public class JellyFishScript : MonoBehaviour
         else
             dir = -1;
 
-        initialPosition = new Vector3(initialX, INITIALY, INITIALZ);
+        initialPosition = new Vector2(initialX, INITIALY);
     }
 }

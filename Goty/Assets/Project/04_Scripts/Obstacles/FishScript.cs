@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class FishScript : MonoBehaviour
 {
-    const int INITIALZ = 7;
     enum State
     {
         ENTER,
@@ -25,8 +24,8 @@ public class FishScript : MonoBehaviour
     private Vector3 screenCenter;
     private Vector3 initialPosition;
 
-
     State state;
+
     void Start()
     {
         spawnRight = UnityEngine.Random.value > 0.5f;
@@ -35,13 +34,13 @@ public class FishScript : MonoBehaviour
         {
             dir = -1;
             initialX = x_right;
-            initialPosition = new Vector3(initialX, initialY, INITIALZ);     
+            initialPosition = new Vector2(initialX, initialY);     
         }
         else
         {
             dir = 1;
             initialX = x_left;
-            initialPosition = new Vector3(initialX, initialY, INITIALZ);
+            initialPosition = new Vector2(initialX, initialY);
         }
         transform.position = initialPosition;
         state = State.ENTER;
@@ -62,7 +61,7 @@ public class FishScript : MonoBehaviour
             case State.CIRCLE:
                 Debug.Log("Estoy en circle");
                 transform.localPosition += vel * Time.deltaTime * dir * transform.right;
-                transform.Rotate(Vector3.forward * rotationSpeed * dir * Time.deltaTime);
+                transform.Rotate(dir * rotationSpeed * Time.deltaTime * Vector3.forward);
                 if (looping)
                 {
                     if (transform.position.y - initialY < 0.01f)

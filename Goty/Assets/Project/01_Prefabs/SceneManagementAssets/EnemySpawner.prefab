@@ -52,10 +52,11 @@ MonoBehaviour:
     type: 3}
   Cloud: {fileID: 9162845639601829825, guid: e81ffd5b85aa2fa47b1fe5092147e1f3, type: 3}
   Bird: {fileID: 9162845639601829825, guid: 7b0ad264486916047a14068130798c40, type: 3}
+  Thunder: {fileID: 0}
   times:
   - 0.5
   - 2
   - 3
   - 1
   - 6
-  enemies: 0000000000000000020000000200000000000000
+  enemies: 0500000005000000040000000400000005000000

@@ -22,7 +22,6 @@ public class SharkScript : MonoBehaviour
     private readonly float timeToWait = 2.0f;
     private float initialY;
     private float initialX;
-    private readonly float initialZ = 7f;
 
     //public float timeToSpawn; 
 
@@ -79,13 +78,13 @@ public class SharkScript : MonoBehaviour
         if (spawnRight)
         {
             initialX = x_right;
-            initialPosition = new Vector3(initialX, initialY, initialZ); 
+            initialPosition = new Vector2(initialX, initialY); 
             stopPosition = initialPosition - new Vector3(appearingDistance, 0, 0);
         }
         else
         {
             initialX = x_left;
-            initialPosition = new Vector3(initialX, initialY, initialZ); 
+            initialPosition = new Vector2(initialX, initialY); 
             stopPosition = initialPosition + new Vector3(appearingDistance, 0, 0);
         }
     }
