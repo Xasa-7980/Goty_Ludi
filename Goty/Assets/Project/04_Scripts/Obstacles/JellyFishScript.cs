@@ -15,6 +15,7 @@ public class JellyFishScript : MonoBehaviour
     private short dir;
     private bool goingRight;
     private float verticalSpeed;
+    private Animator animator;
 
     private Vector3 initialPosition;
 
@@ -24,6 +25,7 @@ public class JellyFishScript : MonoBehaviour
     {
         verticalSpeed = 0f;
         timer = new TimerObject(this);
+        animator = GetComponent<Animator>();
 
         SetRandomSpawn();
         transform.position = initialPosition;
@@ -33,13 +35,19 @@ public class JellyFishScript : MonoBehaviour
     {
         transform.position += new Vector3 (horizontalSpeed * dir * Time.deltaTime, verticalSpeed * Time.deltaTime, 0);
         verticalSpeed -= gravity * Time.deltaTime;
+
+
         if (!timer.Timer_Started())
         {
             timer.StartTimer(flapTime, () =>
             {
                 verticalSpeed = flapImpulse;
+                animator.SetBool("Impulse", true);
             }, Action_Timing.Start);
         }
+
+        if (verticalSpeed <= 0)
+            animator.SetBool("Impulse", false);
 
         if (transform.position.x > 10 || transform.position.x < -10)
             Destroy(gameObject);
