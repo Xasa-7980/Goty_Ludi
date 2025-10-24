@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -5,7 +6,14 @@ using UnityEngine.SceneManagement;
 public class SceneController :MonoBehaviour
 {
     public static SceneController Instance { get; private set; }
-    AsyncOperation async;
+    string nextSceneName;
+    int nextSceneIndex = 1;
+    AsyncOperation asyncNextSceneLoaded;
+    bool nextScene_IsPreLoaded;
+
+    public static Action ChangeToNextScene;
+    public static Action GoMainMenu;
+    public static Action GoToRiver;
     private void Awake()
     {
         if (Instance != null)
@@ -13,36 +21,78 @@ public class SceneController :MonoBehaviour
             Destroy(gameObject);          
         }
         Instance = this;    
-        DontDestroyOnLoad(Instance);
-    }
-    IEnumerator LoadSceneAsync()
-    {
-        async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1, LoadSceneMode.Additive);
+        DontDestroyOnLoad(gameObject);
 
-        while (async.progress < 0.9)
+    }
+    private void Start ( )
+    {
+        CheckFor_NextSceneIndex();
+        //Preparando las escenas
+        print("h");
+        StartCoroutine(PreloadNextScene());
+        InitializeActions();
+    }
+    private void InitializeActions ( )
+    {
+        ChangeToNextScene = ( ) =>
         {
+            if (nextScene_IsPreLoaded && asyncNextSceneLoaded != null)
+            {
+                print("ASYNCLOADED");
+                StartCoroutine(PreloadNextScene());
+                asyncNextSceneLoaded.allowSceneActivation = true;
+                nextSceneIndex++;
+                CheckFor_NextSceneIndex() ;
+            }
+        };
+        GoMainMenu = ( ) =>
+        {
+            SceneManager.LoadScene("MainMenu");
+            nextSceneIndex = 1;
+            CheckFor_NextSceneIndex() ;
+        };
+        GoToRiver = ( ) =>
+        {
+            SceneManager.LoadScene("River");
+            nextSceneIndex++;
+            CheckFor_NextSceneIndex() ;
+        };
+
+    }
+    public IEnumerator PreloadNextScene( )
+    {
+        asyncNextSceneLoaded = SceneManager.LoadSceneAsync(nextSceneIndex);
+        asyncNextSceneLoaded.allowSceneActivation = false;
+        while (!asyncNextSceneLoaded.isDone)
+        {
+            if (asyncNextSceneLoaded.progress >= 0.9f)
+            {
+                nextScene_IsPreLoaded = true;
+                break;
+            }
             yield return null;
         }
     }
 
     public void LoadMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        GoMainMenu?.Invoke();
     }
 
     public void LoadRiver()
     {
-        SceneManager.LoadScene("River");
+        GoToRiver?.Invoke();
     }
-
+    private void CheckFor_NextSceneIndex ( )
+    {
+        if (nextSceneIndex >= SceneManager.sceneCountInBuildSettings)
+        {
+            nextSceneIndex = 0;
+        }
+    }
     public void NextScene()
     {
-        if (SceneManager.GetActiveScene().name != "SkyFall")
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            return;
-        }
-        LoadRiver();
+        ChangeToNextScene?.Invoke();
     }
 
     public void ResetScene()

@@ -38,7 +38,6 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private float checkDist = 0.3f;
     [SerializeField] private float radius = 0.5f;
-    [SerializeField] private Collider screenCollider;
     private Bounds screenBounds;
 
     [Header("Gameplay Settings")]
@@ -47,6 +46,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float timeScale = 1f;
     [SerializeField] private float shakeDurationOnHit = 0.5f;
     [SerializeField] private float shakeAmountOnHit = 0.1f;
+    [SerializeField] private Collider screenCollider;
 
     // Components
     [SerializeField] private Rigidbody2D rb2d;
@@ -279,6 +279,14 @@ public class Player : MonoBehaviour
     {
         ConfigureRigidbodyForAscension();
         float targetVelX = direction.x * speed;
+        if (Physics2D.CircleCast(transform.position, 1, Vector2.zero, 1,5/* layermask 5*/))
+        {
+            minGravityFall = -10;
+        }
+        else
+        {
+            minGravityFall = -3;
+        }
         float velY = Mathf.Clamp(rb2d.linearVelocity.y, minGravityFall, maxGravityFall);
         rb2d.linearVelocity = Vector3.up * velY + Vector3.right * targetVelX;;
     }
@@ -308,13 +316,14 @@ public class Player : MonoBehaviour
         Vector2 velocity = direction * speed;
 
         rb2d.linearVelocity = velocity;
-        float clampedX = Mathf.Clamp(transform.position.x, screenBounds.min.x, screenBounds.max.x);
-        float clampedY = Mathf.Clamp(transform.position.y, screenBounds.min.y, screenBounds.max.y);
-        Vector3 clampedPosition = new Vector3(clampedX, clampedY, transform.position.z);
-
-        rb2d.MovePosition(clampedPosition);
     }
 
+    Vector3 ClampPositionInsideScreen ( )
+    {
+        float clampedX = Mathf.Clamp(transform.position.x, screenBounds.min.x, screenBounds.max.x);
+        float clampedY = Mathf.Clamp(transform.position.y, screenBounds.min.y, screenBounds.max.y);
+        return new Vector3(clampedX, clampedY, transform.position.z);
+    }
     private void OnDrawGizmos ( )
     {
         Gizmos.color = Color.red;
