@@ -17,5 +17,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project/07_Scenes/Ascension.unity
     guid: 1eb5f2b45bce409468bcc1c001ab9626
+  - enabled: 1
+    path: Assets/Project/07_Scenes/Sky.unity
+    guid: dd0dd0c3e3cf06f46809a3f54dd5a508
+  - enabled: 1
+    path: Assets/Project/07_Scenes/SkyFall.unity
+    guid: 0ec98e5d7284e384b9c9e67c646aecdc
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

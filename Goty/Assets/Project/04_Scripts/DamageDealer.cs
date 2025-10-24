@@ -7,6 +7,7 @@ public class DamageDealer : MonoBehaviour
         if (collision.gameObject.layer == 7)
         {
             // Matar al player
+            print("die player");
             SceneController.Instance.ResetScene();
         }
     }
