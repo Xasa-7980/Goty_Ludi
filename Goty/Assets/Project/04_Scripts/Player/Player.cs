@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float divingSpeed = 3f;
     [SerializeField] private float forwardSpeed = 1f;
     [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float descendentFlowPower = -7f;
 
     [Header("Collision Settings")]
     [SerializeField] private LayerMask groundMask;
@@ -194,7 +195,7 @@ public class Player : MonoBehaviour
     {
         if (rb2d.gravityScale != 0)
         {
-            rb2d.gravityScale = 0.01f;
+            rb2d.gravityScale = 1f;
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
@@ -281,7 +282,7 @@ public class Player : MonoBehaviour
         float targetVelX = direction.x * speed;
         if (Physics2D.CircleCast(transform.position, 1, Vector2.zero, 1,5/* layermask 5*/))
         {
-            minGravityFall = -10;
+            minGravityFall = descendentFlowPower;
         }
         else
         {
@@ -392,5 +393,12 @@ public class Player : MonoBehaviour
 
         public Vector2 GetKeyboardDirection ( ) => moveActionK.ReadValue<Vector2>();
         public Vector2 GetTouchDirection ( ) => moveAction.ReadValue<Vector2>();
+    }
+    bool lookRight;
+    void Flip ( )
+    {
+        lookRight = !lookRight;
+        int right = lookRight ? 1 : -1;
+        transform.localScale =  new Vector2 ( right, transform.localScale.y );
     }
 }
