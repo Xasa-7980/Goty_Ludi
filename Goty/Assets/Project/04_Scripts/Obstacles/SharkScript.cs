@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SharkScript : MonoBehaviour
 {
+    const float INITIALZ = 7;
     enum State
     {
         APPEARING,
@@ -22,6 +23,7 @@ public class SharkScript : MonoBehaviour
     private readonly float timeToWait = 2.0f;
     private float initialY;
     private float initialX;
+    private Animator animator;
 
     //public float timeToSpawn; 
 
@@ -31,6 +33,7 @@ public class SharkScript : MonoBehaviour
 
    void Start()
     {
+        animator = GetComponent<Animator>();
         appearVel = vel / 5;
         timer = new TimerObject(this);
         SetRandomSpawn();
@@ -49,6 +52,7 @@ public class SharkScript : MonoBehaviour
                     timer.StartTimer(timeToWait, () =>
                     {
                         state = State.SWIMMING;
+                        animator.SetBool("Attack", true);
                     }, Action_Timing.End);
                 }
                 break;
@@ -63,7 +67,7 @@ public class SharkScript : MonoBehaviour
             default:
                 break;
         }
-        if (transform.position.x > 10 || transform.position.x < -10)
+        if (transform.position.x > 30 || transform.position.x < -30)
             Destroy(gameObject);
     }
 
@@ -78,13 +82,14 @@ public class SharkScript : MonoBehaviour
         if (spawnRight)
         {
             initialX = x_right;
-            initialPosition = new Vector2(initialX, initialY); 
+            initialPosition = new Vector3(initialX, initialY, INITIALZ); 
             stopPosition = initialPosition - new Vector3(appearingDistance, 0, 0);
         }
         else
         {
+            transform.localScale = new Vector3(-1, 1, 1);
             initialX = x_left;
-            initialPosition = new Vector2(initialX, initialY); 
+            initialPosition = new Vector3(initialX, initialY, INITIALZ); 
             stopPosition = initialPosition + new Vector3(appearingDistance, 0, 0);
         }
     }
