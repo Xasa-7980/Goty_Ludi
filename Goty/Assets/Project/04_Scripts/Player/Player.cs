@@ -33,7 +33,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float divingSpeed = 3f;
     [SerializeField] private float forwardSpeed = 1f;
     [SerializeField] private float jumpForce = 10f;
-    [SerializeField] private float descendentFlowPower = -7f;
 
     [Header("Collision Settings")]
     [SerializeField] private LayerMask groundMask;
@@ -48,6 +47,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float shakeDurationOnHit = 0.5f;
     [SerializeField] private float shakeAmountOnHit = 0.1f;
     [SerializeField] private Collider screenCollider;
+
+    [Header("Visual Settings")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite dropSprite;
+    [SerializeField] private Sprite cloudSprite;
+    [SerializeField] private Animator anim;
 
     // Components
     [SerializeField] private Rigidbody2D rb2d;
@@ -85,6 +90,8 @@ public class Player : MonoBehaviour
     {
         gameInput = new GameInput(playerInput);
         timer = new TimerObject(this);
+        anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         rb2d = GetComponent<Rigidbody2D>();
         circleCollider2D = GetComponent<CircleCollider2D>();
         if(screenCollider != null) screenBounds = screenCollider.bounds;
@@ -127,18 +134,28 @@ public class Player : MonoBehaviour
         switch (phase)
         {
             case GamePhase.RIVER:
+                spriteRenderer.sprite = dropSprite;
+                anim.SetBool("IsCloud", false);
                 RiverMove(GetInputDirection());
                 break;
             case GamePhase.SEA:
+                spriteRenderer.sprite = dropSprite;
+                anim.SetBool("IsCloud", false);
                 SeaMove(GetInputDirection());
                 break;
             case GamePhase.ASCENSION:
+                spriteRenderer.sprite = dropSprite;
+                anim.SetBool("IsCloud", false);
                 AscensionMove(GetInputDirection());
                 break;
             case GamePhase.SKY:
+                spriteRenderer.sprite = cloudSprite;
+                anim.SetBool("IsCloud", true);
                 SkyMove();
                 break;
             case GamePhase.FALL:
+                spriteRenderer.sprite = dropSprite;
+                anim.SetBool("IsCloud", false);
                 FallMove(GetInputDirection());
                 break;
         }
@@ -193,19 +210,23 @@ public class Player : MonoBehaviour
 
     private void ConfigureRigidbodyForRiver ( )
     {
-        if (rb2d.gravityScale != 0)
+        do
         {
+            spriteRenderer.sprite = dropSprite;
+            rb2d.simulated = true;
             rb2d.gravityScale = 1f;
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-        }
+        } while (!rb2d.simulated);
     }
     private void ConfigureRigidbodyForSkyFall ( )
     {
-        if (rb2d.simulated)
+        do
         {
-            rb2d.simulated = false;
+            spriteRenderer.sprite = dropSprite;
+            rb2d.simulated = true;
+            rb2d.gravityScale = 1f;
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-        }
+        } while (!rb2d.simulated);
     }
 
     private void MoveHorizontallyWithCollision ( Vector2 direction )
@@ -244,12 +265,13 @@ public class Player : MonoBehaviour
 
     private void ConfigureRigidbodyForFlappy ( )
     {
-        if (!rb2d.simulated)
+        do
         {
+            spriteRenderer.sprite = dropSprite;
             rb2d.simulated = true;
-            rb2d.constraints = RigidbodyConstraints2D.None;
+            rb2d.gravityScale = 1f;
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-        }
+        } while (!rb2d.simulated);
     }
 
     private void HandleJump ( )
@@ -274,36 +296,35 @@ public class Player : MonoBehaviour
             rb2d.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
         }
     }
-    public float maxGravityFall = 7;
-    public float minGravityFall = -3;
+    [SerializeField] float maxGravityFall = 7;
+    [SerializeField] private float descendentFlowPower = -3f;
+    [SerializeField] float minGravityFall = -1;
     private void AscensionMove ( Vector2 direction )
     {
         ConfigureRigidbodyForAscension();
         float targetVelX = direction.x * speed;
-        if (Physics2D.CircleCast(transform.position, 1, Vector2.zero, 1,5/* layermask 5*/))
+        if (Physics2D.CircleCast(transform.position, 1, Vector2.zero, 1,8/* layermask 5*/))
         {
             minGravityFall = descendentFlowPower;
         }
         else
         {
-            minGravityFall = -3;
+            minGravityFall = -1;
         }
         float velY = Mathf.Clamp(rb2d.linearVelocity.y, minGravityFall, maxGravityFall);
-        rb2d.linearVelocity = Vector3.up * velY + Vector3.right * targetVelX;;
+        rb2d.linearVelocity = rb2d.linearVelocity.y * Vector3.up + Vector3.right * targetVelX;;
     }
     float lerpSpeed = 3;
     float originalSpeed;
     private void ConfigureRigidbodyForAscension ( )
     {
-        if (!rb2d != null)
+        do
         {
-            if (!rb2d.simulated)
-            {
-                rb2d.simulated = true;
-                rb2d.constraints = RigidbodyConstraints2D.None;
-                rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-            }
-        }
+            spriteRenderer.sprite = dropSprite;
+            rb2d.simulated = true;
+            rb2d.gravityScale = 1f;
+            rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+        } while (!rb2d.simulated);
     }
     private void SkyMove ( )
     {
