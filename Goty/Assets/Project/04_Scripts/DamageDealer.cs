@@ -8,7 +8,9 @@ public class DamageDealer : MonoBehaviour
         {
             // Matar al player
             print("die player");
-            SceneController.Instance.ResetScene();
+            PlayerStats playerStats = collision.gameObject.GetComponent<PlayerStats>();
+            playerStats.SetHealth(-1);
+
         }
     }
 }

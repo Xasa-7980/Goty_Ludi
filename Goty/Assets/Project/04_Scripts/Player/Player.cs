@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
     {
         deltaTime = Time.deltaTime * timeScale;
         HandleMovement();
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.U))
         {
             SceneController.Instance.NextScene();
         }
