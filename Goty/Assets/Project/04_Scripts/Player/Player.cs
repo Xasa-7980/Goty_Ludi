@@ -228,7 +228,8 @@ public class Player : MonoBehaviour
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         } while (!rb2d.simulated);
     }
-
+    float rotZ;
+    [SerializeField] private float rotSpeed;
     private void MoveHorizontallyWithCollision ( Vector2 direction )
     {
         float deltaX = -direction.y * speed;
@@ -247,7 +248,13 @@ public class Player : MonoBehaviour
 
         Vector2 nextPos = Vector2.right * deltaX; 
         dirZ = Vector3.forward.z * forwardSpeed;
-
+        rotZ += Vector2.right.x * deltaX * deltaTime * rotSpeed;
+        if(deltaX == 0)
+        {
+            rotZ = Mathf.MoveTowards(rotZ, 0, deltaTime * rotSpeed * rotSpeed);
+        }
+        rotZ = Mathf.Clamp(rotZ, -45, 45);
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotZ));
         rb2d.linearVelocity = new Vector2(nextPos.x, dirZ);
     }
 
@@ -255,7 +262,7 @@ public class Player : MonoBehaviour
     {
         ConfigureRigidbodyForFlappy();
 
-        float targetVelX = -direction.y * speed;
+        float targetVelX = -direction.x * speed;
 
 
         rb2d.linearVelocity = new Vector3(targetVelX, rb2d.linearVelocity.y);
@@ -375,6 +382,13 @@ public class Player : MonoBehaviour
     }
 
     private void OnCollisionEnter2D ( Collision2D collision )
+    {
+        if (collision.gameObject.layer == groundMask)
+        {
+            cameraBehaviour?.CameraShake(shakeDurationOnHit, shakeAmountOnHit);
+        }
+    }
+    private void OnTriggerEnter2D ( Collider2D collision )
     {
         if (collision.gameObject.layer == groundMask)
         {

@@ -12,7 +12,7 @@ public class CameraBehaviour : MonoBehaviour
     }
     private void Update ( )
     {
-        
+        transform.position = new Vector3(player.transform.position.x, player.transform.position.y,transform.position.z);
     }
     public void CameraShake ( float duration, float shakeAmount )
     {
