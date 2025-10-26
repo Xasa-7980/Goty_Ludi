@@ -37,7 +37,7 @@ public class SpawnObstacles : MonoBehaviour
         if (distanceY <= minDistance)
         {
             if (spawnTimer.Timer_Started())
-                spawnTimer.StopTimer(); 
+                spawnTimer.PauseTimer(); 
             return;
         }
 
@@ -103,7 +103,7 @@ public class SpawnObstacles : MonoBehaviour
     void SpawnInsideSquare ( )
     {
         var a = GetComponent<Collider2D>().bounds;
-        float randomX = Random.Range(a.min.x + 0.5f, a.max.x -0.5f);
+        float randomX = Random.Range(a.min.x + 0.5f, a.max.x -0.5f); //0,5f para mantener margenes
         float randomY = Random.Range(a.min.y, a.max.y);
         Vector3 pointInsideSquare = new Vector3(randomX, randomY, transform.position.z);
         int randIndex = Random.Range(0, prefabsToSpawn.Length);

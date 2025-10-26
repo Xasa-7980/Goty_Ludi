@@ -28,7 +28,6 @@ public class SceneController :MonoBehaviour
     {
         CheckFor_NextSceneIndex();
         //Preparando las escenas
-        print("h");
         StartCoroutine(PreloadNextScene());
         InitializeActions();
     }
