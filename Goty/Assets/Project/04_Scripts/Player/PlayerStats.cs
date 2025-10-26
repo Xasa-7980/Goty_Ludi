@@ -18,8 +18,7 @@ public class PlayerStats : MonoBehaviour
             PlayerPrefs.SetInt("Health",health);
         }
         curHealth = PlayerPrefs.GetInt("Health"); 
-        timer = new TimerObject(this);
-
+        timer = new TimerObject(this); 
     }
     private void Update ( )
     {
@@ -31,12 +30,15 @@ public class PlayerStats : MonoBehaviour
     }
     public void SetHealth ( int value )
     {
+        Debug.Log("a");
         if (!timer.Timer_Started())
         {
             timer.StartTimer(invulnerableTime, ( ) => { 
             anim.SetTrigger("Damaged"); 
-            curHealth = value; }, 
-            Action_Timing.Start);
+            curHealth += value; 
+            Debug.Log("b");
+            HeartsAndScore.Instance.DrawCurrentLifes(curHealth);
+            }, Action_Timing.Start);
         }
     }
 }
