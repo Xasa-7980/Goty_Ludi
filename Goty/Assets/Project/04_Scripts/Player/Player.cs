@@ -65,7 +65,6 @@ public class Player : MonoBehaviour
     private Vector2 lastPointerPos;
     private float dirZ;
     private float deltaTime;
-    private int health = 0;
     private PhysicsMode currentPhysicsMode;
 
     // Events
@@ -255,7 +254,7 @@ public class Player : MonoBehaviour
     {
         ConfigureRigidbodyForFlappy();
 
-        float targetVelX = -direction.y * speed;
+        float targetVelX = -direction.x * speed;
 
 
         rb2d.linearVelocity = new Vector3(targetVelX, rb2d.linearVelocity.y);
@@ -379,15 +378,6 @@ public class Player : MonoBehaviour
         if (collision.gameObject.layer == groundMask)
         {
             cameraBehaviour?.CameraShake(shakeDurationOnHit, shakeAmountOnHit);
-        }
-    }
-
-    public void ReceiveDamage ( int damage )
-    {
-        health -= damage;
-        if (health <= 0)
-        {
-            OnDeath?.Invoke();
         }
     }
 
