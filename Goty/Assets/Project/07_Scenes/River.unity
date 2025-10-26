@@ -288,6 +288,11 @@ PrefabInstance:
       propertyPath: health
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1231092779817224629, guid: f773b7e44c6ca5343bb2397f4fb8a3d0,
+        type: 3}
+      propertyPath: field of view
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 3502886897055534321, guid: f773b7e44c6ca5343bb2397f4fb8a3d0,
         type: 3}
       propertyPath: m_LocalPosition.x
