@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1397363731295546205}
   - component: {fileID: 388633640910854971}
+  - component: {fileID: -682111570306954813}
   m_Layer: 0
   m_Name: ScoreMultiplier
   m_TagString: Untagged
@@ -78,3 +79,17 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-682111570306954813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6886776631471368980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15461630d76a9734eb4add06c95675a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMultiplier: 1
+  multiplierTime: 5

@@ -22,14 +22,15 @@ public class HeartsAndScore : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(this);
-        DrawLifes();
+        InitLifes();
     }
 
-    public void DrawLifes()
+    public void InitLifes()
     {
         for (int i = 0; i < 5; i++)
         {
             Image im = Instantiate(imagePrefab, lifeParent).GetComponent<Image>();
+            im.gameObject.SetActive(false);
             lifes.Add(im);
         }
     }
@@ -45,8 +46,18 @@ public class HeartsAndScore : MonoBehaviour
         }
     }
 
-    public void SetScore(int score)
+    public void SetScore(int score, bool multiplier)
     {
-        scoreTxt.text = score.ToString();
+        if(multiplier)
+        {
+            scoreTxt.color = Color.yellow;
+            scoreTxt.fontSize = 40;
+        }
+        else
+        {
+            scoreTxt.color = Color.white;
+            scoreTxt.fontSize = 36;
+        }
+            scoreTxt.text = score.ToString();
     }
 }

@@ -6,23 +6,29 @@ public class PlayerStats : MonoBehaviour
     private Animator anim;
     [SerializeField] private int health = 5;
     [SerializeField] public int multiplier;
+    [SerializeField] float multiplierDuration;
+    [SerializeField] public bool multiplierOn;
+    [SerializeField] private float invulnerableTime = 1f;
+
     private bool isDeath { get { return curHealth == 0; } }
     private int curHealth; 
     private TimerObject timer;
     private float height;
     private float lastHeight;
-    [SerializeField] private float invulnerableTime = 1f;
     private float score;
     private float scoreTime;
+    private float multiplierTime;
+    private int initialMultiplier;
     GamePhase fase;
 
 
     private void Awake ( )
     {
+        initialMultiplier = multiplier;
         scoreTime = 0;
+        multiplierTime = 0;
         height = 0;
         score = 0;
-        multiplier = 1;
         anim = GetComponent<Animator>();
         if (!PlayerPrefs.HasKey("Health"))
         {
@@ -31,6 +37,7 @@ public class PlayerStats : MonoBehaviour
         curHealth = PlayerPrefs.GetInt("Health"); 
         timer = new TimerObject(this); 
         fase = GetComponent<Player>().phase;
+        HeartsAndScore.Instance.DrawCurrentLifes(curHealth);
     }
     private void Update ( )
     {
@@ -39,25 +46,52 @@ public class PlayerStats : MonoBehaviour
             SceneController.Instance.ResetScene();
         }
         scoreTime += Time.deltaTime;
+
+        if (multiplierOn)
+        { 
+            multiplierTime += Time.deltaTime;
+            if (multiplierTime >= multiplierDuration)
+            {
+                multiplier = initialMultiplier;
+                multiplierTime = 0;
+                multiplierOn = false;
+            }
+        }
         AddScore();
     }
     public void SetHealth ( int value )
     {
-        Debug.Log("a");
         if (!timer.Timer_Started())
         {
-            timer.StartTimer(invulnerableTime, ( ) => { 
-            anim.SetTrigger("Damaged"); 
-            curHealth += value; 
-            Debug.Log("b");
-            HeartsAndScore.Instance.DrawCurrentLifes(curHealth);
+            timer.StartTimer(invulnerableTime, ( ) => {
+
+                if (value < 0)
+                    anim.SetTrigger("Damaged");
+                else
+                    anim.SetTrigger("Boost");
+
+                curHealth += value; 
+                curHealth = Mathf.Clamp(curHealth, 0, 5);
+
+                HeartsAndScore.Instance.DrawCurrentLifes(curHealth);
+
             }, Action_Timing.Start);
         }
     }
 
+    public void OnMultiplier()
+    {
+        if (!multiplierOn)
+        {
+            multiplier *= 2;
+            multiplierOn = true;
+        }
+        anim.SetTrigger("Boost");
+        multiplierTime = 0;
+    }
+
     public void AddScore()
     {
-        print(score);
         if (fase == GamePhase.ASCENSION)
         {
             if ((int)transform.position.y > (int)lastHeight)
@@ -72,7 +106,10 @@ public class PlayerStats : MonoBehaviour
             score += multiplier;
             scoreTime = 0;
         }
-        print(score);
-        HeartsAndScore.Instance.SetScore((int)score);
+        HeartsAndScore.Instance.SetScore((int)score, multiplier > initialMultiplier);
+    }
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.DeleteAll();
     }
 }
