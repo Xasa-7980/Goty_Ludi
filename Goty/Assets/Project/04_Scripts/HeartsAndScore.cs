@@ -11,9 +11,11 @@ public class HeartsAndScore : MonoBehaviour
     [SerializeField] private Transform lifeParent;
     [SerializeField] private TextMeshProUGUI scoreTxt;
     private List<Image> lifes = new List<Image>();
+    private int score;
 
     private void Awake()
     {
+        score = 0;
         if (Instance != null)
         {
             Destroy(gameObject);

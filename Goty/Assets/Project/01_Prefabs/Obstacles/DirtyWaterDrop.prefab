@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4486082591499939597}
   - component: {fileID: 7201081478029294204}
   - component: {fileID: 5918260018975103489}
+  - component: {fileID: -3076170544274278645}
   m_Layer: 0
   m_Name: DirtyWaterDrop
   m_TagString: Untagged
@@ -51,7 +52,10 @@ MonoBehaviour:
   fallingVelMin: 2
   xMax: 5
   xMin: -6
-  probabilityToBeClean: 0
+  probabilityToBeClean: 0.1
+  sprites:
+  - {fileID: 21300000, guid: 24d83cf2d79582043a1d6f0bfae8de18, type: 3}
+  - {fileID: 21300000, guid: dee80410dbd31bc4688dc61b830ea002, type: 3}
 --- !u!114 &4486082591499939597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,3 +170,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-3076170544274278645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4739753399556298665}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15461630d76a9734eb4add06c95675a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMultiplier: 0
+  multiplierTime: 0

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1646550193634950776}
   - component: {fileID: 6270735577616260089}
   - component: {fileID: 6734621303772590333}
+  - component: {fileID: 1843825325242805170}
   m_Layer: 5
   m_Name: LifeSprite
   m_TagString: Untagged
@@ -76,3 +77,17 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1843825325242805170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4464756428861843592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15461630d76a9734eb4add06c95675a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMultiplier: 1
+  multiplierTime: 5
