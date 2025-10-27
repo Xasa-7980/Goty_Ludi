@@ -20,19 +20,20 @@ public class proto : MonoBehaviour
     void Update()
     {
         dir = Input.GetAxis("Horizontal");
-        verticalSpeed -= gravity * Time.deltaTime;
+        verticalSpeed -= gravity * Time.deltaTime; 
 
-        if (verticalSpeed >= maxVSpeed)
-            verticalSpeed = maxVSpeed;
-        if (verticalSpeed <= -maxVSpeed)
-            verticalSpeed = -maxVSpeed;
-
+        verticalSpeed = Mathf.Clamp(verticalSpeed,-maxVSpeed,maxVSpeed);
         transform.position += new Vector3(horizontalSpeed * dir * Time.deltaTime, verticalSpeed * Time.deltaTime, 0);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 4)
+        if (collision.gameObject.layer == 8) //Cold air
+        {
+            verticalSpeed -= impulse * Time.deltaTime;
+            Debug.Log(verticalSpeed);
+        }
+        if (collision.gameObject.layer == 9) //Hot air
         {
             verticalSpeed += impulse * Time.deltaTime;
             Debug.Log(verticalSpeed);
