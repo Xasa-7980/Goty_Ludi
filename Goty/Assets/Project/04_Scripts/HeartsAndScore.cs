@@ -21,7 +21,7 @@ public class HeartsAndScore : MonoBehaviour
             Destroy(gameObject);
         }
         Instance = this;
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(gameObject);
         InitLifes();
     }
 
@@ -48,7 +48,9 @@ public class HeartsAndScore : MonoBehaviour
 
     public void SetScore(int score, bool multiplier)
     {
-        if(multiplier)
+
+        print("setting score");
+        if (multiplier)
         {
             scoreTxt.color = Color.yellow;
             scoreTxt.fontSize = 40;

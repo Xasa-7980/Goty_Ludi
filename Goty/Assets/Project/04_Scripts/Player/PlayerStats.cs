@@ -10,7 +10,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] public bool multiplierOn;
     [SerializeField] private float invulnerableTime = 1f;
 
-    private bool isDeath { get { return curHealth == 0; } }
+    private bool isDeath;
     private int curHealth; 
     private TimerObject timer;
     private float height;
@@ -24,6 +24,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Awake ( )
     {
+        print("hola?");
         initialMultiplier = multiplier;
         scoreTime = 0;
         multiplierTime = 0;
@@ -37,10 +38,15 @@ public class PlayerStats : MonoBehaviour
         curHealth = PlayerPrefs.GetInt("Health"); 
         timer = new TimerObject(this); 
         fase = GetComponent<Player>().phase;
-        HeartsAndScore.Instance.DrawCurrentLifes(curHealth);
     }
+    private void Start ( )
+    {
+        print("hola?");
+    }
+    bool f = false;
     private void Update ( )
     {
+        print("hola?");
         if ( isDeath)
         {
             SceneController.Instance.ResetScene();
@@ -56,6 +62,14 @@ public class PlayerStats : MonoBehaviour
                 multiplierTime = 0;
                 multiplierOn = false;
             }
+        }
+        if (HeartsAndScore.Instance != null)
+        {
+            print("hay instancia");
+        }
+        else
+        {
+            print("no hay instancia");
         }
         AddScore();
     }
@@ -92,6 +106,7 @@ public class PlayerStats : MonoBehaviour
 
     public void AddScore()
     {
+        print("adding score");
         if (fase == GamePhase.ASCENSION)
         {
             if ((int)transform.position.y > (int)lastHeight)
