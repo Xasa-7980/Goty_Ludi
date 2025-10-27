@@ -253,7 +253,7 @@ public class Player : MonoBehaviour
         {
             rotZ = Mathf.MoveTowards(rotZ, 0, deltaTime * rotSpeed * rotSpeed);
         }
-        rotZ = Mathf.Clamp(rotZ, -45, 45);
+        rotZ = Mathf.Clamp(rotZ, -30, 30);
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotZ));
         rb2d.linearVelocity = new Vector2(nextPos.x, dirZ);
     }
