@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -46,7 +47,7 @@ public class PlayerStats : MonoBehaviour
     {
         if ( isDeath)
         {
-            SceneController.Instance.ResetScene();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         scoreTime += Time.deltaTime;
 
@@ -74,7 +75,7 @@ public class PlayerStats : MonoBehaviour
                     anim.SetTrigger("Boost");
 
                 curHealth += value; 
-                curHealth = Mathf.Clamp(curHealth, 0, 5);
+                curHealth = Mathf.Clamp(curHealth, 0, 4);
                 
                 PlayerPrefs.SetInt("Health",curHealth);
                 HeartsAndScore.Instance.DrawCurrentLifes();

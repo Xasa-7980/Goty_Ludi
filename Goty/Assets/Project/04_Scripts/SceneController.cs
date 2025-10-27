@@ -8,7 +8,6 @@ public class SceneController :MonoBehaviour
     public static SceneController Instance { get; private set; }
     string nextSceneName;
     int nextSceneIndex = 1;
-    AsyncOperation asyncNextSceneLoaded;
     bool nextScene_IsPreLoaded;
 
     public static Action ChangeToNextScene;
@@ -18,69 +17,52 @@ public class SceneController :MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(gameObject);          
+            Destroy(gameObject); 
+            return;
         }
         Instance = this;    
         DontDestroyOnLoad(gameObject);
 
     }
-    private void Start ( )
-    {
-        CheckFor_NextSceneIndex();
-        //Preparando las escenas
-        StartCoroutine(PreloadNextScene());
-        InitializeActions();
-    }
-    private void InitializeActions ( )
-    {
-        ChangeToNextScene = ( ) =>
-        {
-            if (nextScene_IsPreLoaded && asyncNextSceneLoaded != null)
-            {
-                print("ASYNCLOADED");
-                StartCoroutine(PreloadNextScene());
-                asyncNextSceneLoaded.allowSceneActivation = true;
-                nextSceneIndex++;
-                CheckFor_NextSceneIndex() ;
-            }
-        };
-        GoMainMenu = ( ) =>
-        {
-            SceneManager.LoadScene("MainMenu");
-            nextSceneIndex = 1;
-            CheckFor_NextSceneIndex() ;
-        };
-        GoToRiver = ( ) =>
-        {
-            SceneManager.LoadScene("River");
-            nextSceneIndex++;
-            CheckFor_NextSceneIndex() ;
-        };
 
-    }
-    public IEnumerator PreloadNextScene( )
-    {
-        asyncNextSceneLoaded = SceneManager.LoadSceneAsync(nextSceneIndex);
-        asyncNextSceneLoaded.allowSceneActivation = false;
-        while (!asyncNextSceneLoaded.isDone)
-        {
-            if (asyncNextSceneLoaded.progress >= 0.9f)
-            {
-                nextScene_IsPreLoaded = true;
-                break;
-            }
-            yield return null;
-        }
-    }
+    //private void InitializeActions ( )
+    //{
+    //    ChangeToNextScene = ( ) =>
+    //    {
+    //        if (nextScene_IsPreLoaded && asyncNextSceneLoaded != null)
+    //        {
+    //            print("ASYNCLOADED");
+    //            StartCoroutine(PreloadNextScene());
+    //            asyncNextSceneLoaded.allowSceneActivation = true;
+    //            nextSceneIndex++;
+    //            CheckFor_NextSceneIndex() ;
+    //        }
+    //    };
+
+    //}
+    //public IEnumerator PreloadNextScene( )
+    //{
+    //    asyncNextSceneLoaded = SceneManager.LoadSceneAsync(nextSceneIndex);
+    //    asyncNextSceneLoaded.allowSceneActivation = false;
+    //    while (!asyncNextSceneLoaded.isDone)
+    //    {
+    //        if (asyncNextSceneLoaded.progress >= 0.9f)
+    //        {
+    //            nextScene_IsPreLoaded = true;
+    //            break;
+    //        }
+    //        yield return null;
+    //    }
+    //}
 
     public void LoadMainMenu()
     {
-        GoMainMenu?.Invoke();
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void LoadRiver()
     {
-        GoToRiver?.Invoke();
+        SceneManager.LoadScene("River");
     }
     private void CheckFor_NextSceneIndex ( )
     {
