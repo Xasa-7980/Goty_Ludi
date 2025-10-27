@@ -3,7 +3,7 @@ using System.Collections;
 
 public class JellyFishScript : MonoBehaviour
 {
-    const int INITIALY = -5;
+    const int INITIALY = -7;
 
     [SerializeField] private float horizontalSpeed;
     [SerializeField] private float flapTime;
@@ -49,8 +49,8 @@ public class JellyFishScript : MonoBehaviour
         if (verticalSpeed <= 0)
             animator.SetBool("Impulse", false);
 
-        if (transform.position.x > 10 || transform.position.x < -10)
-            Destroy(gameObject);
+        if (transform.position.x > 12 || transform.position.x < -12)
+           gameObject.SetActive(false);
     }
     void SetRandomSpawn()
     {

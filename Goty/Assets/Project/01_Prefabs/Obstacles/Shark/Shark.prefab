@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yMax: 3
-  yMin: -3
+  yMin: -8
   x_left: -22
   x_right: 22
   appearingDistance: 4
