@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
     private Bounds screenBounds;
 
     [Header("Gameplay Settings")]
-    [SerializeField] private GamePhase phase = GamePhase.RIVER;
+    [SerializeField] public GamePhase phase = GamePhase.RIVER;
     [SerializeField] private float phaseTransitionMaxTime = 2f;
     [SerializeField] private float timeScale = 1f;
     [SerializeField] private float shakeDurationOnHit = 0.5f;

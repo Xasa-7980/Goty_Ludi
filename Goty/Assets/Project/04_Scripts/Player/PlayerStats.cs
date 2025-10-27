@@ -9,12 +9,18 @@ public class PlayerStats : MonoBehaviour
     private bool isDeath { get { return curHealth == 0; } }
     private int curHealth; 
     private TimerObject timer;
+    private float height;
+    private float lastHeight;
     [SerializeField] private float invulnerableTime = 1f;
-    private int score;
+    private float score;
+    private float scoreTime;
+    GamePhase fase;
 
 
     private void Awake ( )
     {
+        scoreTime = 0;
+        height = 0;
         score = 0;
         multiplier = 1;
         anim = GetComponent<Animator>();
@@ -24,6 +30,7 @@ public class PlayerStats : MonoBehaviour
         }
         curHealth = PlayerPrefs.GetInt("Health"); 
         timer = new TimerObject(this); 
+        fase = GetComponent<Player>().phase;
     }
     private void Update ( )
     {
@@ -31,6 +38,8 @@ public class PlayerStats : MonoBehaviour
         {
             SceneController.Instance.ResetScene();
         }
+        scoreTime += Time.deltaTime;
+        AddScore();
     }
     public void SetHealth ( int value )
     {
@@ -48,7 +57,22 @@ public class PlayerStats : MonoBehaviour
 
     public void AddScore()
     {
-        score += (int)Time.unscaledDeltaTime * multiplier; 
-        HeartsAndScore.Instance.SetScore(score);
+        print(score);
+        if (fase == GamePhase.ASCENSION)
+        {
+            if ((int)transform.position.y > (int)lastHeight)
+            {
+                height += multiplier;
+                lastHeight = transform.position.y;
+            }
+            score = (int)height;
+        }
+        else if (scoreTime > 0.2f)
+        {
+            score += multiplier;
+            scoreTime = 0;
+        }
+        print(score);
+        HeartsAndScore.Instance.SetScore((int)score);
     }
 }
