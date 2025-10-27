@@ -7,11 +7,11 @@ using UnityEngine.InputSystem;
 
 public enum GamePhase
 {
-    RIVER,
-    SEA,
-    ASCENSION,
-    SKY,
-    FALL
+    RIVER = 1,
+    SEA = 2,
+    ASCENSION = 3,
+    SKY = 4,
+    FALL = 5
 }
 
 public enum PhysicsMode
@@ -73,6 +73,7 @@ public class Player : MonoBehaviour
 
     private void Start ( )
     {
+        phase = (GamePhase)UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
         InitializeComponents();
     }
 
@@ -212,6 +213,7 @@ public class Player : MonoBehaviour
     {
         do
         {
+            CameraBehaviour.followMode = CameraFollowMode.Full;
             spriteRenderer.sprite = dropSprite;
             rb2d.simulated = true;
             rb2d.gravityScale = 1f;
@@ -222,6 +224,7 @@ public class Player : MonoBehaviour
     {
         do
         {
+            CameraBehaviour.followMode = CameraFollowMode.Horizontal;
             spriteRenderer.sprite = dropSprite;
             rb2d.simulated = true;
             rb2d.gravityScale = 1f;
@@ -274,6 +277,7 @@ public class Player : MonoBehaviour
     {
         do
         {
+            CameraBehaviour.followMode = CameraFollowMode.Vertical;
             spriteRenderer.sprite = dropSprite;
             rb2d.simulated = true;
             rb2d.gravityScale = 1f;
@@ -327,6 +331,7 @@ public class Player : MonoBehaviour
     {
         do
         {
+            CameraBehaviour.followMode = CameraFollowMode.Vertical;
             spriteRenderer.sprite = dropSprite;
             rb2d.simulated = true;
             rb2d.gravityScale = 1f;

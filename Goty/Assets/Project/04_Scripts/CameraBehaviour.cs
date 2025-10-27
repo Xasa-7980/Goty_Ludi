@@ -1,10 +1,17 @@
 using UnityEngine;
 
+public enum CameraFollowMode
+{
+    Vertical,
+    Horizontal,
+    Full
+}
 public class CameraBehaviour : MonoBehaviour
 {
     private TimerObject timer;
     private Vector3 originalPos;
     [SerializeField] private Player player;
+    public CameraFollowMode followMode;
     private void Start ( )
     {
         originalPos = transform.localPosition;
@@ -12,7 +19,9 @@ public class CameraBehaviour : MonoBehaviour
     }
     private void Update ( )
     {
-        transform.position = new Vector3(player.transform.position.x, player.transform.position.y,transform.position.z);
+        if(followMode == CameraFollowMode.Full) transform.position = new Vector3(player.transform.position.x, player.transform.position.y,transform.position.z);
+        else if(followMode == CameraFollowMode.Vertical) transform.position = new Vector3(transform.position.x, player.transform.position.y,transform.position.z);
+        else if(followMode == CameraFollowMode.Horizontal) transform.position = new Vector3(player.transform.position.x, transform.position.y,transform.position.z);
     }
     public void CameraShake ( float duration, float shakeAmount )
     {
