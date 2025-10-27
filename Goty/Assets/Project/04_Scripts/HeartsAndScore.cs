@@ -9,47 +9,42 @@ public class HeartsAndScore : MonoBehaviour
 
     [SerializeField] private GameObject imagePrefab;
     [SerializeField] private Transform lifeParent;
-    [SerializeField] private TextMeshProUGUI scoreTxt;
-    private List<Image> lifes = new List<Image>();
+    [SerializeField] public TextMeshProUGUI scoreTxt;
+    public List<Image> lifes = new List<Image>();
     private int score;
 
     private void Awake()
     {
+        print("here");
         score = 0;
         if (Instance != null)
         {
             Destroy(gameObject);
+            return;
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        InitLifes();
+        scoreTxt = transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>();
+    }
+    private void Update ( )
+    {
+        SetText(PlayerPrefs.GetInt("Score"));
+        DrawCurrentLifes();
     }
 
-    public void InitLifes()
+    public void DrawCurrentLifes()
     {
         for (int i = 0; i < 5; i++)
         {
-            Image im = Instantiate(imagePrefab, lifeParent).GetComponent<Image>();
-            im.gameObject.SetActive(false);
-            lifes.Add(im);
-        }
-    }
-
-    public void DrawCurrentLifes(int health)
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            if (i > health)
+            if (i > PlayerPrefs.GetInt("Health"))
                 lifes[i].gameObject.SetActive(false);
             else
                 lifes[i].gameObject.SetActive(true);
         }
     }
-
-    public void SetScore(int score, bool multiplier)
+    public void SetScore(int _score, bool multiplier)
     {
 
-        print("setting score");
         if (multiplier)
         {
             scoreTxt.color = Color.yellow;
@@ -60,6 +55,10 @@ public class HeartsAndScore : MonoBehaviour
             scoreTxt.color = Color.white;
             scoreTxt.fontSize = 36;
         }
-            scoreTxt.text = score.ToString();
+        SetText(_score);
+    }
+    public void SetText(int _score )
+    {
+        scoreTxt.text = _score.ToString();
     }
 }
