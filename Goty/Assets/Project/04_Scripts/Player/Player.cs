@@ -306,6 +306,8 @@ public class Player : MonoBehaviour
 
         if (jumpInput)
         {
+            float velY = Mathf.Clamp(rb2d.linearVelocity.y, minGravityFall, maxGravityFall);
+            rb2d.linearVelocity = velY * Vector3.up ;
             rb2d.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
         }
     }
@@ -315,7 +317,19 @@ public class Player : MonoBehaviour
     private void AscensionMove ( Vector2 direction )
     {
         ConfigureRigidbodyForAscension();
-        float targetVelX = direction.x * speed;
+        float deltaX = direction.x * speed;
+
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, radius + checkDist, groundMask);
+        if (deltaX > 0 && hitRight.collider != null)
+        {
+            deltaX = Mathf.Min(deltaX, hitRight.distance - radius);
+        }
+
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, radius + checkDist, groundMask);
+        if (deltaX < 0 && hitLeft.collider != null)
+        {
+            deltaX = Mathf.Max(deltaX, -(hitLeft.distance - radius));
+        }
         if (Physics2D.CircleCast(transform.position, 1, Vector2.zero, 1,8/* cold air 5*/))
         {
             anim.SetBool("ColdFlow", true);
@@ -334,8 +348,18 @@ public class Player : MonoBehaviour
             anim.SetBool("HotFlow", false);
             minGravityFall = -1;
         }
+        RaycastHit2D hitDown = Physics2D.Raycast(transform.position, Vector2.down, radius + checkDist, groundMask);
+
+        if (rb2d.linearVelocity.y <= 0 && hitDown.collider != null)
+        {
+            transform.position = new Vector2(transform.position.x,
+                                                 transform.position.y - (hitDown.distance - radius));
+            Vector2 vel = rb2d.linearVelocity;
+            vel.y = 0;
+            rb2d.linearVelocity = vel;
+        }
         float velY = Mathf.Clamp(rb2d.linearVelocity.y, minGravityFall, maxGravityFall);
-        rb2d.linearVelocity = rb2d.linearVelocity.y * Vector3.up + Vector3.right * targetVelX;;
+        rb2d.linearVelocity = rb2d.linearVelocity.y * Vector3.up + Vector3.right * deltaX; ;
     }
     float lerpSpeed = 3;
     float originalSpeed;
@@ -343,6 +367,7 @@ public class Player : MonoBehaviour
     {
         do
         {
+            print(rb2d.simulated);
             CameraBehaviour.followMode = CameraFollowMode.FollowOnlyUp;
             CameraBehaviour.cinemachineCameraStatic.enabled = false;
             rb2d.bodyType = RigidbodyType2D.Kinematic;

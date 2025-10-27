@@ -4,8 +4,10 @@ public class DamageDealer : MonoBehaviour
 {
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        print("collided with" + collision.gameObject.name);
         if (collision.gameObject.layer == 7)
         {
+            print("found collision");
             // Matar al player
             PlayerStats playerStats = collision.gameObject.GetComponent<PlayerStats>();
             Player p = collision.gameObject.GetComponent<Player>();
@@ -16,6 +18,7 @@ public class DamageDealer : MonoBehaviour
                     collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
                     break;
                 case GamePhase.ASCENSION:
+                    print("found collision at ascension");
                     collision.gameObject.transform.position = new Vector3(0, transform.position.y + 5, 0);
                     collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
                     break;
