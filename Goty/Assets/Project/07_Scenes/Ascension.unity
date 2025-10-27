@@ -6339,12 +6339,6 @@ PrefabInstance:
       propertyPath: phase
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 2867728810081561486, guid: b6f74a54c68261f43ae699d8cc89995f,
-        type: 3}
-      propertyPath: vaporSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: d6f262580f6866043aeadd424016bc5a,
-        type: 3}
     - target: {fileID: 5846108060764455523, guid: b6f74a54c68261f43ae699d8cc89995f,
         type: 3}
       propertyPath: m_LocalPosition.x
