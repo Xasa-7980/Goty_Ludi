@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Thunder : MonoBehaviour
 {
-    const float INITIALY = 6;
+    const float INITIALY = 0;
 
     TimerObject timer;
     [SerializeField] float warningTime;
