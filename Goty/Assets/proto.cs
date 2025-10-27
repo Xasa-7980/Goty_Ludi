@@ -31,12 +31,10 @@ public class proto : MonoBehaviour
         if (collision.gameObject.layer == 8) //Cold air
         {
             verticalSpeed -= impulse * Time.deltaTime;
-            Debug.Log(verticalSpeed);
         }
         if (collision.gameObject.layer == 9) //Hot air
         {
             verticalSpeed += impulse * Time.deltaTime;
-            Debug.Log(verticalSpeed);
         }
     }
 }
