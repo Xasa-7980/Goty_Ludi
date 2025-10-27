@@ -34,13 +34,14 @@ public class FishScript : MonoBehaviour
         {
             dir = -1;
             initialX = x_right;
-            initialPosition = new Vector2(initialX, initialY);     
+            initialPosition = new Vector3(initialX, initialY, 8);
         }
         else
         {
             dir = 1;
             initialX = x_left;
             initialPosition = new Vector2(initialX, initialY);
+            transform.localScale = new Vector3(-1, 1, 1);
         }
         transform.position = initialPosition;
         state = State.ENTER;
@@ -80,7 +81,7 @@ public class FishScript : MonoBehaviour
                 break;
         }
 
-        if (transform.position.x > 10 || transform.position.x < -10)
+        if (transform.position.x > initialX + 5 || transform.position.x < -(initialX + 5))
             Destroy(gameObject);
     }
 }
