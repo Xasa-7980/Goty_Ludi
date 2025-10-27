@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite dropSprite;
     [SerializeField] private Sprite cloudSprite;
+    [SerializeField] private Sprite vaporSprite;
     [SerializeField] private Animator anim;
 
     // Components
@@ -101,15 +102,16 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Added camera behaviour succefully");
         }
+        
+        
         if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            // Lógica para apps móviles
+        {  // Lógica para apps móviles 
             useMouse = true;
             joystick.gameObject.SetActive(true);
         }
         else if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
-            // WebGL: puede ser PC o móvil, hay que comprobar si tiene pantalla táctil
+            // WebGL: puede ser PC o móvil, hay que comprobar si tiene pantalla táctil con:
             if (Input.touchSupported)
             {
                 useMouse = true;
@@ -145,8 +147,9 @@ public class Player : MonoBehaviour
                 SeaMove(GetInputDirection());
                 break;
             case GamePhase.ASCENSION:
-                spriteRenderer.sprite = dropSprite;
+                spriteRenderer.sprite = vaporSprite;
                 anim.SetBool("IsCloud", false);
+                anim.SetBool("IsVapor", false);
                 AscensionMove(GetInputDirection());
                 break;
             case GamePhase.SKY:
@@ -228,7 +231,7 @@ public class Player : MonoBehaviour
             CameraBehaviour.cinemachineCameraStatic.enabled = false;
             spriteRenderer.sprite = dropSprite;
             rb2d.simulated = true;
-            rb2d.gravityScale = 1f;
+            rb2d.gravityScale = 0f;
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         } while (!rb2d.simulated);
     }
@@ -313,12 +316,22 @@ public class Player : MonoBehaviour
     {
         ConfigureRigidbodyForAscension();
         float targetVelX = direction.x * speed;
-        if (Physics2D.CircleCast(transform.position, 1, Vector2.zero, 1,8/* layermask 5*/))
+        if (Physics2D.CircleCast(transform.position, 1, Vector2.zero, 1,8/* cold air 5*/))
         {
+            anim.SetBool("ColdFlow", true);
+            anim.SetBool("HotFlow", false);
             minGravityFall = descendentFlowPower;
+        }
+        else if(Physics2D.CircleCast(transform.position, 1, Vector2.zero, 1, 9/* hot air 5*/))
+        {
+            anim.SetBool("ColdFlow", false);
+            anim.SetBool("HotFlow", true);
+            minGravityFall = -1;
         }
         else
         {
+            anim.SetBool("ColdFlow", false);
+            anim.SetBool("HotFlow", false);
             minGravityFall = -1;
         }
         float velY = Mathf.Clamp(rb2d.linearVelocity.y, minGravityFall, maxGravityFall);
@@ -330,10 +343,12 @@ public class Player : MonoBehaviour
     {
         do
         {
-            CameraBehaviour.followMode = CameraFollowMode.Vertical;
+            CameraBehaviour.followMode = CameraFollowMode.FollowOnlyUp;
+            CameraBehaviour.cinemachineCameraStatic.enabled = false;
+            rb2d.bodyType = RigidbodyType2D.Kinematic;
             spriteRenderer.sprite = dropSprite;
             rb2d.simulated = true;
-            rb2d.gravityScale = 1f;
+            rb2d.gravityScale = 0.5f;
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         } while (!rb2d.simulated);
     }

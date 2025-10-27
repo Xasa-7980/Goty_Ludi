@@ -5,6 +5,7 @@ public enum CameraFollowMode
 {
     None,
     Vertical,
+    FollowOnlyUp,
     Horizontal,
     Full
 }
@@ -30,6 +31,9 @@ public class CameraBehaviour : MonoBehaviour
         if (followMode == CameraFollowMode.Full) transform.position = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
         else if (followMode == CameraFollowMode.Vertical) transform.position = new Vector3(transform.position.x, player.transform.position.y, transform.position.z);
         else if (followMode == CameraFollowMode.Horizontal) transform.position = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
+        else if (followMode == CameraFollowMode.FollowOnlyUp) transform.position = new Vector3(transform.position.x, 
+            player.transform.position.y >= transform.position.y ? player.transform.position.y : transform.position.y,
+            transform.position.z);
         else return;
     }
     public void CameraShake ( float duration, float shakeAmount )
