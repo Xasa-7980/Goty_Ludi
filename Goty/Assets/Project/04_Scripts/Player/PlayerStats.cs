@@ -63,13 +63,18 @@ public class PlayerStats : MonoBehaviour
     {
         if (!timer.Timer_Started())
         {
-            timer.StartTimer(invulnerableTime, ( ) => { 
-            if(value < 0)
-                anim.SetTrigger("Damaged");
-            
-            curHealth += value; 
-            curHealth = Mathf.Clamp(curHealth, 0, 5);
-            HeartsAndScore.Instance.DrawCurrentLifes(curHealth);
+            timer.StartTimer(invulnerableTime, ( ) => {
+
+                if (value < 0)
+                    anim.SetTrigger("Damaged");
+                else
+                    anim.SetTrigger("Boost");
+
+                curHealth += value; 
+                curHealth = Mathf.Clamp(curHealth, 0, 5);
+
+                HeartsAndScore.Instance.DrawCurrentLifes(curHealth);
+
             }, Action_Timing.Start);
         }
     }
@@ -81,6 +86,7 @@ public class PlayerStats : MonoBehaviour
             multiplier *= 2;
             multiplierOn = true;
         }
+        anim.SetTrigger("Boost");
         multiplierTime = 0;
     }
 
