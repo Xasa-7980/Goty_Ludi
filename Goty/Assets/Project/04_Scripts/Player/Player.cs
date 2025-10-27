@@ -149,7 +149,7 @@ public class Player : MonoBehaviour
             case GamePhase.ASCENSION:
                 spriteRenderer.sprite = vaporSprite;
                 anim.SetBool("IsCloud", false);
-                anim.SetBool("IsVapor", false);
+                anim.SetBool("IsVapor", true);
                 AscensionMove(GetInputDirection());
                 break;
             case GamePhase.SKY:
@@ -330,13 +330,13 @@ public class Player : MonoBehaviour
         {
             deltaX = Mathf.Max(deltaX, -(hitLeft.distance - radius));
         }
-        if (Physics2D.CircleCast(transform.position, 1, Vector2.zero, 1,8/* cold air 5*/))
+        if (Physics2D.OverlapCircle(transform.position, 1,1 << 8))
         {
             anim.SetBool("ColdFlow", true);
             anim.SetBool("HotFlow", false);
             minGravityFall = descendentFlowPower;
         }
-        else if(Physics2D.CircleCast(transform.position, 1, Vector2.zero, 1, 9/* hot air 5*/))
+        else if(Physics2D.OverlapCircle(transform.position, 1,1 << 9))
         {
             anim.SetBool("ColdFlow", false);
             anim.SetBool("HotFlow", true);
