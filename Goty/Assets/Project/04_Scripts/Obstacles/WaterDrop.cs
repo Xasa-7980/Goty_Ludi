@@ -3,7 +3,7 @@ using UnityEngine;
 public class WaterDrop : MonoBehaviour
 {
     const float INITIALY = 11;
-    const float INITIALZ = 7;
+    const float INITIALZ = 0;
 
     [SerializeField] private float fallingVelMax;
     [SerializeField] private float fallingVelMin;
