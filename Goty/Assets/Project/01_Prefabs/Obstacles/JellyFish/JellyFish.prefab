@@ -52,8 +52,8 @@ MonoBehaviour:
   flapTime: 3
   flapImpulse: 3.5
   gravity: 2
-  xMax: 8
-  xMin: -8
+  xMax: 9
+  xMin: -9
 --- !u!114 &-5707840922804026438
 MonoBehaviour:
   m_ObjectHideFlags: 0
