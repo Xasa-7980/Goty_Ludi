@@ -224,7 +224,8 @@ public class Player : MonoBehaviour
     {
         do
         {
-            CameraBehaviour.followMode = CameraFollowMode.Horizontal;
+            CameraBehaviour.followMode = CameraFollowMode.None;
+            CameraBehaviour.cinemachineCameraStatic.enabled = false;
             spriteRenderer.sprite = dropSprite;
             rb2d.simulated = true;
             rb2d.gravityScale = 1f;
@@ -235,7 +236,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float rotSpeed;
     private void MoveHorizontallyWithCollision ( Vector2 direction )
     {
-        float deltaX = -direction.y * speed;
+        float deltaX = -direction.x * speed;
 
         RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, radius + checkDist, groundMask);
         if (deltaX > 0 && hitRight.collider != null)

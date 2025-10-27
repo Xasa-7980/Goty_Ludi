@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     private Animator anim;
-    [SerializeField] private int health = 1;
+    [SerializeField] private int health = 5;
     [SerializeField] public int multiplier;
     private bool isDeath;
     private int curHealth; 

@@ -1,7 +1,9 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public enum CameraFollowMode
 {
+    None,
     Vertical,
     Horizontal,
     Full
@@ -11,17 +13,24 @@ public class CameraBehaviour : MonoBehaviour
     private TimerObject timer;
     private Vector3 originalPos;
     [SerializeField] private Player player;
-    public CameraFollowMode followMode;
+    public static CameraFollowMode followMode;
+    public CinemachineCamera cinemachineCamera;
+    public static CinemachineCamera cinemachineCameraStatic;
     private void Start ( )
     {
         originalPos = transform.localPosition;
+        if(cinemachineCamera != null )
+        {
+            cinemachineCameraStatic = cinemachineCamera;
+        }
         timer = new TimerObject(this);
     }
     private void Update ( )
     {
-        if(followMode == CameraFollowMode.Full) transform.position = new Vector3(player.transform.position.x, player.transform.position.y,transform.position.z);
-        else if(followMode == CameraFollowMode.Vertical) transform.position = new Vector3(transform.position.x, player.transform.position.y,transform.position.z);
-        else if(followMode == CameraFollowMode.Horizontal) transform.position = new Vector3(player.transform.position.x, transform.position.y,transform.position.z);
+        if (followMode == CameraFollowMode.Full) transform.position = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
+        else if (followMode == CameraFollowMode.Vertical) transform.position = new Vector3(transform.position.x, player.transform.position.y, transform.position.z);
+        else if (followMode == CameraFollowMode.Horizontal) transform.position = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
+        else return;
     }
     public void CameraShake ( float duration, float shakeAmount )
     {
@@ -42,6 +51,10 @@ public class CameraBehaviour : MonoBehaviour
     void FollowPlayer ( )
     {
         
+    }
+    public static void EnableCinemachine(bool enable )
+    {
+        cinemachineCameraStatic.enabled = enable;
     }
 }
 

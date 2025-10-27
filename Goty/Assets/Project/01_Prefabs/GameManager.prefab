@@ -329,6 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 2867728810081561486}
+  cinemachineCamera: {fileID: 3616086345875376721}
 --- !u!114 &495605840894260038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1075,4 +1076,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 5
+  multiplier: 0
   invulnerableTime: 1
