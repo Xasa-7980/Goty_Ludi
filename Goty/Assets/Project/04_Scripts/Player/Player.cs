@@ -278,7 +278,8 @@ public class Player : MonoBehaviour
     {
         do
         {
-            CameraBehaviour.followMode = CameraFollowMode.Vertical;
+            CameraBehaviour.followMode = CameraFollowMode.None;
+            CameraBehaviour.cinemachineCameraStatic.enabled = false;
             spriteRenderer.sprite = dropSprite;
             rb2d.simulated = true;
             rb2d.gravityScale = 1f;
@@ -297,14 +298,11 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(0))
         {
-            jumpInput = Input.mousePosition.x > Screen.width / 2;
+            jumpInput = Input.mousePosition.x > 0;
         }
 
         if (jumpInput)
         {
-            float velY = Mathf.Clamp(rb2d.linearVelocity.y, minGravityFall, maxGravityFall);
-
-            rb2d.linearVelocity = new Vector3(rb2d.linearVelocity.x, velY);
             rb2d.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
         }
     }
