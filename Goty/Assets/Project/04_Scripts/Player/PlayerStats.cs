@@ -6,7 +6,7 @@ public class PlayerStats : MonoBehaviour
     private Animator anim;
     [SerializeField] private int health = 5;
     [SerializeField] public int multiplier;
-    private bool isDeath;
+    private bool isDeath { get { return curHealth == 0; } }
     private int curHealth; 
     private TimerObject timer;
     [SerializeField] private float invulnerableTime = 1f;
@@ -27,7 +27,6 @@ public class PlayerStats : MonoBehaviour
     }
     private void Update ( )
     {
-        isDeath = curHealth == 0;
         if ( isDeath)
         {
             SceneController.Instance.ResetScene();
