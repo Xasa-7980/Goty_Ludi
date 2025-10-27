@@ -91,7 +91,9 @@ public class SceneController :MonoBehaviour
     }
     public void NextScene()
     {
-        ChangeToNextScene?.Invoke();
+        //ChangeToNextScene?.Invoke();
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void ResetScene()

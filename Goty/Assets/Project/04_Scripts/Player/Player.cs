@@ -239,7 +239,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float rotSpeed;
     private void MoveHorizontallyWithCollision ( Vector2 direction )
     {
-        float deltaX = -direction.x * speed;
+        float deltaX = direction.x * speed;
 
         RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, radius + checkDist, groundMask);
         if (deltaX > 0 && hitRight.collider != null)
@@ -269,7 +269,7 @@ public class Player : MonoBehaviour
     {
         ConfigureRigidbodyForFlappy();
 
-        float targetVelX = -direction.x * speed;
+        float targetVelX = direction.x * speed;
 
 
         rb2d.linearVelocity = new Vector3(targetVelX, rb2d.linearVelocity.y);
