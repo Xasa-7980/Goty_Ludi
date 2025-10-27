@@ -369,7 +369,7 @@ PrefabInstance:
     - target: {fileID: 2506050507981328703, guid: d925efc6d8319a34baf47bff522345dd,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8794634492204747921, guid: d925efc6d8319a34baf47bff522345dd,
         type: 3}
@@ -7024,6 +7024,23 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2543335744921676686, guid: 9277a7f550cafbf449470391da23be6c,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: b9ab97d0675f8984583b2fa9d92c6607,
+        type: 2}
+    - target: {fileID: 2543335744921676686, guid: 9277a7f550cafbf449470391da23be6c,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2520956442890278071, guid: b9ab97d0675f8984583b2fa9d92c6607,
+        type: 2}
+    - target: {fileID: 2543335744921676686, guid: 9277a7f550cafbf449470391da23be6c,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2731762696760554557, guid: 9277a7f550cafbf449470391da23be6c,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -7256,8 +7273,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b4ccd7d91ac0874bb3c864bdb36d3ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSky: 0
-  isSea: 0
 --- !u!60 &1535347322
 PolygonCollider2D:
   m_ObjectHideFlags: 0
