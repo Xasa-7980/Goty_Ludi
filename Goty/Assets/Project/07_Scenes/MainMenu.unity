@@ -1439,8 +1439,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Sortir
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b9ab97d0675f8984583b2fa9d92c6607, type: 2}
-  m_sharedMaterial: {fileID: 2520956442890278071, guid: b9ab97d0675f8984583b2fa9d92c6607,
+  m_fontAsset: {fileID: 11400000, guid: 3ff33ae2a54100c40abada04312dd9bb, type: 2}
+  m_sharedMaterial: {fileID: -2896426056811963765, guid: 3ff33ae2a54100c40abada04312dd9bb,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2179,8 +2179,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: i el cicle de l'aigua
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b9ab97d0675f8984583b2fa9d92c6607, type: 2}
-  m_sharedMaterial: {fileID: 2520956442890278071, guid: b9ab97d0675f8984583b2fa9d92c6607,
+  m_fontAsset: {fileID: 11400000, guid: 3ff33ae2a54100c40abada04312dd9bb, type: 2}
+  m_sharedMaterial: {fileID: -2896426056811963765, guid: 3ff33ae2a54100c40abada04312dd9bb,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -4530,8 +4530,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Comen\xE7a"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 52b086caf6180d54bb22ddedc943903b, type: 2}
-  m_sharedMaterial: {fileID: -8126609218724285007, guid: 52b086caf6180d54bb22ddedc943903b,
+  m_fontAsset: {fileID: 11400000, guid: 3ff33ae2a54100c40abada04312dd9bb, type: 2}
+  m_sharedMaterial: {fileID: -2896426056811963765, guid: 3ff33ae2a54100c40abada04312dd9bb,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -4796,8 +4796,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Opcions
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b9ab97d0675f8984583b2fa9d92c6607, type: 2}
-  m_sharedMaterial: {fileID: 2520956442890278071, guid: b9ab97d0675f8984583b2fa9d92c6607,
+  m_fontAsset: {fileID: 11400000, guid: 3ff33ae2a54100c40abada04312dd9bb, type: 2}
+  m_sharedMaterial: {fileID: -2896426056811963765, guid: 3ff33ae2a54100c40abada04312dd9bb,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

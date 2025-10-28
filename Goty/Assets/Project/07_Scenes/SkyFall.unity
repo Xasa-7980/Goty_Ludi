@@ -327,7 +327,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 50, y: 5}
+  m_Size: {x: 30, y: 5}
   m_EdgeRadius: 0
 --- !u!114 &169971746
 MonoBehaviour:
@@ -342,7 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 10
-  size: {x: 50, y: 5, z: 1}
+  size: {x: 20, y: 5, z: 1}
   spawnTime: 3
   prefabsToSpawn:
   - {fileID: 8934677866171364787, guid: eb454f10a40bd54409fbc3acc8c46791, type: 3}
@@ -352,6 +352,7 @@ MonoBehaviour:
   minDistance: 3
   minSpawnDistance: 1.5
   maxAttempts: 100
+  objectsGravityScale: -0.05
 --- !u!1 &179029725
 GameObject:
   m_ObjectHideFlags: 0
