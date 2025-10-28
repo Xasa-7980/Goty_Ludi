@@ -55,7 +55,7 @@ public class FishScript : MonoBehaviour
         switch(state)
         {
             case State.ENTER:
-                if (transform.position.x < 0.1f && transform.position.x > -0.1f)
+                if (transform.position.x < 0.1f && spawnRight || !spawnRight && transform.position.x > -0.1f)
                     state = State.CIRCLE;
                 transform.position += new Vector3(vel * Time.deltaTime * dir * transform.right.x, 0, 0);
                 break;
@@ -65,7 +65,7 @@ public class FishScript : MonoBehaviour
                 transform.Rotate(dir * rotationSpeed * Time.deltaTime * Vector3.forward);
                 if (looping)
                 {
-                    if (transform.position.y - initialY < 0.01f)
+                    if (transform.position.y - initialY < 0.05f)
                         state = State.OUT;
                 }
                 else if (transform.position.y - initialY > 0.2f)
