@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
@@ -26,7 +27,7 @@ public class PlayerStats : MonoBehaviour
     private Animator anim;
     private TimerObject timer;
     private GamePhase fase;
-
+    public UnityEvent onDie;
     private void Awake ( )
     {
         anim = GetComponent<Animator>();
@@ -73,7 +74,7 @@ public class PlayerStats : MonoBehaviour
         PlayerPrefs.Save();
 
         hasDied = false;
-        SceneController.Instance.ResetScene();
+        onDie?.Invoke();
     }
     // ===================== HEALTH =====================
 

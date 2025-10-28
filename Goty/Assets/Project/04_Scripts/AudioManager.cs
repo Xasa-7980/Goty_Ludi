@@ -39,16 +39,11 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        PlayOnce("Theme");
     }
 
-    public static void PlayOnce(AudioClip clip)
+    public void PlayOnce(AudioClip clip)
     {
         source.PlayOneShot(clip);
-        if(s == null)
-        {
-            return;
-        }
     }
 
    

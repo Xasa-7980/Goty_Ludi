@@ -8,7 +8,7 @@ public class DamageDealer : MonoBehaviour
     {
         if (collision.gameObject.layer == 7)
         {
-            AudioManager.PlayOnce(clip);
+            //AudioManager.PlayOnce(clip);
 
             // Matar al player
             PlayerStats playerStats = collision.gameObject.GetComponent<PlayerStats>();
