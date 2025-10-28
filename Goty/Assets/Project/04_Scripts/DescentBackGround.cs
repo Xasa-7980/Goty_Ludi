@@ -2,15 +2,19 @@ using UnityEngine;
 
 public class DescentBackGround : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private GameObject[] backgrounds;
+    [SerializeField] private float vel;
     void Start()
     {
-        
+        backgrounds[0].SetActive(true);
+        backgrounds[1].SetActive(false);
+        backgrounds[2].SetActive(true);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        transform.position += Time.deltaTime * Vector3.up * vel;
+        if (transform.position.y > 35)
+            backgrounds[0].SetActive(false);
     }
 }
