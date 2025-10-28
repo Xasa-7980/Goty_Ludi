@@ -138,32 +138,9 @@ public class SpawnObstacles : MonoBehaviour
         int randIndex = Random.Range(0, prefabsToSpawn.Length);
         GameObject tempOb = Instantiate(prefabsToSpawn[randIndex], newPos, Quaternion.identity);
         occupiedPositions.Add(newPos);
-        switch (player.phase)
+        if(tempOb.TryGetComponent<Rigidbody2D> (out Rigidbody2D rb2d))
         {
-            case GamePhase.RIVER:
-                break;
-            case GamePhase.SEA:
-                Rigidbody2D rb2d;
-                if(!tempOb.TryGetComponent<Rigidbody2D>(out rb2d))
-                {
-                    rb2d.gravityScale = 0.5f;
-                }
-                return;
-
-                break;
-            case GamePhase.ASCENSION:
-                break;
-            case GamePhase.SKY:
-                break;
-            case GamePhase.FALL:
-                if (!tempOb.TryGetComponent<Rigidbody2D>(out rb2d))
-                {
-                    rb2d.gravityScale = -0.2f;
-                }
-                return;
-                break;
-            default:
-                break;
+            rb2d.gravityScale = objectsGravityScale;
         }
     }
 
