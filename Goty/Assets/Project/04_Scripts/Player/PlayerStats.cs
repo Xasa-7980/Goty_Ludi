@@ -1,58 +1,56 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
-    private Animator anim;
+    [Header("Stats")]
+    [SerializeField] private int maxHealth = 5;
     [SerializeField] private int health = 5;
-    [SerializeField] public int multiplier;
-    [SerializeField] float multiplierDuration;
-    [SerializeField] public bool multiplierOn;
+    [SerializeField] private int multiplier = 1;
+    [SerializeField] private float multiplierDuration = 5f;
     [SerializeField] private float invulnerableTime = 1f;
 
-    private bool isDeath { get { return curHealth == 0; } }
-    private int curHealth;
-    private TimerObject timer;
+    [Header("Runtime")]
+    private int currentHealth;
+    private float score;
     private float height;
     private float lastHeight;
-    private float score;
     private float scoreTime;
     private float multiplierTime;
     private int initialMultiplier;
-    GamePhase fase;
+    private bool multiplierOn;
+    private bool isDead => currentHealth <= 0;
 
+    private Animator anim;
+    private TimerObject timer;
+    private GamePhase fase;
 
     private void Awake ( )
     {
-        initialMultiplier = multiplier;
-        scoreTime = 0;
-        multiplierTime = 0;
-        height = 0;
-        score = 0;
         anim = GetComponent<Animator>();
-        if (!PlayerPrefs.HasKey("Health"))
-        {
-            PlayerPrefs.SetInt("Health",health);
-        }
-        curHealth = PlayerPrefs.GetInt("Health"); 
-        timer = new TimerObject(this); 
+        timer = new TimerObject(this);
         fase = GetComponent<Player>().phase;
+
+        // Cargar o inicializar valores persistentes
+        initialMultiplier = multiplier;
+        LoadPersistentStats();
     }
-    HeartsAndScore hearts;
-    private void Start ( )
-    {
-    }
+
+    private bool hasDied = false;
+
     private void Update ( )
     {
-        if ( isDeath)
+        if (isDead && !hasDied)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            hasDied = true;
+            StartCoroutine(RestartSceneAfterDelay(0.25f)); 
         }
-        scoreTime += Time.deltaTime;
 
+        // Control de multiplicador
         if (multiplierOn)
-        { 
+        {
             multiplierTime += Time.deltaTime;
             if (multiplierTime >= multiplierDuration)
             {
@@ -61,41 +59,61 @@ public class PlayerStats : MonoBehaviour
                 multiplierOn = false;
             }
         }
+
+        // Actualizar puntuación
+        scoreTime += Time.deltaTime;
         AddScore();
     }
+    private IEnumerator RestartSceneAfterDelay ( float delay )
+    {
+        yield return new WaitForSeconds(delay);
+
+        // restaurar salud antes de recargar
+        PlayerPrefs.SetInt("Health", maxHealth);
+        PlayerPrefs.Save();
+
+        hasDied = false;
+        SceneController.Instance.ResetScene();
+    }
+    // ===================== HEALTH =====================
+
     public void SetHealth ( int value )
     {
-        if (!timer.Timer_Started())
+        if (timer.Timer_Started()) return;
+
+        timer.StartTimer(invulnerableTime, ( ) =>
         {
-            timer.StartTimer(invulnerableTime, ( ) => {
+            if (value < 0)
+                anim.SetTrigger("Damaged");
+            else
+                anim.SetTrigger("Boost");
 
-                if (value < 0)
-                    anim.SetTrigger("Damaged");
-                else
-                    anim.SetTrigger("Boost");
+            currentHealth = Mathf.Clamp(currentHealth + value, 0, maxHealth);
+            // Guardar salud persistente
+            PlayerPrefs.SetInt("Health", currentHealth);
+            PlayerPrefs.Save();
 
-                curHealth += value; 
-                curHealth = Mathf.Clamp(curHealth, 0, 4);
-                
-                PlayerPrefs.SetInt("Health",curHealth);
-                HeartsAndScore.Instance.DrawCurrentLifes();
+            HeartsAndScore.Instance?.DrawCurrentLifes();
 
-            }, Action_Timing.Start);
-        }
+        }, Action_Timing.Start);
     }
 
-    public void OnMultiplier()
+    // ===================== MULTIPLIER =====================
+
+    public void OnMultiplier ( )
     {
         if (!multiplierOn)
         {
             multiplier *= 2;
             multiplierOn = true;
+            multiplierTime = 0;
         }
         anim.SetTrigger("Boost");
-        multiplierTime = 0;
     }
 
-    public void AddScore()
+    // ===================== SCORE =====================
+
+    public void AddScore ( )
     {
         if (fase == GamePhase.ASCENSION)
         {
@@ -111,11 +129,45 @@ public class PlayerStats : MonoBehaviour
             score += multiplier;
             scoreTime = 0;
         }
+
+        // Guardar puntuación persistente
         PlayerPrefs.SetInt("Score", (int)score);
-        HeartsAndScore.Instance.SetScore((int)score, multiplier > initialMultiplier);
+        PlayerPrefs.Save();
+        HeartsAndScore.Instance?.SetScore((int)score, multiplier > initialMultiplier);
+
     }
-    private void OnApplicationQuit()
+
+    // ===================== PERSISTENCIA =====================
+
+    private void LoadPersistentStats ( )
     {
-        PlayerPrefs.DeleteAll();
+        // Si existen, cargar los valores previos
+        if (PlayerPrefs.HasKey("Health"))
+            if(PlayerPrefs.GetInt("Health") == 0) currentHealth = maxHealth;
+            else currentHealth = PlayerPrefs.GetInt("Health");
+        else
+            currentHealth = maxHealth;
+
+        if (PlayerPrefs.HasKey("Score"))
+            score = PlayerPrefs.GetInt("Score");
+        else
+            score = 0;
+
+
+        HeartsAndScore.Instance?.DrawCurrentLifes();
+        HeartsAndScore.Instance?.SetScore((int)score, multiplier > initialMultiplier);
+
+    }
+
+    public void ResetPersistentStats ( )
+    {
+        PlayerPrefs.DeleteKey("Health");
+        PlayerPrefs.DeleteKey("Score");
+        PlayerPrefs.Save();
+    }
+
+    private void OnApplicationQuit ( )
+    {
+        ResetPersistentStats();
     }
 }
