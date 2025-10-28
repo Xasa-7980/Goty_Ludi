@@ -16,9 +16,8 @@ public class Thunder : MonoBehaviour
     private State state;
     private int parpadeos;
     private SpriteRenderer sr;
-
-    private Color transparentYellow = new(1,1,0,0.25f);
-    private Color yellow = new Color(1, 1, 0, 0.25f);
+    private GameObject warn;
+    
     enum State
     {
         WARNING,
@@ -32,7 +31,9 @@ public class Thunder : MonoBehaviour
         parpadeos = 0;
         state = State.WARNING;
         sr = GetComponent<SpriteRenderer>();
-        sr.color = transparentYellow;
+        sr.enabled = false;
+        warn = transform.GetChild(0).gameObject;
+        warn.SetActive(false);
         timer = new TimerObject(this);
         initialX = UnityEngine.Random.Range(xMin, xMax);
         transform.position = new Vector2(initialX, INITIALY);
@@ -48,9 +49,9 @@ public class Thunder : MonoBehaviour
                 {
                     timer.StartTimer(warningTime, () =>
                     {
-                        if (sr.enabled)
+                        if (warn.activeSelf)
                         {
-                            sr.enabled = false;
+                            warn.SetActive(false);
 
                             parpadeos++;
 
@@ -61,7 +62,7 @@ public class Thunder : MonoBehaviour
                         }
                         else
                         {
-                            sr.enabled = true;
+                            warn.SetActive(true);
                         }
                     }, Action_Timing.End);
                 }
@@ -73,7 +74,6 @@ public class Thunder : MonoBehaviour
                     {
                         GetComponent<BoxCollider2D>().enabled = true;
                         sr.enabled = true;
-                        sr.color = yellow;
                         state = State.STRIKE;
                     }, Action_Timing.End);
                 }
