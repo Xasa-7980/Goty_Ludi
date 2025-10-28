@@ -306,9 +306,9 @@ public class Player : MonoBehaviour
 
         if (jumpInput)
         {
+            rb2d.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
             float velY = Mathf.Clamp(rb2d.linearVelocity.y, minGravityFall, maxGravityFall);
             rb2d.linearVelocity = velY * Vector3.up ;
-            rb2d.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
         }
     }
     [SerializeField] float maxGravityFall = 7;

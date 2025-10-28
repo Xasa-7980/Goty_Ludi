@@ -13,18 +13,17 @@ public class SceneController :MonoBehaviour
     public static Action ChangeToNextScene;
     public static Action GoMainMenu;
     public static Action GoToRiver;
-    private void Awake()
+    private void Awake ( )
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
-            Destroy(gameObject); 
+            Destroy(gameObject);
             return;
         }
-        Instance = this;    
+
+        Instance = this;
         DontDestroyOnLoad(gameObject);
-
     }
-
     //private void InitializeActions ( )
     //{
     //    ChangeToNextScene = ( ) =>
@@ -78,11 +77,15 @@ public class SceneController :MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    public void ResetScene()
+    private bool isReloading = false;
+
+    public void ResetScene ( )
     {
+        if (isReloading) return; // evita recargar dos veces
+        isReloading = true;
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
     public void LoadPauseMenu()
     {
 
