@@ -28,6 +28,7 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] private float minSpawnDistance = 1.5f;
     [SerializeField] private int maxAttempts = 100;
 
+    [SerializeField, Range(-1,1)] private float objectsGravityScale = 0.5f;
     private TimerObject spawnTimer;
     private List<Vector3> occupiedPositions = new List<Vector3>();
 
@@ -135,8 +136,12 @@ public class SpawnObstacles : MonoBehaviour
         } while (!IsPositionValid(newPos));
 
         int randIndex = Random.Range(0, prefabsToSpawn.Length);
-        Instantiate(prefabsToSpawn[randIndex], newPos, Quaternion.identity);
+        GameObject tempOb = Instantiate(prefabsToSpawn[randIndex], newPos, Quaternion.identity);
         occupiedPositions.Add(newPos);
+        if(tempOb.TryGetComponent<Rigidbody2D> (out Rigidbody2D rb2d))
+        {
+            rb2d.gravityScale = objectsGravityScale;
+        }
     }
 
     // ========================= SPHERE SPAWN =========================

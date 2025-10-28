@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2824159486187751972}
   - component: {fileID: 6708406797711656650}
   - component: {fileID: 3929050169593279185}
+  - component: {fileID: -1401105560097753795}
   m_Layer: 0
   m_Name: Thunder
   m_TagString: Untagged
@@ -154,6 +155,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-1401105560097753795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507614604604350548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b4ccd7d91ac0874bb3c864bdb36d3ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8573531064856390037
 GameObject:
   m_ObjectHideFlags: 0
