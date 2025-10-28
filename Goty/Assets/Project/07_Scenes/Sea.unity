@@ -890,8 +890,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 159479886179089404, guid: cf646267413e18144b7c39c9865ad25c,
         type: 3}
+      propertyPath: VelocityModule.z.scalar
+      value: 1.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 159479886179089404, guid: cf646267413e18144b7c39c9865ad25c,
+        type: 3}
       propertyPath: NoiseModule.remapEnabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 159479886179089404, guid: cf646267413e18144b7c39c9865ad25c,
+        type: 3}
+      propertyPath: ShapeModule.m_Position.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 159479886179089404, guid: cf646267413e18144b7c39c9865ad25c,
         type: 3}
@@ -912,6 +922,11 @@ PrefabInstance:
         type: 3}
       propertyPath: RotationModule.curve.scalar
       value: 0.052359875
+      objectReference: {fileID: 0}
+    - target: {fileID: 159479886179089404, guid: cf646267413e18144b7c39c9865ad25c,
+        type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
       objectReference: {fileID: 0}
     - target: {fileID: 159479886179089404, guid: cf646267413e18144b7c39c9865ad25c,
         type: 3}
@@ -1691,7 +1706,7 @@ BoxCollider2D:
   m_UsedByEffector: 1
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 31.190968, y: -18.509317}
+  m_Offset: {x: 31.190968, y: -20.177465}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1701,7 +1716,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 60.948067, y: 36.279217}
+  m_Size: {x: 60.948067, y: 32.94292}
   m_EdgeRadius: 0
 --- !u!253 &1067339645
 BuoyancyEffector2D:
@@ -1720,7 +1735,7 @@ BuoyancyEffector2D:
   m_LinearDrag: 2
   m_AngularDrag: 2
   m_FlowAngle: -90
-  m_FlowMagnitude: 3
+  m_FlowMagnitude: 2
   m_FlowVariation: 0
 --- !u!212 &1067339646
 SpriteRenderer:
@@ -2305,9 +2320,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 10
   size: {x: 20.64602, y: 10.10504, z: 10}
-  spawnTime: 10
+  spawnTime: 5
   prefabsToSpawn:
-  - {fileID: 0}
+  - {fileID: 2471977046301435323, guid: 47b0623fb6cee8c4eb4a416f4316cdd9, type: 3}
+  - {fileID: 8934677866171364787, guid: eb454f10a40bd54409fbc3acc8c46791, type: 3}
   spawnMode: 1
   player: {fileID: 0}
   maxDistance: 50

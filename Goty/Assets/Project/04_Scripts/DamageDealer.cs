@@ -4,12 +4,11 @@ public class DamageDealer : MonoBehaviour
 {
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        print("collided with" + collision.gameObject.name);
         if (collision.gameObject.layer == 7)
         {
-            print("found collision");
             // Matar al player
             PlayerStats playerStats = collision.gameObject.GetComponent<PlayerStats>();
+            PlayerResizer playerResizer = collision.gameObject.GetComponent<PlayerResizer>();
             Player p = collision.gameObject.GetComponent<Player>();
             switch (p.phase)
             {
@@ -25,6 +24,7 @@ public class DamageDealer : MonoBehaviour
                 case GamePhase.SKY:
                     collision.gameObject.transform.position = new Vector3(-5, 0, 0);
                     collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
+                    playerResizer.OnPlayerAbsorbs?.Invoke(false);
                     break;
                 default:
                     break;

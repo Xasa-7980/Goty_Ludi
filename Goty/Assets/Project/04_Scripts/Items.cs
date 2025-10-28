@@ -24,7 +24,7 @@ public class Items : MonoBehaviour
     const float FALL_X_MAX = 12;
 
     [SerializeField] private bool isMultiplier;
-    [SerializeField] public GameObject player;
+    [SerializeField] public Player player;
 
     private GamePhase fase;
     private float vel = 10;
@@ -33,7 +33,8 @@ public class Items : MonoBehaviour
 
     private void Awake()
     {
-        fase = player.GetComponent<Player>().phase;
+        player = GameObject.FindFirstObjectByType<Player>();
+        fase = player.phase;
         switch (fase)
         {
             case (GamePhase.RIVER):
