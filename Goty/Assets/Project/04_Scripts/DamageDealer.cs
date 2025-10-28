@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class DamageDealer : MonoBehaviour
 {
+    public AudioClip clip;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 7)
         {
+            AudioManager.PlayOnce(clip);
+
             // Matar al player
             PlayerStats playerStats = collision.gameObject.GetComponent<PlayerStats>();
             PlayerResizer playerResizer = collision.gameObject.GetComponent<PlayerResizer>();
