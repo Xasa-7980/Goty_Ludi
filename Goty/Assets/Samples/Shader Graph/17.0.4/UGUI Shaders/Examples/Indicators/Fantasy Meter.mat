@@ -28,6 +28,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Ocean:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -48,6 +52,7 @@ Material:
     - _Health: 0.618
     - _Height: 0.26
     - _MeterValue: 0.5
+    - _Opacity: 1
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -59,7 +64,7 @@ Material:
     m_Colors:
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0, g: 0.4823529, b: 1, a: 1}
-    - _WaterColor: {r: 0.10588237, g: 0.34901956, b: 0.7215686, a: 1}
+    - _WaterColor: {r: 0, g: 0.2849506, b: 0.72156864, a: 1}
     - _WidthHeight: {r: 200, g: 200, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
