@@ -9,6 +9,7 @@ public class SceneController :MonoBehaviour
     string nextSceneName;
     int nextSceneIndex = 1;
     bool nextScene_IsPreLoaded;
+    public int index;
 
     public static Action ChangeToNextScene;
     public static Action GoMainMenu;
@@ -56,12 +57,14 @@ public class SceneController :MonoBehaviour
 
     public void LoadMainMenu()
     {
+        index = 0;
         SceneManager.LoadScene("MainMenu");
     }
 
     public void LoadRiver()
     {
-        SceneManager.LoadScene("River");
+        index++;
+        SceneManager.LoadScene("Transition",LoadSceneMode.Additive);
     }
     private void CheckFor_NextSceneIndex ( )
     {

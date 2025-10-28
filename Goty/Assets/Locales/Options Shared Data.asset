@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Options Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Options
+  m_TableCollectionNameGuidString: 6ed1a227238688a4b997f2d78a5a2522
+  m_Entries:
+  - m_Id: 7288360960
+    m_Key: mainMenu.Options.Logo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10509586432
+    m_Key: mainMenu.Options.Records
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13101666304
+    m_Key: mainMenu.Options.Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15970570240
+    m_Key: mainMenu.Options.Music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210649190400
+    m_Key: mainMenu.Options.SFX
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 2500238412907807077
+  references:
+    version: 2
+    RefIds:
+    - rid: 2500238412907807077
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1761686663227
