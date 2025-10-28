@@ -24,7 +24,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Blurred Hexagon
-  m_Shader: {fileID: -6465566751694194690, guid: 58587ff0becaab64b86f2254dcb4bf7d, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 58587ff0becaab64b86f2254dcb4bf7d,
+    type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -96,7 +97,7 @@ Material:
     - _HexagonTiles: 10
     - _Hexagon_Disolve: 0.97
     - _Hexagon_Dissolve: 0.91466075
-    - _Hexagon_Tiles: 10
+    - _Hexagon_Tiles: 2.44
     - _MaterialID: 1
     - _MaterialTypeMask: 2
     - _OpaqueCullMode: 2
