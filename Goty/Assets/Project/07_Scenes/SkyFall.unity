@@ -346,6 +346,7 @@ MonoBehaviour:
   spawnTime: 3
   prefabsToSpawn:
   - {fileID: 8934677866171364787, guid: eb454f10a40bd54409fbc3acc8c46791, type: 3}
+  - {fileID: 2471977046301435323, guid: 47b0623fb6cee8c4eb4a416f4316cdd9, type: 3}
   spawnMode: 1
   player: {fileID: 0}
   maxDistance: 50
