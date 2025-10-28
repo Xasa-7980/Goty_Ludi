@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TimeManager : MonoBehaviour
 {
     [SerializeField] private float timeToWin;
-
+    public UnityEvent onTimeFinishes;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,7 +16,7 @@ public class TimeManager : MonoBehaviour
     {
         yield return new WaitForSeconds(timeToWin);
 
-        SceneController.Instance.NextScene();
+        onTimeFinishes?.Invoke();
 
         yield return null;
     }
