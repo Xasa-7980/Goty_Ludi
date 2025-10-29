@@ -34,7 +34,7 @@ public class FishScript : MonoBehaviour
         {
             dir = -1;
             initialX = x_right;
-            initialPosition = new Vector3(initialX, initialY, 8);
+            initialPosition = new Vector3(initialX, initialY, 0);
         }
         else
         {
