@@ -79,7 +79,10 @@ public class SceneController :MonoBehaviour
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
-
+    public string GetCurrentSceneName ( )
+    {
+        return SceneManager.GetSceneAt(index).name;
+    }
     private bool isReloading = false;
 
     public void ResetScene ( )

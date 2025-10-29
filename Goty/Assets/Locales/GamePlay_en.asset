@@ -17,27 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 761497e10df57a94c8dfc12a8b55f691, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData:
-  - m_Id: 5484810240
-    m_Localized: Runoff
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8651509760
-    m_Localized: Evaporation
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15853129728
-    m_Localized: Runoff return
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13273632768
-    m_Localized: Precipitation
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11059040256
-    m_Localized: Ascent
-    m_Metadata:
-      m_Items: []
+  m_TableData: []
   references:
     version: 2
     RefIds: []

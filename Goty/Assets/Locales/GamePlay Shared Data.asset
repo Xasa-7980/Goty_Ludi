@@ -15,35 +15,35 @@ MonoBehaviour:
   m_TableCollectionName: GamePlay
   m_TableCollectionNameGuidString: 761497e10df57a94c8dfc12a8b55f691
   m_Entries:
-  - m_Id: 5484810240
+  - m_Id: 10316648448
     m_Key: GamePlay.River
     m_Metadata:
       m_Items: []
-  - m_Id: 8651509760
+  - m_Id: 13940527104
     m_Key: GamePlay.Sea
     m_Metadata:
       m_Items: []
-  - m_Id: 11059040256
+  - m_Id: 16683601920
     m_Key: GamePlay.Ascension
     m_Metadata:
       m_Items: []
-  - m_Id: 13273632768
+  - m_Id: 19082743808
     m_Key: GamePlay.Sky
     m_Metadata:
       m_Items: []
-  - m_Id: 15853129728
+  - m_Id: 21653852160
     m_Key: GamePlay.SkyFall
     m_Metadata:
       m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    rid: 2500238412907807184
+    rid: 2500238412907807198
   references:
     version: 2
     RefIds:
-    - rid: 2500238412907807184
+    - rid: 2500238412907807198
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
         asm: Unity.Localization}
       data:
-        m_CustomEpoch: 1761696635263
+        m_CustomEpoch: 1761698169252
