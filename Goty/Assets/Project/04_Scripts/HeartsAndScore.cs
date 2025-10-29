@@ -22,6 +22,8 @@ public class HeartsAndScore : MonoBehaviour
 
     [SerializeField] private Image controlsImageParent;
     [SerializeField] private GameObject panelPauseMenu;
+    [SerializeField] private GameObject scoreLabel;
+    [SerializeField] private GameObject healthLabel;
     [SerializeField] private GameObject[] controlsImagePrefab;
 
     public static bool pause;
@@ -67,7 +69,14 @@ public class HeartsAndScore : MonoBehaviour
     {
         if (sc.name == "MainMenu")
         {
+            scoreLabel.SetActive(false);
+            healthLabel.SetActive(false);  
             RestartValues();
+        }
+        else
+        {
+            healthLabel.SetActive(true);
+            scoreLabel.SetActive(true);
         }
     }
     public void RestartValues ( )
