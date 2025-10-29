@@ -122,6 +122,13 @@ public class HeartsAndScore : MonoBehaviour
         }
     }
 
+    public void RestartValues()
+    {
+        PlayerPrefs.SetInt("Health", 5);
+        PlayerPrefs.SetInt("Score", 0);
+        SetScore(PlayerPrefs.GetInt("Score"), false);
+    }
+
     // =================== HEALTH ===================
 
     public void DrawCurrentLifes ( )
