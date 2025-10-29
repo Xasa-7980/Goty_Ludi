@@ -64,11 +64,7 @@ public class Player : MonoBehaviour
     private Vector2 lastPointerPos;
     private float dirZ;
     private float deltaTime;
-    private int health = 0;
     private PhysicsMode currentPhysicsMode;
-
-    // Events
-    public UnityEvent OnDeath;
     bool blockMovement;
 
     private void Start ( )
@@ -454,15 +450,6 @@ public class Player : MonoBehaviour
         if (collision.gameObject.layer == groundMask)
         {
             cameraBehaviour?.CameraShake(shakeDurationOnHit, shakeAmountOnHit);
-        }
-    }
-
-    public void ReceiveDamage ( int damage )
-    {
-        health -= damage;
-        if (health <= 0)
-        {
-            OnDeath?.Invoke();
         }
     }
 

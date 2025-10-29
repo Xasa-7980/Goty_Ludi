@@ -1,7 +1,6 @@
 using UnityEngine.Audio;
 using System;
 using UnityEngine;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
