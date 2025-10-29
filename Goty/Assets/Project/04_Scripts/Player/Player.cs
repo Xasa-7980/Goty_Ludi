@@ -387,7 +387,13 @@ public class Player : MonoBehaviour
         ConfigureRigidbodyForSkyFall();
         if (direction == Vector2.zero) { lerpSpeed = 0; }
         Vector2 velocity = direction * speed;
-
+        rotZ += Vector2.right.x * velocity.x * deltaTime * rotSpeed;
+        if (velocity.x == 0)
+        {
+            rotZ = Mathf.MoveTowards(rotZ, 0, deltaTime * rotSpeed * rotSpeed);
+        }
+        rotZ = Mathf.Clamp(rotZ, -30, 30);
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotZ));
         rb2d.linearVelocity = velocity;
     }
 
