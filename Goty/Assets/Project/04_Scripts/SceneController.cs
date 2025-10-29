@@ -95,7 +95,6 @@ public class SceneController :MonoBehaviour
     {
         if (isReloading) return; // evita recargar dos veces
         isReloading = true;
-
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     public void LoadPauseMenu()

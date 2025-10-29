@@ -70,11 +70,12 @@ public class PlayerStats : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         // restaurar salud antes de recargar
-        PlayerPrefs.SetInt("Health", maxHealth);
-        PlayerPrefs.Save();
 
         hasDied = false;
         onDie?.Invoke();
+
+        PlayerPrefs.SetInt("Health", maxHealth);
+        PlayerPrefs.Save();
     }
     // ===================== HEALTH =====================
 
