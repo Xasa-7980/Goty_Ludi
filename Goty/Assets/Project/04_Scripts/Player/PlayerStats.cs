@@ -39,6 +39,14 @@ public class PlayerStats : MonoBehaviour
         LoadPersistentStats();
     }
 
+    private void Start()
+    {
+        onDie.AddListener(() =>
+        {
+            PlayerPrefs.SetInt("Health", 5);
+            PlayerPrefs.SetInt("Score", 0);
+        });
+    }
     private bool hasDied = false;
 
     private void Update ( )
