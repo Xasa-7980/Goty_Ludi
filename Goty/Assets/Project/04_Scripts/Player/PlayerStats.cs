@@ -17,7 +17,7 @@ public class PlayerStats : MonoBehaviour
     private int currentHealth;
     private float score;
     private float height;
-    private float lastHeight;
+    private float lastHeight = 0;
     private float scoreTime;
     private float multiplierTime;
     private int initialMultiplier;
@@ -123,16 +123,16 @@ public class PlayerStats : MonoBehaviour
                 height += multiplier;
                 lastHeight = transform.position.y;
             }
-            score = (int)height;
         }
         else if (scoreTime > 0.2f)
         {
             score += multiplier;
             scoreTime = 0;
+            height = lastHeight;
         }
 
         // Guardar puntuación persistente
-        PlayerPrefs.SetInt("Score", (int)score);
+        PlayerPrefs.SetInt("Score", (int)score + (int)height);
         PlayerPrefs.Save();
         HeartsAndScore.Instance?.SetScore((int)score, multiplier > initialMultiplier);
 

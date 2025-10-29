@@ -15,16 +15,16 @@ MonoBehaviour:
   m_TableCollectionName: GamePlay
   m_TableCollectionNameGuidString: 761497e10df57a94c8dfc12a8b55f691
   m_Entries:
+  - m_Id: 16683601920
+    m_Key: GamePlay.Ascension
+    m_Metadata:
+      m_Items: []
   - m_Id: 10316648448
     m_Key: GamePlay.River
     m_Metadata:
       m_Items: []
   - m_Id: 13940527104
     m_Key: GamePlay.Sea
-    m_Metadata:
-      m_Items: []
-  - m_Id: 16683601920
-    m_Key: GamePlay.Ascension
     m_Metadata:
       m_Items: []
   - m_Id: 19082743808
