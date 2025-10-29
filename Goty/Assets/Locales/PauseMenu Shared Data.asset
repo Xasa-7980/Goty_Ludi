@@ -31,6 +31,10 @@ MonoBehaviour:
     m_Key: PauseMenu.Pausa
     m_Metadata:
       m_Items: []
+  - m_Id: 48669003583488
+    m_Key: "PauseMenu.MainMenu\t"
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
