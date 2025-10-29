@@ -120,7 +120,7 @@ public class PlayerStats : MonoBehaviour
         {
             if ((int)transform.position.y > (int)lastHeight)
             {
-                height += multiplier;
+                score += (transform.position.y - lastHeight) * multiplier;
                 lastHeight = transform.position.y;
             }
         }
@@ -128,7 +128,6 @@ public class PlayerStats : MonoBehaviour
         {
             score += multiplier;
             scoreTime = 0;
-            height = lastHeight;
         }
 
         // Guardar puntuación persistente
