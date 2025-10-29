@@ -33,7 +33,6 @@ public class DamageDealer : MonoBehaviour
                 default:
                     break;
             }  
-
             playerStats.SetHealth(-1);
         }
     }

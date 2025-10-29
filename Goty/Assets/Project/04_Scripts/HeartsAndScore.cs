@@ -16,6 +16,8 @@ public class HeartsAndScore : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreTxt;
     [SerializeField] private float fillSpeed = 3f;
     [SerializeField] private int maxHearts = 5;
+    [SerializeField] private GameObject scoreLabel;
+    [SerializeField] private GameObject hpLabel;
 
     private readonly List<Image> lifes = new List<Image>();
     private int lastHealth;
@@ -54,7 +56,16 @@ public class HeartsAndScore : MonoBehaviour
         {
             if (sc.name == "MainMenu")
             {
+                Debug.Log("Ahi te los quito");
+                scoreLabel.SetActive(false);
+                hpLabel.SetActive(false);
                 RestartValues();
+            }
+            else
+            {
+                Debug.Log("Ala puestos");
+                scoreLabel.SetActive(true);
+                hpLabel.SetActive(true);
             }
         };
     }
@@ -67,6 +78,7 @@ public class HeartsAndScore : MonoBehaviour
     {
         if (sc.name == "MainMenu")
         {
+            
             RestartValues();
         }
     }
@@ -121,13 +133,6 @@ public class HeartsAndScore : MonoBehaviour
             lifes.Add(heartImg);
         }
     }
-
-    //public void RestartValues()
-    //{
-    //    PlayerPrefs.SetInt("Health", 5);
-    //    PlayerPrefs.SetInt("Score", 0);
-    //    SetScore(PlayerPrefs.GetInt("Score"), false);
-    //}
 
     // =================== HEALTH ===================
 

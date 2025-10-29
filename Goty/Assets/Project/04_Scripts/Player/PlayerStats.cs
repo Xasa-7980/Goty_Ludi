@@ -98,10 +98,15 @@ public class PlayerStats : MonoBehaviour
             else
                 anim.SetTrigger("Boost");
 
+            if (PlayerPrefs.GetInt("Health") > 0)
+            {
             currentHealth = Mathf.Clamp(currentHealth + value, 0, maxHealth);
+
             // Guardar salud persistente
-            PlayerPrefs.SetInt("Health", currentHealth);
-            PlayerPrefs.Save();
+
+                PlayerPrefs.SetInt("Health", currentHealth);
+                PlayerPrefs.Save();
+            }
 
             HeartsAndScore.Instance?.DrawCurrentLifes();
 
