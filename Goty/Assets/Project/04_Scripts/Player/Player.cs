@@ -83,8 +83,8 @@ public class Player : MonoBehaviour
     {
         if(blockMovement)
         {
-            blockMovement = !Input.anyKey;
-            return;
+            blockMovement = false;
+            rb2d.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
         }
         deltaTime = Time.deltaTime * timeScale;
         HandleMovement();

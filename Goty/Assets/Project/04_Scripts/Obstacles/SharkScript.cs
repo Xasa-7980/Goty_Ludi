@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SharkScript : MonoBehaviour
 {
-    const float INITIALZ = 7;
+    const float INITIALZ = 0;
     enum State
     {
         APPEARING,
