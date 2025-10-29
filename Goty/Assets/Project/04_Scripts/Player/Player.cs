@@ -108,35 +108,81 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Added camera behaviour succefully");
         }
-        
-        
-        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
-        {  // Lógica para apps móviles 
-            useMouse = true;
-            joystick.gameObject.SetActive(true);
-        }
-        else if (Application.platform == RuntimePlatform.WebGLPlayer)
+
+
+        bool isMobile = RunningOnAndroid();
+
+        if (isMobile)
         {
-            // WebGL: puede ser PC o móvil, hay que comprobar si tiene pantalla táctil con:
-            if (Input.touchSupported)
-            {
-                useMouse = true;
-                print("has touch support");
-                joystick.gameObject.SetActive(true);
-            }
-            else
-            {
-                useMouse = false;
-                joystick.gameObject.SetActive(false);
-            }
+            // MOBILE OR TABLET
+            useMouse = true; // in your logic: true = touch input
+            joystick.gameObject.SetActive(true); // show joystick
+            Debug.Log("Detected MOBILE/TABLET -> joystick ON");
         }
         else
         {
-            // PC o editor
-            useMouse = false;
-            joystick.gameObject.SetActive(false);
+            // DESKTOP OR LAPTOP
+            useMouse = false; // in your logic: false = mouse input
+            joystick.gameObject.SetActive(false); // hide joystick
+            Debug.Log("Detected DESKTOP -> joystick OFF");
         }
+
         blockMovement = phase == GamePhase.SEA || phase == GamePhase.SKY;
+    }
+
+//    private bool IsMobileUltraPrecise ( )
+//    {
+//        // 1 - Native build detection
+//#if UNITY_ANDROID || UNITY_IOS
+//    return true;
+//#endif
+
+//        // 2 - Device type
+//        if (SystemInfo.deviceType == DeviceType.Handheld)
+//            return true;
+
+//        // 3 - WebGL
+//        if (Application.platform == RuntimePlatform.WebGLPlayer)
+//        {
+//            // 3A - Check JavaScript MobileDetection
+//            try
+//            {
+//                if (IsMobile() == 1)
+//                    return true;
+//            }
+//            catch { /* safe ignore if not defined */ }
+
+//            // 3B - Touch detection
+//            if (Input.touchSupported && Input.multiTouchEnabled)
+//                return true;
+
+//            // 3C - Screen size and DPI
+//            if ((Screen.width <= 950 && Screen.height <= 950) && Input.touchSupported)
+//                return true;
+
+//            if (Screen.dpi > 200 && Screen.width < 1400 && Input.touchSupported)
+//                return true;
+
+//            // 3D - Fallback: user agent from Application.absoluteURL
+//            string url = Application.absoluteURL.ToLower();
+//            if (url.Contains("android") || url.Contains("iphone") || url.Contains("ipad") || url.Contains("mobile"))
+//                return true;
+
+//            return false;
+//        }
+
+//        // 4 - Other platforms
+//        return false;
+//    }
+[System.Runtime.InteropServices.DllImport("__Internal")]
+    private static extern bool IsMobile ( );
+    bool RunningOnAndroid ( )
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+return IsMobile();
+#else  
+        return false;
+#endif
     }
     private void HandleMovement ( )
     {
