@@ -54,7 +54,13 @@ public class SceneController :MonoBehaviour
     //        yield return null;
     //    }
     //}
-
+    private void Update ( )
+    {
+        if(Input.GetKeyDown(KeyCode.U)) //testeo pasar nivel
+            {
+            NextScene();
+        }
+    }
     public void LoadMainMenu()
     {
         index = 0;
