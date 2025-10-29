@@ -809,8 +809,8 @@
     "m_ObjectId": "41b0957d08184160bab3a07a30b4fe74",
     "m_Title": "Sample the 3D Scene",
     "m_Position": {
-        "x": -1126.0001220703125,
-        "y": -148.6666717529297
+        "x": -1124.9998779296875,
+        "y": -149.0
     }
 }
 
@@ -1108,15 +1108,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.Rendering.Canvas.ShaderGraph.CanvasData",
-    "m_ObjectId": "5b7725cd3e784260883ec979b71fc2a9",
-    "m_Version": 0,
-    "m_AlphaClip": false,
-    "m_DisableTint": false
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "5ba0867abad644c5a8ceba0817ef8c14",
     "m_Id": 0,
@@ -1226,8 +1217,8 @@
     "m_ObjectId": "61fceaeb8fce48efbe34e417c1b76709",
     "m_Title": "Screenspace UV coordinates",
     "m_Position": {
-        "x": -1201.3333740234375,
-        "y": 220.66665649414063
+        "x": -1199.9998779296875,
+        "y": 220.00003051757813
     }
 }
 
@@ -1842,8 +1833,8 @@
     "m_ObjectId": "95a6deb1c09940029f6a987c5b46dc6c",
     "m_Title": "Generate Hexagon Grid",
     "m_Position": {
-        "x": -655.3333129882813,
-        "y": 220.66665649414063
+        "x": -653.9999389648438,
+        "y": 220.9999542236328
     }
 }
 

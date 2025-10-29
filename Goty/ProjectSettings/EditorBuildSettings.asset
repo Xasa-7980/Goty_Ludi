@@ -8,12 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project/07_Scenes/MainMenu.unity
     guid: 69680f6a35bb1d84983359066434dcf3
-  - enabled: 0
+  - enabled: 1
     path: Assets/Project/07_Scenes/River.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Project/07_Scenes/Sea.unity
-    guid: 33017132d956b8b44ad91722400cb46e
+    guid: 4fe8182b8fe41374ea4ff24af0fd543c
   - enabled: 1
     path: Assets/Project/07_Scenes/Ascension.unity
     guid: 1eb5f2b45bce409468bcc1c001ab9626

@@ -48,11 +48,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdd852f15bf9d5943bd28090784592ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yMax: 3
-  yMin: -8
-  x_left: -22
-  x_right: 22
-  appearingDistance: 4
+  yMax: 2
+  yMin: -4
+  x_left: -12
+  x_right: 12
+  appearingDistance: 3
   vel: 10
 --- !u!114 &1656771086343344108
 MonoBehaviour:
@@ -66,8 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b4ccd7d91ac0874bb3c864bdb36d3ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSky: 0
-  isSea: 0
+  clip: {fileID: 0}
 --- !u!212 &347961881998627270
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -179,15 +178,15 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -1.6755295, y: -0.11900297}
+  m_Offset: {x: -0.7310015, y: 0.021971375}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 9.1411295, y: 3.968}
+    oldSize: {x: 4.5705647, y: 1.984}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 4.351059, y: 1.950032}
+  m_Size: {x: 2.4620035, y: 1.104186}
   m_EdgeRadius: 0

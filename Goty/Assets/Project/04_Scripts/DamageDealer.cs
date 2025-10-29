@@ -46,7 +46,7 @@ public class DamageDealer : MonoBehaviour
             Player p = collision.gameObject.GetComponent<Player>();
             if (p.phase == GamePhase.ASCENSION)
             {
-                collision.gameObject.transform.position = new Vector3(0, transform.position.y + 5, 0);
+                collision.gameObject.transform.position = new Vector3(0, transform.position.y + 8, 0);
                 collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
             }
             playerStats.SetHealth(-1);
