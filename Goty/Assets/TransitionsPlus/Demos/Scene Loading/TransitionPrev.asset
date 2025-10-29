@@ -53,8 +53,8 @@ MonoBehaviour:
   noiseIntensity: 0.25
   vignetteIntensity: 1
   toonGradientIntensity: 64
-  toonDotIntensity: 0.5
-  toonDotRadius: 0.333
+  toonDotIntensity: 1
+  toonDotRadius: 0.01
   toonDotCount: 32
   rotationMultiplier: 0
   rotation: 0
