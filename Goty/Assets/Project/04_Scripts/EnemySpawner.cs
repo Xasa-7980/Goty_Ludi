@@ -34,6 +34,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Update()
     {
+
         if (i < enemies.Length)
         {
             if (!timer.Timer_Started())

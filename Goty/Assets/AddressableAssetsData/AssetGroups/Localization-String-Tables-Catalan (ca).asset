@@ -15,6 +15,13 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Catalan (ca)
   m_GUID: 5db1d3db4fb0fe344b986c41784471d7
   m_SerializeEntries:
+  - m_GUID: 2371f59e1cea35b4aa66aa1988e1937a
+    m_Address: PauseMenu_ca
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ca
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 26b831d84c1d9a34eb30c2878b32fa0e
     m_Address: GameOver_ca
     m_ReadOnly: 1
@@ -28,12 +35,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-ca
     - Preload
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 350b0cf29ecea834f8e2d978ea688959
-    m_Address: GamePlay_ca
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-ca
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4689dc14df179f64f9bc628fffad14c4
     m_Address: MenuLabels_ca

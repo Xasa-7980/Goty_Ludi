@@ -47,7 +47,8 @@ public class SpawnObstacles : MonoBehaviour
 
     private void Update ( )
     {
-        if (player == null) return;
+
+        if (HeartsAndScore.pause) return;
 
         float distanceY = Mathf.Abs(transform.position.y - player.transform.position.y);
 

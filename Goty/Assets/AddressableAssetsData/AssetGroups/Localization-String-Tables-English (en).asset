@@ -29,6 +29,13 @@ MonoBehaviour:
     - Locale-en
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9eb18a95ce566fa4295dee842c9aad15
+    m_Address: PauseMenu_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9f323ff909d185f408d27b379e6c3f9c
     m_Address: MenuLabels_en
     m_ReadOnly: 1

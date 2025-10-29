@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class HeartsAndScore : MonoBehaviour
 {
@@ -18,6 +19,11 @@ public class HeartsAndScore : MonoBehaviour
     private readonly List<Image> lifes = new List<Image>();
     private int lastHealth;
 
+    [SerializeField] private Image controlsImageParent;
+    [SerializeField] private GameObject panelPauseMenu;
+    [SerializeField] private GameObject[] controlsImagePrefab;
+
+    public static bool pause;
     private void Awake ( )
     {
         if (Instance != null && Instance != this)
@@ -36,10 +42,18 @@ public class HeartsAndScore : MonoBehaviour
 
         lastHealth = PlayerPrefs.GetInt("Health", maxHearts);
         DrawCurrentLifes();
+        if (curControlsImage == null) CreateCurrentSceneControls();
+
     }
 
     private void Update ( )
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pause = true;
+            Time.timeScale = 0f;
+            panelPauseMenu?.SetActive(true);
+        }
         SetText(PlayerPrefs.GetInt("Score", 0));
 
         int currentHealth = PlayerPrefs.GetInt("Health", maxHearts);
@@ -52,6 +66,11 @@ public class HeartsAndScore : MonoBehaviour
         }
     }
 
+    public void QuitPause ( )
+    {
+        Time.timeScale = 1f;
+        pause = false;
+    }
     // =================== INIT ===================
 
     private void InitLifes ( )
@@ -139,5 +158,19 @@ public class HeartsAndScore : MonoBehaviour
     {
         if (scoreTxt != null)
             scoreTxt.text = _score.ToString();
+    }
+
+    // =================== CONTROLS ===================
+    GameObject curControlsImage;
+    void CreateCurrentSceneControls ( )
+    {
+        int curSceneIndex = SceneManager.GetActiveScene().buildIndex - 1;
+        curControlsImage = Instantiate(controlsImagePrefab[curSceneIndex], controlsImageParent.transform);
+        curControlsImage.SetActive(false);
+    }
+    public void ShowCurrentControls ( )
+    {
+        curControlsImage.SetActive(true);
+
     }
 }

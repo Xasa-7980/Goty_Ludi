@@ -86,6 +86,12 @@ public class Player : MonoBehaviour
             blockMovement = false;
             rb2d.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
         }
+        else
+        {
+            if (timeScale < 0) timeScale = 1;
+            if(rb2d.gravityScale < 0) rb2d.gravityScale = 1;
+                
+        }
         deltaTime = Time.deltaTime * timeScale;
         HandleMovement();
         if(Input.GetKeyDown(KeyCode.U))
@@ -93,7 +99,7 @@ public class Player : MonoBehaviour
             SceneController.Instance.NextScene();
         }
     }
-
+            
     private void InitializeComponents ( )
     {
         gameInput = new GameInput(playerInput);
