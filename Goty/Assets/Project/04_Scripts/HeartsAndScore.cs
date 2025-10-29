@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class HeartsAndScore : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class HeartsAndScore : MonoBehaviour
         if (scoreTxt == null)
             scoreTxt = GetComponentInChildren<TextMeshProUGUI>();
 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         InitLifes();
 
         lastHealth = PlayerPrefs.GetInt("Health", maxHearts);
@@ -45,7 +48,35 @@ public class HeartsAndScore : MonoBehaviour
         if (curControlsImage == null) CreateCurrentSceneControls();
 
     }
-
+    private void Start ( )
+    {
+        SceneManager.sceneLoaded += ( sc, md ) =>
+        {
+            if (sc.name == "MainMenu")
+            {
+                RestartValues();
+            }
+        };
+    }
+    private void OnDisable ( )
+    {
+        // Desuscribirse para evitar referencias duplicadas
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded ( Scene sc, LoadSceneMode mode )
+    {
+        if (sc.name == "MainMenu")
+        {
+            RestartValues();
+        }
+    }
+    public void RestartValues ( )
+    {
+        PlayerPrefs.SetInt("Health", maxHearts);
+        PlayerPrefs.SetInt("Score", 0);
+        SetScore(0, false);
+        DrawCurrentLifes();
+    }
     private void Update ( )
     {
         if (Input.GetKeyDown(KeyCode.Escape))
