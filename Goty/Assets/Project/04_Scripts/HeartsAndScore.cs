@@ -38,6 +38,14 @@ public class HeartsAndScore : MonoBehaviour
         if (scoreTxt == null)
             scoreTxt = GetComponentInChildren<TextMeshProUGUI>();
 
+        if(SceneManager.GetSceneAt(SceneManager.GetActiveScene().buildIndex).name == "MainMenu")
+        {
+            PlayerPrefs.DeleteKey("Health");
+            PlayerPrefs.DeleteKey("Score");
+            PlayerPrefs.SetInt("Health", 5);
+            PlayerPrefs.SetInt("Score", 0);
+            PlayerPrefs.Save();
+        }
         InitLifes();
 
         lastHealth = PlayerPrefs.GetInt("Health", maxHearts);
