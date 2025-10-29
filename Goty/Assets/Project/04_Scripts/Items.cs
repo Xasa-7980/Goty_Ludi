@@ -10,15 +10,6 @@ public class Items : MonoBehaviour
     const float SEA_X_MAX = 9;
     const float SEA_HEIGHT = 4;
 
-    //SKY CONSTANTS:
-    const float SKY_INITIAL_X = 8;
-    const float SKY_Y_MIN = -12;
-    const float SKY_Y_MAX = 12;
-
-    //ASCENSION CONSTANTS:
-    const float ASC_X_MIN = -12;
-    const float ASC_X_MAX = 12;
-
     //FALL CONSTANTS:
     const float FALL_X_MIN = -12;
     const float FALL_X_MAX = 12;
@@ -29,7 +20,6 @@ public class Items : MonoBehaviour
     private GamePhase fase;
     private float vel = 3;
     private float seaVel;
-    private float initialY;
 
     private void Awake()
     {
@@ -86,9 +76,13 @@ public class Items : MonoBehaviour
         if (collision.gameObject.layer == 7)
         {
             if (!isMultiplier)
+            { 
+                AudioManager.instance?.PlaySfx("Health");
                 collision.gameObject.GetComponent<PlayerStats>().SetHealth(1);
+            }
             else
             {
+                AudioManager.instance?.PlaySfx("Multiplicator");
                 collision.gameObject.GetComponent<PlayerStats>().OnMultiplier();
             }
             gameObject.SetActive(false);

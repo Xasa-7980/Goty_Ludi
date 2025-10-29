@@ -18,8 +18,8 @@ public class AudioSettingsUI : MonoBehaviour
     {
         if (AudioManager.instance != null)
         {
-            //musicSlider.value = AudioManager.instance.GetMusicVolume();
-            //sfxSlider.value = AudioManager.instance.GetSFXVolume();
+            musicSlider.value = AudioManager.instance.GetMusicVolume();
+            sfxSlider.value = AudioManager.instance.GetSFXVolume();
         }
     }
 
@@ -31,7 +31,7 @@ public class AudioSettingsUI : MonoBehaviour
 
     private void OnSFXSliderChanged ( float value )
     {
-        //if (AudioManager.instance != null)
-        //    AudioManager.instance.SetSFXVolume(value);
+        if (AudioManager.instance != null)
+            AudioManager.instance.SetSFXVolume(value);
     }
 }
