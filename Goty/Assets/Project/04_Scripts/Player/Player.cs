@@ -71,6 +71,7 @@ public class Player : MonoBehaviour
 
     // Events
     public UnityEvent OnDeath;
+    bool blockMovement;
 
     private void Start ( )
     {
@@ -80,6 +81,11 @@ public class Player : MonoBehaviour
 
     private void Update ( )
     {
+        if(blockMovement)
+        {
+            blockMovement = !Input.anyKey;
+            return;
+        }
         deltaTime = Time.deltaTime * timeScale;
         HandleMovement();
         if(Input.GetKeyDown(KeyCode.U))
@@ -130,6 +136,7 @@ public class Player : MonoBehaviour
             useMouse = false;
             joystick.gameObject.SetActive(false);
         }
+        blockMovement = phase == GamePhase.SEA || phase == GamePhase.SKY;
     }
     private void HandleMovement ( )
     {
