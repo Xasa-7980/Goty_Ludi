@@ -49,6 +49,7 @@ public class DamageDealer : MonoBehaviour
                 collision.gameObject.transform.position = new Vector3(0, transform.position.y + 8, 0);
                 collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
             }
+            AudioManager.instance.PlaySfx("Damage");
             playerStats.SetHealth(-1);
         }
     }

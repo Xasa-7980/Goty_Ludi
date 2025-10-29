@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4619102003580901443}
   - component: {fileID: 3080981309772538956}
   - component: {fileID: 7120981197258534066}
+  - component: {fileID: 4264611687435192134}
   m_Layer: 5
   m_Name: Canvas_HUD
   m_TagString: Untagged
@@ -133,6 +134,20 @@ MonoBehaviour:
   - {fileID: 8674825228005625339, guid: 957effd421456b04fb93f266d8deb181, type: 3}
   - {fileID: 2221361519661756422, guid: b44f5786edae8a345a268867588ebab7, type: 3}
   - {fileID: 8300252096764622002, guid: 0229a567efc3c034d94910e762d8da74, type: 3}
+--- !u!114 &4264611687435192134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80547641800874749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80b41a39c57d7c1488660fb10b79e57e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSlider: {fileID: 2518786302207769537}
+  sfxSlider: {fileID: 6828549343641017038}
 --- !u!1 &950684864117452706
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,7 +309,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3542,7 +3557,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
