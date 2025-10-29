@@ -3,7 +3,7 @@ using UnityEngine;
 public class Waves : MonoBehaviour
 {
     const int INITIAL_X = -36;
-    const int INITIAL_Y = 8;
+    const int INITIAL_Y = 10;
     const int INITIAL_Z = 8;
     const int END_X = 32;
     [SerializeField] private float vel;
