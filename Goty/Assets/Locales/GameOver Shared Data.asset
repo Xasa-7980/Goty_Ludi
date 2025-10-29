@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: GameOver Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: GameOver
+  m_TableCollectionNameGuidString: 2e6c2af6bcd13c74b88635191bab7837
+  m_Entries:
+  - m_Id: 15287799808
+    m_Key: GameOver.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 122913640448
+    m_Key: GameOver.Score
+    m_Metadata:
+      m_Items: []
+  - m_Id: 398529744896
+    m_Key: GameOver.Restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 573725822976
+    m_Key: GameOver.Exit
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 7915565181271801990
+  references:
+    version: 2
+    RefIds:
+    - rid: 7915565181271801990
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1761695978594

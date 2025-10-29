@@ -21,6 +21,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79f0e5cfecb250640a446c181904aa94
+    m_Address: GameOver_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9f323ff909d185f408d27b379e6c3f9c
     m_Address: MenuLabels_en
     m_ReadOnly: 1

@@ -15,8 +15,8 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Catalan (ca)
   m_GUID: 5db1d3db4fb0fe344b986c41784471d7
   m_SerializeEntries:
-  - m_GUID: 350b0cf29ecea834f8e2d978ea688959
-    m_Address: GamePlay_ca
+  - m_GUID: 26b831d84c1d9a34eb30c2878b32fa0e
+    m_Address: GameOver_ca
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-ca

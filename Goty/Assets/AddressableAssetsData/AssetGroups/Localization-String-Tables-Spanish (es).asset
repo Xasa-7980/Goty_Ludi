@@ -34,6 +34,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-es
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5939949c154e034ba78bfb71564a6d3
+    m_Address: GameOver_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: f55e75c52530c954f9669cba94b99253, type: 2}
   m_SchemaSet:
