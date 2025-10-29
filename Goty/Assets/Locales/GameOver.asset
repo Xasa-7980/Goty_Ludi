@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: GameOver
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: 2e6c2af6bcd13c74b88635191bab7837, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: 26b831d84c1d9a34eb30c2878b32fa0e, type: 2}
+  - {fileID: 11400000, guid: 79f0e5cfecb250640a446c181904aa94, type: 2}
+  - {fileID: 11400000, guid: f5939949c154e034ba78bfb71564a6d3, type: 2}
+  m_Extensions: []
+  m_Group: String Table
+  references:
+    version: 2
+    RefIds: []
